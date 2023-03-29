@@ -1,9 +1,8 @@
-package aaNotepad;
+package Combinatorics;
 
 import java.io.*;
-import java.util.*;
 
-public class notepad {
+public class Q13155_Common_Knowledge_B2 {
 	
 	public static void main(String[] args) throws IOException{
 		
