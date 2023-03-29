@@ -1,9 +1,9 @@
-package aaNotepad;
+package Combinatorics;
 
 import java.io.*;
 import java.util.*;
 
-public class notepad {
+public class Q14551_Card_Game_Contest_B2 {
 	
 	public static void main(String[] args) throws IOException{
 		
