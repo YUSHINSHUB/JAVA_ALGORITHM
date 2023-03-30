@@ -1,10 +1,10 @@
-package aaNotepad;
+package Probability_Theory;
 
 import java.io.*;
 import java.util.*;
 import java.text.*;
 
-public class notepad {
+public class Q13987_Six_Sides {
 	
 	public static void main(String[] args) throws IOException{
 		
@@ -35,6 +35,7 @@ public class notepad {
 		double res2 = base;
 		base *= add;
 		DecimalFormat df = new DecimalFormat("0.00000");
+		//소수를 저장할 형태를 정해준다. 0으로 할 경우 빈자리를 0으로 채워주고 #으로 할 경우 채우지 않는다.
 		
 		while( true ) {
 			res2 += base;
@@ -44,6 +45,7 @@ public class notepad {
 				base *= add;
 			}
 		}
+		//base를 더하는 연산이 double형의 값에 영향을 주지 못할정도로 미세해질 때까지 연산을 반복한다.
 		
 		String out = df.format(res);
 		bw.write( out );
