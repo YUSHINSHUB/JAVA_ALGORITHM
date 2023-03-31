@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.text.*;
 
-public class Q13987_Six_Sides {
+public class Q13987_Six_Sides_B2 {
 	
 	public static void main(String[] args) throws IOException{
 		

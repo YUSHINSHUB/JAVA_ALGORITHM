@@ -1,10 +1,10 @@
-package aaNotepad;
+package Probability_Theory;
 
 import java.io.*;
 import java.util.*;
 import java.text.*;
 
-public class notepad {
+public class Q17211_Good_Day_Bad_Day_B1 {
 	
 	public static void main(String[] args) throws IOException{
 		
