@@ -2,7 +2,6 @@ package Dynamic_Programming;
 
 import java.io.*;
 import java.math.*;
-import java.util.*;
 
 public class Q1149_RGB_Street_S1 {
 	
