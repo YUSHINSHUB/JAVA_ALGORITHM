@@ -1,10 +1,9 @@
-package aaNotepad;
+package Mathematics;
 
 import java.io.*;
 import java.util.*;
-import java.text.*;
 
-public class notepad {
+public class Q13300_Room_Allocation_B2 {
 	
 	public static void main(String[] args) throws IOException{
 		
