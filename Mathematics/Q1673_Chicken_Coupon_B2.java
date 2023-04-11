@@ -1,10 +1,10 @@
-package aaNotepad;
+package Mathematics;
 
 import java.io.*;
 import java.util.*;
 import java.text.*;
 
-public class notepad {
+public class Q1673_Chicken_Coupon_B2 {
 
 	public static void main(String[] args) throws IOException {
 
