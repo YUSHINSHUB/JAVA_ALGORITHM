@@ -1,10 +1,9 @@
-package aaNotepad;
+package Mathematics;
 
 import java.io.*;
 import java.util.*;
-import java.text.*;
 
-public class notepad {
+public class Q2592_Representative_Value_B2 {
 
 	public static void main(String[] args) throws IOException {
 
