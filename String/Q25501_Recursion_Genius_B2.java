@@ -1,10 +1,8 @@
-package aaNotepad;
+package String;
 
 import java.io.*;
-import java.util.*;
-import java.text.*;
 
-public class notepad {
+public class Q25501_Recursion_Genius_B2 {
 	
 	static int cnt; 
 

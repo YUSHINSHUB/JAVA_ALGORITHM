@@ -17,7 +17,7 @@ public class Q10809_Search_Alphabet_B2 {
 		}
 
 		for (int i = 0; i < 26; i++) {
-			if (in.contains(Character.toString('a' + i))) {
+			if (in.contains(Character.toString((char) ('a' + i)))) {
 				for (int z = 0; z < in.length(); z++) {
 					if (in.charAt(z) == 'a' + i) {
 						res[i + 1] = z;
