@@ -1,10 +1,8 @@
-package aaNotepad;
+package Implementation;
 
 import java.io.*;
-import java.util.*;
-import java.text.*;
 
-public class notepad {
+public class Q1652_Place_to_Lie_S5 {
 	
 	public static void main(String[] args) throws IOException {
 
