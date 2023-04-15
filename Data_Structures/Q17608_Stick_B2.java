@@ -1,10 +1,8 @@
-package aaNotepad;
+package Data_Structures;
 
 import java.io.*;
-import java.util.*;
-import java.text.*;
 
-public class notepad {
+public class Q17608_Stick_B2 {
 
 	public static void main(String[] args) throws IOException {
 
