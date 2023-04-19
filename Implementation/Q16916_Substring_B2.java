@@ -1,4 +1,4 @@
-package aaNotepad;
+package Implementation;
 
 import java.io.*;
 import java.util.*;
@@ -6,7 +6,7 @@ import java.text.*;
 
 //KMP알고리즘을 이용해 해결
 //https://bowbowbow.tistory.com/6 참고
-public class notepad {
+public class Q16916_Substring_B2 {
 
 	protected static int[] getlps(String pattern) { // LPS(Longest Prefix which is also Suffix)
 		// lps의 n번 자리에는 pattern의 n+1자리의 접두사(pattern이 abc일 경우 a, ab, abc)
