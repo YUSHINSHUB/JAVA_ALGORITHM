@@ -1,10 +1,10 @@
-package aaNotepad;
+package Implementation;
 
 import java.io.*;
 import java.util.*;
 import java.text.*;
 
-public class notepad {
+public class Q1769_Multiple_of_3_S5 {
 
 	public static void main(String[] args) throws IOException {
 
