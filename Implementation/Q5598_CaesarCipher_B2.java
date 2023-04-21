@@ -1,10 +1,8 @@
-package aaNotepad;
+package Implementation;
 
 import java.io.*;
-import java.util.*;
-import java.text.*;
 
-public class notepad {
+public class Q5598_CaesarCipher_B2 {
 
 	public static void main(String[] args) throws IOException {
 
@@ -27,4 +25,5 @@ public class notepad {
 		bw.close();
 
 	}
+
 }
