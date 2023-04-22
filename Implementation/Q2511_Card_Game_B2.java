@@ -1,10 +1,8 @@
-package aaNotepad;
+package Implementation;
 
 import java.io.*;
-import java.util.*;
-import java.text.*;
 
-public class notepad {
+public class Q2511_Card_Game_B2 {
 
 	public static void main(String[] args) throws IOException {
 
