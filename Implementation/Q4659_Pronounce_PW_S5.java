@@ -1,10 +1,8 @@
-package aaNotepad;
+package Implementation;
 
 import java.io.*;
-import java.util.*;
-import java.text.*;
 
-public class notepad {
+public class Q4659_Pronounce_PW_S5 {
 
 	public static void main(String[] args) throws IOException {
 
