@@ -1,10 +1,8 @@
-package aaNotepad;
+package String;
 
 import java.io.*;
-import java.util.*;
-import java.text.*;
 
-public class notepad {
+public class Q12871_Infinite_String_S5 {
 
 	public static void main(String[] args) throws IOException {
 
