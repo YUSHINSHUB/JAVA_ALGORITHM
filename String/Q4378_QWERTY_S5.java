@@ -1,8 +1,11 @@
-package aaNotepad;
+package String;
 
 import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
 
-public class notepad {
+public class Q4378_QWERTY_S5 {
 
 	public static void main(String[] args) throws IOException {
 
