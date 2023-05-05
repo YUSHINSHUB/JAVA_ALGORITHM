@@ -1,10 +1,10 @@
-package aaNotepad;
+package Dynamic_Programming;
 
 import java.io.*;
 import java.math.*;
 import java.util.Arrays;
 
-public class notepad {
+public class Q10826_Fibonacci_Number_4_S5 {
 
 	public static void main(String[] args) throws IOException {
 

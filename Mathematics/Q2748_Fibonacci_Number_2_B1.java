@@ -4,7 +4,7 @@ import java.io.*;
 import java.math.BigInteger;
 import java.util.*;
 
-public class Q2738_Fibonacci_Number_2_B1 {
+public class Q2748_Fibonacci_Number_2_B1 {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
