@@ -1,10 +1,8 @@
-package aaNotepad;
+package Implementation;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q1357_Reversed_Addition_B1 {
 
 	public static void main(String[] args) throws IOException {
 
