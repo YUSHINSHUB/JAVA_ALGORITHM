@@ -1,10 +1,10 @@
-package aaNotepad;
+package String;
 
 import java.io.*;
 import java.math.*;
 import java.util.*;
 
-public class notepad {
+public class Q1296_Choose_TeamName_B1 {
 
 	public static void main(String[] args) throws IOException {
 
