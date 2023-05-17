@@ -1,10 +1,10 @@
-package aaNotepad;
+package Greedy;
 
 import java.io.*;
 import java.math.*;
 import java.util.*;
 
-public class notepad {
+public class Q17224_Subtask_Competition_B1 {
 
 	public static void main(String[] args) throws IOException {
 
