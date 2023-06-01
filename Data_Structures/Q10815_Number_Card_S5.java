@@ -1,4 +1,4 @@
-package Sorting;
+package Data_Structures;
 
 import java.io.*;
 import java.util.*;

@@ -1,4 +1,4 @@
-package Binary_Search;
+package Parametric_Search;
 
 import java.io.*;
 import java.math.*;

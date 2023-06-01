@@ -1,4 +1,4 @@
-package Dynamic_Programming;
+package Arbitrary_Precision_Big_Integers;
 
 import java.io.*;
 import java.math.*;

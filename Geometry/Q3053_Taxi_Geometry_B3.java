@@ -1,9 +1,9 @@
-package Implementation;
+package Geometry;
 
 import java.io.*;
 import java.util.*;
 
-public class Q11719_Keep_Input_B3 {
+public class Q3053_Taxi_Geometry_B3 {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -11,12 +11,14 @@ public class Q11719_Keep_Input_B3 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String temp;
+		int r = Integer.parseInt(br.readLine());
 
-		while ((temp = br.readLine()) != null) {
-			bw.write(temp + "\n");
-			bw.flush();
-		}
+		double uc = (double) r * (double) r * Math.PI;
+		int tx = r * r * 2;
+
+		bw.write(String.valueOf(uc) + "\n" + String.valueOf(tx));
+
+		bw.flush();
 		bw.close();
 
 	}

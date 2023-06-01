@@ -1,4 +1,4 @@
-package Bruteforcing;
+package Sorting;
 
 import java.io.*;
 import java.util.*;

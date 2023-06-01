@@ -12,37 +12,47 @@ public class notepad {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		int t = Integer.parseInt(br.readLine());
-		
-		for( int i = 0 ; i < t ; i++ ) {
-			String nm[] = br.readLine().split(" ");
-			int n = Integer.parseInt(nm[0]);
-			int m = Integer.parseInt(nm[1]);
-			int team[][] = new int[n][2];
-			
-			for( int j = 0 ; j < m ; j++ ) {
-				String inp[] = br.readLine().split(" ");
-				int a = Integer.parseInt(inp[0]);
-				int b = Integer.parseInt(inp[1]);
-				int c = Integer.parseInt(inp[2]);
-				int d = Integer.parseInt(inp[3]);
-				
-				team[a-1][0] += c;
-				team[a-1][1] += d;
-				team[b-1][0] += d;
-				team[b-1][1] += c;
+
+		for (int i = 0; i < t; i++) {
+			String inp[] = br.readLine().split(" ");
+			String a = inp[0];
+			String b = inp[1];
+
+			if (a.length() < b.length()) {
+				String temp = a;
+				a = b;
+				b = temp;
 			}
+
+			StringBuilder abu = new StringBuilder(a);
+			StringBuilder bbu = new StringBuilder(b);
+
+			abu.reverse();
+			abu.append("0");
+			bbu.reverse();
+			while( bbu.length() != abu.length() ) bbu.append("0");
 			
-			double pe[] = new double[n];
-			
-			for( int j = 0 ; j < n ; j++ ) {
-				if( team[j][0] == 0 && team[j][1] == 0 ) pe[j] = 0;
-				else pe[j] = (Math.pow(team[j][0], 2)) / (Math.pow(team[j][0], 2) + Math.pow(team[j][1], 2));
+			int mod = 0, add = 0;
+
+			for (int j = 0; j < bbu.length(); j++) {
+				add = (abu.charAt(j) - '0') + (bbu.charAt(j) - '0')+mod;
+				abu.setCharAt(j, (char)( (add%2)+ '0' ) );
+				mod = add / 2;
 			}
-			Arrays.sort(pe);
+
+			abu.reverse();
 			
-			bw.write( (int)(pe[n-1]*1000) + "\n" + (int)(pe[0]*1000) + "\n");
+			while( abu.length() != 1 ) {
+				if (abu.charAt(0) == '0')
+					abu.deleteCharAt(0);
+				else
+					break;
+			}
+
+			bw.write(abu.toString() + "\n");
+
 		}
-		
+
 		bw.flush();
 		bw.close();
 	}

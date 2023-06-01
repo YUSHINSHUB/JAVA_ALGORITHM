@@ -1,4 +1,4 @@
-package String;
+package Mathematics;
 
 import java.io.*;
 

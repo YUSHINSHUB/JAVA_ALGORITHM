@@ -1,4 +1,4 @@
-package Graph_Traversal;
+package Graph_Theory;
 
 import java.io.*;
 import java.math.*;

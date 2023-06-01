@@ -1,4 +1,4 @@
-package Arithmetic;
+package Bruteforcing;
 
 import java.io.*;
 import java.util.*;
