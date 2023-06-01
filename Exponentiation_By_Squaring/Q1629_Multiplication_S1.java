@@ -1,4 +1,4 @@
-package Mathematics;
+package Exponentiation_By_Squaring;
 
 import java.io.*;
 import java.util.*;

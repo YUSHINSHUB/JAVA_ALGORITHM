@@ -1,4 +1,4 @@
-package String;
+package Sorting;
 
 import java.io.*;
 import java.util.*;

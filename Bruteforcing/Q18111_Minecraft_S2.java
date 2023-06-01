@@ -1,4 +1,4 @@
-package Implementation;
+package Bruteforcing;
 
 import java.io.*;
 

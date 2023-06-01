@@ -1,4 +1,4 @@
-package Sorting;
+package Sweeping;
 
 import java.io.*;
 import java.util.*;

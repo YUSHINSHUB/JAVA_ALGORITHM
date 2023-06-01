@@ -1,4 +1,4 @@
-package String;
+package Data_Structures;
 
 import java.io.*;
 

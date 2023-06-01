@@ -1,4 +1,4 @@
-package Mathematics;
+package Geometry;
 
 import java.io.*;
 import java.math.*;

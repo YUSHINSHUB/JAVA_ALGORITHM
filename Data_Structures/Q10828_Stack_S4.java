@@ -1,4 +1,4 @@
-package Implementation;
+package Data_Structures;
 
 import java.util.*;
 import java.io.*;

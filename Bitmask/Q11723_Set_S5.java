@@ -1,4 +1,4 @@
-package Implementation;
+package Bitmask;
 
 import java.io.*;
 

@@ -1,4 +1,4 @@
-package Data_Structures;
+package Priority_Queue;
 
 import java.io.*;
 import java.util.*;

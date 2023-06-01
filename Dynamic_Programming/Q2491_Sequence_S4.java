@@ -1,4 +1,4 @@
-package Implementation;
+package Dynamic_Programming;
 
 import java.io.*;
 import java.math.*;

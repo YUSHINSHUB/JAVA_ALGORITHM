@@ -1,4 +1,4 @@
-package Mathematics;
+package Arithmetic;
 
 import java.io.*;
 import java.math.*;

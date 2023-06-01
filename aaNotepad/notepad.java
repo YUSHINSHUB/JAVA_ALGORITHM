@@ -11,47 +11,34 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int t = Integer.parseInt(br.readLine());
+		String inp[] = br.readLine().split(" ");
 
-		for (int i = 0; i < t; i++) {
-			String inp[] = br.readLine().split(" ");
-			String a = inp[0];
-			String b = inp[1];
+		int a = Integer.parseInt(inp[0]);
+		int b = Integer.parseInt(inp[1]);
 
-			if (a.length() < b.length()) {
-				String temp = a;
-				a = b;
-				b = temp;
-			}
+		int nums[] = new int[b];
 
-			StringBuilder abu = new StringBuilder(a);
-			StringBuilder bbu = new StringBuilder(b);
+		int idx = 0;
 
-			abu.reverse();
-			abu.append("0");
-			bbu.reverse();
-			while( bbu.length() != abu.length() ) bbu.append("0");
-			
-			int mod = 0, add = 0;
-
-			for (int j = 0; j < bbu.length(); j++) {
-				add = (abu.charAt(j) - '0') + (bbu.charAt(j) - '0')+mod;
-				abu.setCharAt(j, (char)( (add%2)+ '0' ) );
-				mod = add / 2;
-			}
-
-			abu.reverse();
-			
-			while( abu.length() != 1 ) {
-				if (abu.charAt(0) == '0')
-					abu.deleteCharAt(0);
-				else
+		
+		for (int i = 1; i <= b; i++) {
+			for (int j = 0; j < i; j++) {
+				nums[idx] = i;
+				idx++;
+				if (idx == b)
 					break;
 			}
-
-			bw.write(abu.toString() + "\n");
-
+			if (idx == b)
+				break;
 		}
+
+		int res = 0;
+
+		for (int i = a - 1; i < b; i++) {
+			res += nums[i];
+		}
+
+		bw.write(res + "");
 
 		bw.flush();
 		bw.close();

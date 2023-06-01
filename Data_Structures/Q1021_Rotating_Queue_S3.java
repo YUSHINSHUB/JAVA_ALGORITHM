@@ -1,4 +1,4 @@
-package Deque;
+package Data_Structures;
 
 import java.io.*;
 import java.math.*;

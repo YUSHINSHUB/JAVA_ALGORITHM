@@ -1,4 +1,4 @@
-package String;
+package Greedy;
 
 import java.io.*;
 

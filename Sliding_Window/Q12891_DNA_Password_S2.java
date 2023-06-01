@@ -1,4 +1,4 @@
-package String;
+package Sliding_Window;
 
 import java.io.*;
 import java.math.*;

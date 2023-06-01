@@ -1,4 +1,4 @@
-package Sorting;
+package Two_Pointer;
 
 import java.io.*;
 import java.util.*;

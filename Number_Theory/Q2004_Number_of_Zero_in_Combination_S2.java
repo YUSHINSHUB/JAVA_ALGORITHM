@@ -1,4 +1,4 @@
-package Mathematics;
+package Number_Theory;
 
 import java.io.*;
 import java.math.*;

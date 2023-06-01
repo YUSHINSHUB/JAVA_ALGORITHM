@@ -1,4 +1,4 @@
-package Mathematics;
+package Bruteforcing;
 
 import java.io.*;
 

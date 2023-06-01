@@ -1,8 +1,10 @@
-package Implementation;
+package Mathematics;
 
-import java.io.*;
-import java.util.*;
-import java.text.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class Q1769_Multiple_of_3_S5 {
 

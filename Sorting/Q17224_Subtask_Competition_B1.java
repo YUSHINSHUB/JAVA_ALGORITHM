@@ -1,4 +1,4 @@
-package Greedy;
+package Sorting;
 
 import java.io.*;
 import java.math.*;

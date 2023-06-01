@@ -1,4 +1,4 @@
-package Mathematics;
+package Bitmask;
 
 import java.io.*;
 import java.util.*;

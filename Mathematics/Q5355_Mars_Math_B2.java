@@ -1,8 +1,12 @@
-package Implementation;
+package Mathematics;
 
-import java.io.*;
-import java.util.*;
-import java.text.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.text.DecimalFormat;
+import java.util.StringTokenizer;
 
 public class Q5355_Mars_Math_B2 {
 	

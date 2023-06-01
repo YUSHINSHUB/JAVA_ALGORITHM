@@ -1,4 +1,4 @@
-package Geometry;
+package Pythagoras_Theorem;
 
 import java.io.*;
 

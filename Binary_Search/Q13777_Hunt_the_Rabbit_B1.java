@@ -1,4 +1,4 @@
-package Implementation;
+package Binary_Search;
 
 import java.io.*;
 

@@ -1,4 +1,4 @@
-package Mathematics;
+package Probability_Theory;
 
 import java.io.*;
 import java.util.*;
