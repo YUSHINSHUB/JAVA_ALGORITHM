@@ -1,10 +1,8 @@
-package aaNotepad;
+package Greedy;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q13305_Gas_Station_S3 {
 
 	public static void main(String[] args) throws IOException {
 
@@ -34,7 +32,7 @@ public class notepad {
 			else
 				cheap = prc[i];
 
-			res += (long)dis[i] * (long)prc[i];
+			res += (long) dis[i] * (long) prc[i];
 		}
 
 		bw.write(res + "");
