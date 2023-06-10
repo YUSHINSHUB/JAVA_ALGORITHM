@@ -1,10 +1,8 @@
-package aaNotepad;
+package Number_Theory;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q1564_Factorial_5_S2 {
 
 	public static void main(String[] args) throws IOException {
 
@@ -30,8 +28,8 @@ public class notepad {
 		res %= 100000;
 		String out = res + "";
 
-			while (out.length() < 5)
-				out = "0" + out;
+		while (out.length() < 5)
+			out = "0" + out;
 
 		bw.write(out);
 		bw.flush();
