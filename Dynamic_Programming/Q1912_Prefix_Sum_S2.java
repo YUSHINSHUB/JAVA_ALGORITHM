@@ -1,10 +1,8 @@
-package aaNotepad;
+package Dynamic_Programming;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q1912_Prefix_Sum_S2 {
 
 	public static void main(String[] args) throws IOException {
 
