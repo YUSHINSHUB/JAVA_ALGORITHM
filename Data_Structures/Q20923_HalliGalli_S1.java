@@ -1,10 +1,10 @@
-package aaNotepad;
+package Data_Structures;
 
 import java.io.*;
 import java.math.*;
 import java.util.*;
 
-public class notepad {
+public class Q20923_HalliGalli_S1 {
 
 	public static void main(String[] args) throws IOException {
 
