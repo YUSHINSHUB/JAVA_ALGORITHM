@@ -8,42 +8,55 @@ public class notepad {
 
 	public static void main(String[] args) throws IOException {
 
-		// 해당 문제는 노드가 단방향이기 때문에 배열(visited[])을 이용해서 중복방문 확인 시 불가능 처리를 하면 된다.
-
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int t = Integer.parseInt(br.readLine());
+		int n = Integer.parseInt(br.readLine());
+		int p[][] = new int[n][n];
+		int res[] = new int[3];
+		Arrays.fill(res, 0);
 
-		for (int i = 0; i < t; i++) {
-			int n = Integer.parseInt(br.readLine());
-			int res = 0;
-			int idx = 1;
-			int pt[] = new int[n + 1];
-			int visited[] = new int[n + 1];
-			Arrays.fill(visited, 0);
-			for (int j = 1; j <= n; j++) {
-				pt[j] = Integer.parseInt(br.readLine());
+		for (int i = 0; i < n; i++) {
+			String in[] = br.readLine().split(" ");
+			for (int j = 0; j < n; j++) {
+				p[i][j] = Integer.parseInt(in[j]);
 			}
-
-			while (true) {
-				if (idx == n)
-					break;
-				if (visited[idx] == 1) {
-					res = 0;
-					break;
-				}
-
-				visited[idx] = 1;
-				idx = pt[idx];
-				res++;
-			}
-
-			bw.write(res + "\n");
-
 		}
+
+		for (int i = n; i >= 1; i /= 3) {
+			for (int j = 0; j < n; j += i) {
+				for (int k = 0; k < n; k += i) {
+					if (p[j][k] == -2)
+						continue;
+					int temp = p[j][k];
+					boolean chk = true;
+					for (int l = j; l < j + i; l++) {
+						for (int m = k; m < k + i; m++) {
+							if (p[l][m] != temp) {
+								chk = false;
+								break;
+							}
+						}
+						if (!chk)
+							break;
+					}
+					if (chk) {
+						temp++;
+						res[temp]++;
+						for (int l = j; l < j + i; l++) {
+							for (int m = k; m < k + i; m++) {
+								p[l][m] = -2;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		bw.write(res[0] + "\n" + res[1] + "\n" + res[2]);
 
 		bw.flush();
 		bw.close();
+
 	}
 }

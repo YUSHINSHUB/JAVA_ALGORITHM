@@ -4,7 +4,7 @@ import java.io.*;
 import java.math.BigInteger;
 import java.util.*;
 
-public class Q2605_Line_B2 {
+public class Q2605_LINE_B2 {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub

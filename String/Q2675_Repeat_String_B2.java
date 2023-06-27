@@ -1,31 +1,27 @@
-package Data_Structures;
+package String;
 
 import java.io.*;
+import java.util.*;
 
-public class Q17608_STICK_B2 {
+public class Q2675_Repeat_String_B2 {
 
 	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		int n = Integer.parseInt(br.readLine());
-		int stick[] = new int[n];
-		int hig = 0;
-		int res = 0;
 
 		for (int i = 0; i < n; i++) {
-			stick[i] = Integer.parseInt(br.readLine());
-		}
-
-		for (int i = n - 1; i >= 0; i--) {
-			if (stick[i] > hig) {
-				hig = stick[i];
-				res++;
+			String[] temp = br.readLine().split(" ");
+			for (int z = 0; z < temp[1].length(); z++) {
+				for (int x = 0; x < Integer.parseInt(temp[0]); x++) {
+					bw.write(temp[1].charAt(z));
+				}
 			}
+			bw.write("\n");
 		}
-
-		bw.write(res + "");
 
 		bw.flush();
 		bw.close();
