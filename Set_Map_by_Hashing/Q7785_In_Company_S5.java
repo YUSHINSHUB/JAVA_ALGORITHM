@@ -1,10 +1,9 @@
-package aaNotepad;
+package Set_Map_by_Hashing;
 
 import java.io.*;
-import java.math.*;
 import java.util.*;
 
-public class notepad {
+public class Q7785_In_Company_S5 {
 
 	public static void main(String[] args) throws IOException {
 
@@ -14,7 +13,7 @@ public class notepad {
 		int n = Integer.parseInt(br.readLine());
 		HashMap<String, Integer> hm = new HashMap();
 		ArrayList<String> list = new ArrayList();
-		//인덱스가 확실치 않은 배열을 정렬해야 하기 때문에 ArrayList 사용
+		// 인덱스가 확실치 않은 배열을 정렬해야 하기 때문에 ArrayList 사용
 		int idx = 0;
 
 		String name, stat;
@@ -36,7 +35,7 @@ public class notepad {
 		}
 
 		Collections.sort(list, Comparator.reverseOrder());
-		//문자열 역순정렬
+		// 문자열 역순정렬
 
 		for (int i = 0; i < list.size(); i++) {
 			bw.write(list.get(i) + "\n");
