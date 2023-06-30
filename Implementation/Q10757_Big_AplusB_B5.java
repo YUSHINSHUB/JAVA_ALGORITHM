@@ -1,32 +1,27 @@
-package aaNotepad;
+package Implementation;
 
 import java.io.*;
 import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q10757_Big_AplusB_B5 {
 
 	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int res = 2;
-		int add = 1;
-		int n;
-		n = Integer.parseInt(br.readLine());
+		String elm[] = br.readLine().split(" ");
 
-		for (int i = 0; i < n; i++) {
-			res += add;
-			add *= 2;
-		}
+		BigInteger a = new BigInteger(elm[0]);
+		BigInteger b = new BigInteger(elm[1]);
 
-		res = (int) Math.pow(res, 2);
+		a = a.add(b);
 
-		bw.write(res + "");
+		bw.write(String.valueOf(a));
 
 		bw.flush();
 		bw.close();
-
 	}
+
 }
