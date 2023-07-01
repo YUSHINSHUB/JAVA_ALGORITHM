@@ -1,10 +1,8 @@
-package aaNotepad;
+package Arithmetic;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q15894_Mathematic_is_B3 {
 
 	public static void main(String[] args) throws IOException {
 

@@ -1,21 +1,20 @@
-package aaNotepad;
+package Geometry;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
-
+public class Q27323_Rectangle_B5 {
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		long n = Long.parseLong(br.readLine());
+		int a, b;
+		a = Integer.parseInt(br.readLine());
+		b = Integer.parseInt(br.readLine());
 
-		bw.write(n * 4 + "");
+		bw.write((a * b) + "");
+
 		bw.flush();
 		bw.close();
-
 	}
 }

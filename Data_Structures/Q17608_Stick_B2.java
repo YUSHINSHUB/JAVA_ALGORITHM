@@ -2,7 +2,7 @@ package Data_Structures;
 
 import java.io.*;
 
-public class Q17608_STICK_B2 {
+public class Q17608_Stick_B2 {
 
 	public static void main(String[] args) throws IOException {
 
