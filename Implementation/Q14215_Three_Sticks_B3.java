@@ -1,10 +1,9 @@
-package aaNotepad;
+package Implementation;
 
 import java.io.*;
-import java.math.*;
 import java.util.*;
 
-public class notepad {
+public class Q14215_Three_Sticks_B3 {
 
 	public static void main(String[] args) throws IOException {
 
