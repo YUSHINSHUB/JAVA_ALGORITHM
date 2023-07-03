@@ -1,19 +1,19 @@
-package aaNotepad;
+package Simulation;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q24263_Execution_Time_2_B4 {
 
 	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		long n = Long.parseLong(br.readLine());
+		int n = Integer.parseInt(br.readLine());
 
-		bw.write(n * n * n + "\n3");
+		bw.write(n + "\n1");
+
 		bw.flush();
 		bw.close();
 

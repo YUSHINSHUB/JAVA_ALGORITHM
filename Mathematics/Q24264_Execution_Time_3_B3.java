@@ -1,10 +1,8 @@
-package aaNotepad;
+package Mathematics;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q24264_Execution_Time_3_B3 {
 
 	public static void main(String[] args) throws IOException {
 
@@ -13,7 +11,7 @@ public class notepad {
 
 		long n = Long.parseLong(br.readLine());
 
-		bw.write(n * n * n + "\n3");
+		bw.write(n * n + "\n2");
 		bw.flush();
 		bw.close();
 

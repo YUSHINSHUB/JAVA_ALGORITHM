@@ -1,10 +1,8 @@
-package aaNotepad;
+package Mathematics;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q24266_Execution_Time_5_B3 {
 
 	public static void main(String[] args) throws IOException {
 
