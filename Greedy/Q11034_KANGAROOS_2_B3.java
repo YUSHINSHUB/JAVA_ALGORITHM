@@ -1,10 +1,9 @@
-package aaNotepad;
+package Greedy;
 
 import java.io.*;
-import java.math.*;
 import java.util.*;
 
-public class notepad {
+public class Q11034_KANGAROOS_2_B3 {
 
 	public static void main(String[] args) throws IOException {
 
