@@ -1,10 +1,10 @@
-package aaNotepad;
+package Mathematics;
 
 import java.io.*;
 import java.math.*;
 import java.util.*;
 
-public class notepad {
+public class Q2108_STATISTICS_S3 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
