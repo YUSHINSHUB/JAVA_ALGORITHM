@@ -1,10 +1,8 @@
-package aaNotepad;
+package Regular_Expression;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q9996_Missing_Korea_S3 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
