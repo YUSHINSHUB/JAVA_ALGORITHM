@@ -1,10 +1,8 @@
-package aaNotepad;
+package Bruteforcing;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q27590_Sun_Moon_B4 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
