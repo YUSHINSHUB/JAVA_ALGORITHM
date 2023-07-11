@@ -1,10 +1,8 @@
-package aaNotepad;
+package Prefix_Sum;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q2003_Sum_of_Numbers_2_S4 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
