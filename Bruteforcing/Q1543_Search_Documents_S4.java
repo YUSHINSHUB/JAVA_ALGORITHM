@@ -1,10 +1,8 @@
-package aaNotepad;
+package Bruteforcing;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q1543_Search_Documents_S4 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
