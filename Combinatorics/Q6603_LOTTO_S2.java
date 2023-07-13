@@ -1,10 +1,8 @@
-package aaNotepad;
+package Combinatorics;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q6603_LOTTO_S2 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
