@@ -1,10 +1,9 @@
-package aaNotepad;
+package Stack;
 
 import java.io.*;
-import java.math.*;
 import java.util.*;
 
-public class notepad {
+public class Q5397_Key_Logger_S2 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,7 +13,6 @@ public class notepad {
 
 		for (int i = 0; i < n; i++) {
 			String s = br.readLine();
-			String res = "";
 			Deque<Character> stk = new LinkedList<>();
 			Deque<Character> buf = new LinkedList<>();
 
