@@ -1,10 +1,8 @@
-package aaNotepad;
+package Greedy;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q11501_STOCK_S2 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
