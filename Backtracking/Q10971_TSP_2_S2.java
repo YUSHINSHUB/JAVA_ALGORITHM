@@ -1,13 +1,11 @@
-package aaNotepad;
+package Backtracking;
 
 import java.io.*;
-import java.math.*;
 import java.util.*;
 
-public class notepad {
+public class Q10971_TSP_2_S2 {
 
 	static int n;
-	static int len = 1;
 	static int res = Integer.MAX_VALUE;
 	static int tsp[][];
 	static boolean visited[];
@@ -35,7 +33,8 @@ public class notepad {
 					visited[i] = true;
 					bt(cnt + 1, sum, temp, i);
 					visited[i] = false;
-					if( bef >= 0 ) sum -= tsp[bef][i];
+					if (bef >= 0)
+						sum -= tsp[bef][i];
 				}
 			}
 		}
