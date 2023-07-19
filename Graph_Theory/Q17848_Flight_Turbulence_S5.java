@@ -1,10 +1,8 @@
-package aaNotepad;
+package Graph_Theory;
 
 import java.io.*;
-import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q17848_Flight_Turbulence_S5 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -15,11 +13,11 @@ public class notepad {
 		int m = Integer.parseInt(in[1]);
 		int res = 0;
 
-		int pas[] = new int[n+1];
+		int pas[] = new int[n + 1];
 		in = br.readLine().split(" ");
 
 		for (int i = 1; i <= n; i++)
-			pas[i] = Integer.parseInt(in[i-1]);
+			pas[i] = Integer.parseInt(in[i - 1]);
 
 		while (pas[m] != m) {
 			int temp = pas[m];
