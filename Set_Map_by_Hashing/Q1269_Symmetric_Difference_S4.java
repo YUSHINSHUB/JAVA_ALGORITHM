@@ -1,10 +1,10 @@
-package aaNotepad;
+package Set_Map_by_Hashing;
 
 import java.io.*;
 import java.math.*;
 import java.util.*;
 
-public class notepad {
+public class Q1269_Symmetric_Difference_S4 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
