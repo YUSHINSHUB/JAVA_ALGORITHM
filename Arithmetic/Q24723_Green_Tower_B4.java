@@ -1,10 +1,9 @@
-package aaNotepad;
+package Arithmetic;
 
 import java.io.*;
 import java.math.*;
-import java.util.*;
 
-public class notepad {
+public class Q24723_Green_Tower_B4 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
