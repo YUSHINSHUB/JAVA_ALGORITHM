@@ -11,36 +11,37 @@ public class notepad {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		int n = Integer.parseInt(br.readLine());
-		int res = 0;
-		HashMap<String, Integer> hm = new HashMap<>();
-		String a, b;
-		hm.put("ChongChong", 1);
+		Deque<Integer> q = new LinkedList<>();
 
 		for (int i = 0; i < n; i++) {
-			String inp[] = br.readLine().split(" ");
-			a = inp[0];
-			b = inp[1];
+			String in[] = br.readLine().split(" ");
 
-			if (!hm.containsKey(a)) {
-				hm.put(a, 0);
+			if (in[0].equals("push"))
+				q.addLast(Integer.parseInt(in[1]));
+			else if (in[0].equals("pop")) {
+				if (q.isEmpty())
+					bw.write("-1\n");
+				else
+					bw.write(q.pollFirst() + "\n");
+			} else if (in[0].equals("size"))
+				bw.write(q.size() + "\n");
+			else if (in[0].equals("empty")) {
+				if (q.isEmpty())
+					bw.write("1\n");
+				else
+					bw.write("0\n");
+			} else if (in[0].equals("front")) {
+				if (q.isEmpty())
+					bw.write("-1\n");
+				else
+					bw.write(q.getFirst() + "\n");
+			} else if (in[0].equals("back")) {
+				if (q.isEmpty())
+					bw.write("-1\n");
+				else
+					bw.write(q.getLast() + "\n");
 			}
-			if (!hm.containsKey(b)) {
-				hm.put(b, 0);
-			}
-
-			if (hm.get(a) == 1)
-				hm.put(b, 1);
-			else if (hm.get(b) == 1)
-				hm.put(a, 1);
-
 		}
-
-		for (Map.Entry<String, Integer> en : hm.entrySet()) {
-			if (en.getValue() == 1)
-				res++;
-		}
-
-		bw.write(res + "");
 
 		bw.flush();
 		bw.close();
