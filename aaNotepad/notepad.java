@@ -6,43 +6,43 @@ import java.util.*;
 
 public class notepad {
 
+	static int dp[];
+	static int w[];
+
+	static int recur(int n) {
+
+		if (dp[n] < 0) {
+			dp[n] = Math.max(Math.max(recur(n - 3) + w[n - 1] + w[n], recur(n - 2) + w[n]), recur(n - 1));
+		}
+
+		return dp[n];
+	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		int n = Integer.parseInt(br.readLine());
-		Deque<Integer> q = new LinkedList<>();
+		dp = new int[n + 1];
+		w = new int[n + 1];
 
-		for (int i = 0; i < n; i++) {
-			String in[] = br.readLine().split(" ");
+		Arrays.fill(dp, -1);
 
-			if (in[0].equals("push"))
-				q.addLast(Integer.parseInt(in[1]));
-			else if (in[0].equals("pop")) {
-				if (q.isEmpty())
-					bw.write("-1\n");
-				else
-					bw.write(q.pollFirst() + "\n");
-			} else if (in[0].equals("size"))
-				bw.write(q.size() + "\n");
-			else if (in[0].equals("empty")) {
-				if (q.isEmpty())
-					bw.write("1\n");
-				else
-					bw.write("0\n");
-			} else if (in[0].equals("front")) {
-				if (q.isEmpty())
-					bw.write("-1\n");
-				else
-					bw.write(q.getFirst() + "\n");
-			} else if (in[0].equals("back")) {
-				if (q.isEmpty())
-					bw.write("-1\n");
-				else
-					bw.write(q.getLast() + "\n");
-			}
+		for (int i = 1; i <= n; i++) {
+			w[i] = Integer.parseInt(br.readLine());
 		}
+		w[0] = 0;
+		dp[0] = 0;
 
+		if (n >= 2) {
+			dp[2] = w[1] + w[2];
+			dp[1] = w[1];
+		} else if (n == 1)
+			dp[1] = w[1];
+
+		int res = recur(n);
+
+		bw.write(res + "");
 		bw.flush();
 		bw.close();
 
