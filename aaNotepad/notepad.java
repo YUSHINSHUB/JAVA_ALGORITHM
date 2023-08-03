@@ -6,31 +6,27 @@ import java.util.*;
 
 public class notepad {
 
-	static int maze[][];
-	static int bfs[][];
+	static int visited[];
+	static int cur = 0;
+	static ArrayList<Integer>[] node;
 
-	public static void recur(int n, int m) {
+	public static void bfs(int idx) {
 
-		if (maze[n - 1][m] == 1 && bfs[n - 1][m] > bfs[n][m] + 1) {
-			bfs[n - 1][m] = bfs[n][m] + 1;
-			recur(n - 1, m);
+		Queue<Integer> q = new LinkedList<>();
+		q.add(idx);
+		cur++;
+		visited[idx] = 1;
+
+		while (!q.isEmpty()) {
+			int n = q.poll();
+			for (int temp : node[n]) {
+				if (visited[temp] == 0) {
+					q.add(temp);
+					visited[temp] = 1;
+					cur++;
+				}
+			}
 		}
-
-		if (maze[n][m + 1] == 1 && bfs[n][m + 1] > bfs[n][m] + 1) {
-			bfs[n][m + 1] = bfs[n][m] + 1;
-			recur(n, m + 1);
-		}
-
-		if (maze[n + 1][m] == 1 && bfs[n + 1][m] > bfs[n][m] + 1) {
-			bfs[n + 1][m] = bfs[n][m] + 1;
-			recur(n + 1, m);
-		}
-
-		if (maze[n][m - 1] == 1 && bfs[n][m - 1] > bfs[n][m] + 1) {
-			bfs[n][m - 1] = bfs[n][m] + 1;
-			recur(n, m - 1);
-		}
-
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -40,28 +36,38 @@ public class notepad {
 
 		String inp[] = br.readLine().split(" ");
 		int n = Integer.parseInt(inp[0]);
+		int hig = 0;
 		int m = Integer.parseInt(inp[1]);
+		int scr[] = new int[n + 1];
+		visited = new int[n + 1];
+		node = new ArrayList[n + 1];
 
-		maze = new int[n + 2][m + 2];
-		bfs = new int[n + 2][m + 2];
+		for (int i = 1; i <= n; i++)
+			node[i] = new ArrayList<>();
 
-		Arrays.fill(bfs[0], Integer.MAX_VALUE);
-		Arrays.fill(bfs[n + 1], Integer.MAX_VALUE);
-
-		for (int i = 1; i <= n; i++) {
-			Arrays.fill(bfs[i], Integer.MAX_VALUE);
-			inp = br.readLine().split("");
-			for (int j = 1; j <= m; j++) {
-				maze[i][j] = Integer.parseInt(inp[j - 1]);
-			}
+		for (int i = 0; i < m; i++) {
+			inp = br.readLine().split(" ");
+			int a = Integer.parseInt(inp[0]);
+			int b = Integer.parseInt(inp[1]);
+			node[b].add(a);
 		}
 
-		bfs[1][1] = 1;
+		for (int i = 1; i <= n; i++) {
+			visited = new int[n + 1];
+			cur = 0;
+			bfs(i);
+			scr[i] = cur;
+			if (cur > hig)
+				hig = cur;
+		}
 
-		recur(1, 1);
+		StringBuilder res = new StringBuilder("");
+		for (int i = 1; i <= n; i++) {
+			if (scr[i] == hig)
+				res.append(i + " ");
+		}
 
-		bw.write(bfs[n][m] + "");
-
+		bw.write(res.toString());
 		bw.flush();
 		bw.close();
 
