@@ -6,27 +6,41 @@ import java.util.*;
 
 public class notepad {
 
-	static int visited[];
-	static int cur = 0;
-	static ArrayList<Integer>[] node;
+	static int n;
+	static int num[];
+	static int op[] = new int[4];
+	static int hig = Integer.MIN_VALUE;
+	static int low = Integer.MAX_VALUE;
 
-	public static void bfs(int idx) {
+	static void bt(int cur, int idx) {
 
-		Queue<Integer> q = new LinkedList<>();
-		q.add(idx);
-		cur++;
-		visited[idx] = 1;
-
-		while (!q.isEmpty()) {
-			int n = q.poll();
-			for (int temp : node[n]) {
-				if (visited[temp] == 0) {
-					q.add(temp);
-					visited[temp] = 1;
-					cur++;
+		if (idx == n) {
+			hig = Math.max(hig, cur);
+			low = Math.min(low, cur);
+		} else {
+			for (int i = 0; i < 4; i++) {
+				if (op[i] > 0) {
+					op[i]--;
+					switch (i) {
+					case 0:
+						bt(cur + num[idx], idx + 1);
+						break;
+					case 1:
+						bt(cur - num[idx], idx + 1);
+						break;
+					case 2:
+						bt(cur * num[idx], idx + 1);
+						break;
+					case 3:
+						bt(cur / num[idx], idx + 1);
+						break;
+					}
+					op[i]++;
 				}
 			}
 		}
+
+		return;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -34,40 +48,22 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+		n = Integer.parseInt(br.readLine());
+		num = new int[n];
 		String inp[] = br.readLine().split(" ");
-		int n = Integer.parseInt(inp[0]);
-		int hig = 0;
-		int m = Integer.parseInt(inp[1]);
-		int scr[] = new int[n + 1];
-		visited = new int[n + 1];
-		node = new ArrayList[n + 1];
 
-		for (int i = 1; i <= n; i++)
-			node[i] = new ArrayList<>();
+		for (int i = 0; i < n; i++)
+			num[i] = Integer.parseInt(inp[i]);
 
-		for (int i = 0; i < m; i++) {
-			inp = br.readLine().split(" ");
-			int a = Integer.parseInt(inp[0]);
-			int b = Integer.parseInt(inp[1]);
-			node[b].add(a);
-		}
+		inp = br.readLine().split(" ");
 
-		for (int i = 1; i <= n; i++) {
-			visited = new int[n + 1];
-			cur = 0;
-			bfs(i);
-			scr[i] = cur;
-			if (cur > hig)
-				hig = cur;
-		}
+		for (int i = 0; i < 4; i++)
+			op[i] = Integer.parseInt(inp[i]);
 
-		StringBuilder res = new StringBuilder("");
-		for (int i = 1; i <= n; i++) {
-			if (scr[i] == hig)
-				res.append(i + " ");
-		}
+		bt(num[0], 1);
 
-		bw.write(res.toString());
+		bw.write(hig + "\n" + low);
+
 		bw.flush();
 		bw.close();
 
