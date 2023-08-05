@@ -6,41 +6,22 @@ import java.util.*;
 
 public class notepad {
 
-	static int n;
-	static int num[];
-	static int op[] = new int[4];
-	static int hig = Integer.MIN_VALUE;
-	static int low = Integer.MAX_VALUE;
+	static int node[];
+	static int visited[];
+	static ArrayList<Integer>[] edge;
+	static int res[];
+	static int idx = 0;
 
-	static void bt(int cur, int idx) {
+	static void dfs(int r) {
 
-		if (idx == n) {
-			hig = Math.max(hig, cur);
-			low = Math.min(low, cur);
-		} else {
-			for (int i = 0; i < 4; i++) {
-				if (op[i] > 0) {
-					op[i]--;
-					switch (i) {
-					case 0:
-						bt(cur + num[idx], idx + 1);
-						break;
-					case 1:
-						bt(cur - num[idx], idx + 1);
-						break;
-					case 2:
-						bt(cur * num[idx], idx + 1);
-						break;
-					case 3:
-						bt(cur / num[idx], idx + 1);
-						break;
-					}
-					op[i]++;
-				}
-			}
+		idx++;
+		res[r] = idx;
+		visited[r] = 1;
+
+		for (int v : edge[r]) {
+			if (visited[v] < 1)
+				dfs(v);
 		}
-
-		return;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -48,21 +29,38 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		n = Integer.parseInt(br.readLine());
-		num = new int[n];
 		String inp[] = br.readLine().split(" ");
+		int n = Integer.parseInt(inp[0]);
+		int m = Integer.parseInt(inp[1]);
+		int r = Integer.parseInt(inp[2]);
 
-		for (int i = 0; i < n; i++)
-			num[i] = Integer.parseInt(inp[i]);
+		node = new int[n + 1];
+		visited = new int[n + 1];
+		res = new int[n + 1];
+		edge = new ArrayList[n + 1];
 
-		inp = br.readLine().split(" ");
+		for (int i = 1; i <= n; i++) {
+			edge[i] = new ArrayList<Integer>();
+		}
 
-		for (int i = 0; i < 4; i++)
-			op[i] = Integer.parseInt(inp[i]);
+		for (int i = 0; i < m; i++) {
+			inp = br.readLine().split(" ");
+			int u = Integer.parseInt(inp[0]);
+			int v = Integer.parseInt(inp[1]);
+			edge[u].add(v);
+			edge[v].add(u);
+		}
 
-		bt(num[0], 1);
+		for (int i = 1; i <= n; i++) {
+			Collections.sort(edge[i]);
+		}
 
-		bw.write(hig + "\n" + low);
+		res[r] = 1;
+		visited[r] = 1;
+		dfs(r);
+
+		for (int i = 1; i <= n; i++)
+			bw.write(res[i] + "\n");
 
 		bw.flush();
 		bw.close();
