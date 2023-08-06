@@ -6,61 +6,60 @@ import java.util.*;
 
 public class notepad {
 
-	static int node[];
-	static int visited[];
-	static ArrayList<Integer>[] edge;
-	static int res[];
-	static int idx = 0;
-
-	static void dfs(int r) {
-
-		idx++;
-		res[r] = idx;
-		visited[r] = 1;
-
-		for (int v : edge[r]) {
-			if (visited[v] < 1)
-				dfs(v);
-		}
-	}
-
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String inp[] = br.readLine().split(" ");
-		int n = Integer.parseInt(inp[0]);
-		int m = Integer.parseInt(inp[1]);
-		int r = Integer.parseInt(inp[2]);
+		int n = Integer.parseInt(br.readLine());
+		Deque<Integer> stk = new LinkedList<>();
 
-		node = new int[n + 1];
-		visited = new int[n + 1];
-		res = new int[n + 1];
-		edge = new ArrayList[n + 1];
+		for (int i = 0; i < n; i++) {
+			String inp[] = br.readLine().split(" ");
+			int c = Integer.parseInt(inp[0]);
 
-		for (int i = 1; i <= n; i++) {
-			edge[i] = new ArrayList<Integer>();
+			switch (c) {
+			case 1:
+				stk.addFirst(Integer.parseInt(inp[1]));
+				break;
+			case 2:
+				stk.addLast(Integer.parseInt(inp[1]));
+				break;
+			case 3:
+				if (stk.isEmpty())
+					bw.write("-1\n");
+				else
+					bw.write(stk.pollFirst() + "\n");
+				break;
+			case 4:
+				if (stk.isEmpty())
+					bw.write("-1\n");
+				else
+					bw.write(stk.pollLast() + "\n");
+				break;
+			case 5:
+				bw.write(stk.size() + "\n");
+				break;
+			case 6:
+				if (stk.isEmpty())
+					bw.write("1\n");
+				else
+					bw.write("0\n");
+				break;
+			case 7:
+				if (stk.isEmpty())
+					bw.write("-1\n");
+				else
+					bw.write(stk.peekFirst() + "\n");
+				break;
+			case 8:
+				if (stk.isEmpty())
+					bw.write("-1\n");
+				else
+					bw.write(stk.peekLast() + "\n");
+				break;
+			}
 		}
-
-		for (int i = 0; i < m; i++) {
-			inp = br.readLine().split(" ");
-			int u = Integer.parseInt(inp[0]);
-			int v = Integer.parseInt(inp[1]);
-			edge[u].add(v);
-			edge[v].add(u);
-		}
-
-		for (int i = 1; i <= n; i++) {
-			Collections.sort(edge[i]);
-		}
-
-		res[r] = 1;
-		visited[r] = 1;
-		dfs(r);
-
-		for (int i = 1; i <= n; i++)
-			bw.write(res[i] + "\n");
 
 		bw.flush();
 		bw.close();
