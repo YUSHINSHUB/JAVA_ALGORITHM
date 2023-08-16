@@ -1,10 +1,12 @@
-package aaNotepad;
+package Sorting;
 
-import java.io.*;
-import java.math.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
-public class notepad {
+public class Q24060_Merge_Sort_S3 {
 
 	static int A[];
 	static int tmp[];
