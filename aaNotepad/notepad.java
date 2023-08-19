@@ -6,29 +6,38 @@ import java.util.*;
 
 public class notepad {
 
-	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	static boolean visited[] = new boolean[101];
+	static long pad[] = new long[101];
 
-	public static void hanoi(int n, int s, int m, int e) throws IOException {
-
-		if (n == 1) {
-			bw.write(s + " " + e + "\n");
-			return;
+	static long dp(int n) {
+		if (visited[n] == true) {
+			return pad[n];
+		} else {
+			pad[n] = dp(n - 2) + dp(n - 3);
+			visited[n] = true;
+			return pad[n];
 		}
-
-		hanoi(n - 1, s, e, m);
-		bw.write(s + " " + e + "\n");
-
-		hanoi(n - 1, m, s, e);
-
 	}
 
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		bw.write((int) Math.pow(2, n) - 1 + "\n");
-		hanoi(n, 1, 2, 3);
+		Arrays.fill(visited, false);
+		int t = Integer.parseInt(br.readLine());
+
+		pad[1] = 1;
+		pad[2] = 1;
+		pad[3] = 1;
+		visited[1] = true;
+		visited[2] = true;
+		visited[3] = true;
+
+		for (int i = 0; i < t; i++) {
+			int n = Integer.parseInt(br.readLine());
+			bw.write(dp(n) + "\n");
+		}
 
 		bw.flush();
 		bw.close();
