@@ -6,16 +6,14 @@ import java.util.*;
 
 public class notepad {
 
-	static boolean visited[] = new boolean[101];
-	static long pad[] = new long[101];
+	static int mem[] = new int[1001];
 
-	static long dp(int n) {
-		if (visited[n] == true) {
-			return pad[n];
-		} else {
-			pad[n] = dp(n - 2) + dp(n - 3);
-			visited[n] = true;
-			return pad[n];
+	static int dp(int a) {
+		if (mem[a] > 0)
+			return mem[a];
+		else {
+			mem[a] = ( dp(a - 1) + (dp(a - 2) * 2) ) % 10007;
+			return mem[a];
 		}
 	}
 
@@ -24,20 +22,11 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		Arrays.fill(visited, false);
-		int t = Integer.parseInt(br.readLine());
+		int n = Integer.parseInt(br.readLine());
+		mem[0] = 1;
+		mem[1] = 1;
 
-		pad[1] = 1;
-		pad[2] = 1;
-		pad[3] = 1;
-		visited[1] = true;
-		visited[2] = true;
-		visited[3] = true;
-
-		for (int i = 0; i < t; i++) {
-			int n = Integer.parseInt(br.readLine());
-			bw.write(dp(n) + "\n");
-		}
+		bw.write(dp(n) + "");
 
 		bw.flush();
 		bw.close();
