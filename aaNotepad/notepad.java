@@ -6,43 +6,44 @@ import java.util.*;
 
 public class notepad {
 
-	static int grp[][];
-	static int res[][];
-	static int nexty[] = { 1, 0, -1, 0 };
-	static int nextx[] = { 0, 1, 0, -1 };
+	static String grp[];
 	static boolean visited[][];
+	static int trax[] = { 1, 0, -1, 0 };
+	static int tray[] = { 0, 1, 0, -1 };
 	static int n, m;
+	static int res = 0;
 
-	static void bfs(int i, int j) {
+	static void bfs(int y, int x) {
 
-		Queue<Integer> yq = new LinkedList<>();
-		Queue<Integer> xq = new LinkedList<>();
+		visited[y][x] = true;
+		Queue<Integer> px = new LinkedList<>();
+		Queue<Integer> py = new LinkedList<>();
 
-		yq.add(i);
-		xq.add(j);
+		px.add(x);
+		py.add(y);
 
-		visited[i][j] = true;
+		while (!px.isEmpty()) {
 
-		while (!yq.isEmpty()) {
+			int curx = px.poll();
+			int cury = py.poll();
 
-			int cy = yq.poll();
-			int cx = xq.poll();
+			for (int i = 0; i < 4; i++) {
+				int xnext = curx + trax[i];
+				int ynext = cury + tray[i];
 
-			for (int k = 0; k < 4; k++) {
-				int ny = cy + nexty[k];
-				int nx = cx + nextx[k];
-
-				if (ny < 0 || nx < 0 || ny >= n || nx >= m)
+				if (xnext < 0 || ynext < 0 || xnext >= m || ynext >= n)
 					continue;
-				else if (visited[ny][nx] == true)
+				if (grp[ynext].charAt(xnext) == 'X')
 					continue;
-				else if (res[ny][nx] == 0)
+				if (visited[ynext][xnext] == true)
 					continue;
 
-				visited[ny][nx] = true;
-				res[ny][nx] = res[cy][cx] + 1;
-				yq.add(ny);
-				xq.add(nx);
+				visited[ynext][xnext] = true;
+				if (grp[ynext].charAt(xnext) == 'P')
+					res++;
+
+				px.add(xnext);
+				py.add(ynext);
 
 			}
 		}
@@ -55,46 +56,30 @@ public class notepad {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		String inp[] = br.readLine().split(" ");
-
 		n = Integer.parseInt(inp[0]);
 		m = Integer.parseInt(inp[1]);
-		int x = 0, y = 0;
+		int y = 0, x = 0;
 
-		grp = new int[n][m];
-		res = new int[n][m];
+		grp = new String[n];
 		visited = new boolean[n][m];
 
 		for (int i = 0; i < n; i++) {
-			Arrays.fill(res[i], 10000000);
+			grp[i] = br.readLine();
 			Arrays.fill(visited[i], false);
-		}
-
-		for (int i = 0; i < n; i++) {
-			inp = br.readLine().split(" ");
 			for (int j = 0; j < m; j++) {
-				int t = Integer.parseInt(inp[j]);
-				grp[i][j] = t;
-				if (t == 0 || t == 2) {
-					if (t == 2) {
-						y = i;
-						x = j;
-					}
-					res[i][j] = 0;
+				if (grp[i].charAt(j) == 'I') {
+					y = i;
+					x = j;
 				}
 			}
 		}
 
 		bfs(y, x);
 
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				if (res[i][j] == 10000000)
-					bw.write("-1 ");
-				else
-					bw.write(res[i][j] + " ");
-			}
-			bw.write("\n");
-		}
+		if (res == 0)
+			bw.write("TT");
+		else
+			bw.write(res + "");
 
 		bw.flush();
 		bw.close();
