@@ -6,48 +6,23 @@ import java.util.*;
 
 public class notepad {
 
-	static String grp[];
-	static boolean visited[][];
-	static int trax[] = { 1, 0, -1, 0 };
-	static int tray[] = { 0, 1, 0, -1 };
-	static int n, m;
+	static int item[][] = new int[100][2];
+	static int mem[][] = new int[100001][100];
+	static int n, k;
 	static int res = 0;
 
-	static void bfs(int y, int x) {
+	static int dp(int w, int idx) {
 
-		visited[y][x] = true;
-		Queue<Integer> px = new LinkedList<>();
-		Queue<Integer> py = new LinkedList<>();
-
-		px.add(x);
-		py.add(y);
-
-		while (!px.isEmpty()) {
-
-			int curx = px.poll();
-			int cury = py.poll();
-
-			for (int i = 0; i < 4; i++) {
-				int xnext = curx + trax[i];
-				int ynext = cury + tray[i];
-
-				if (xnext < 0 || ynext < 0 || xnext >= m || ynext >= n)
-					continue;
-				if (grp[ynext].charAt(xnext) == 'X')
-					continue;
-				if (visited[ynext][xnext] == true)
-					continue;
-
-				visited[ynext][xnext] = true;
-				if (grp[ynext].charAt(xnext) == 'P')
-					res++;
-
-				px.add(xnext);
-				py.add(ynext);
-
-			}
+		if (mem[w][idx] >= 0) {
+			return mem[w][idx];
 		}
 
+		if (item[idx][0] <= w)
+			mem[w][idx] = Math.max(item[idx][1] + dp(w - item[idx][0], idx - 1), dp(w, idx - 1));
+		else
+			mem[w][idx] = dp(w, idx - 1);
+
+		return mem[w][idx];
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -57,29 +32,25 @@ public class notepad {
 
 		String inp[] = br.readLine().split(" ");
 		n = Integer.parseInt(inp[0]);
-		m = Integer.parseInt(inp[1]);
-		int y = 0, x = 0;
-
-		grp = new String[n];
-		visited = new boolean[n][m];
+		k = Integer.parseInt(inp[1]);
 
 		for (int i = 0; i < n; i++) {
-			grp[i] = br.readLine();
-			Arrays.fill(visited[i], false);
-			for (int j = 0; j < m; j++) {
-				if (grp[i].charAt(j) == 'I') {
-					y = i;
-					x = j;
-				}
-			}
+			inp = br.readLine().split(" ");
+			item[i][0] = Integer.parseInt(inp[0]);
+			item[i][1] = Integer.parseInt(inp[1]);
 		}
 
-		bfs(y, x);
+		for (int i = 1; i <= k; i++) {
+			Arrays.fill(mem[i], -1);
+			if (i >= item[0][0])
+				mem[i][0] = item[0][1];
+			else
+				mem[i][0] = 0;
+		}
 
-		if (res == 0)
-			bw.write("TT");
-		else
-			bw.write(res + "");
+		Arrays.fill(mem[0], 0);
+
+		bw.write(dp(k, n - 1) + "");
 
 		bw.flush();
 		bw.close();

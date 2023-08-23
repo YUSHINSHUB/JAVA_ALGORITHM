@@ -8,7 +8,7 @@ package Data_Structures;
 import java.io.*;
 import java.util.*;
 
-public class Q2504_Bracket_Value_S1 {
+public class Q2504_Bracket_Value_G5 {
 
 	public static void main(String[] args) throws IOException {
 		// Use BufferedReader for fast input and BufferedWriter for fast output
