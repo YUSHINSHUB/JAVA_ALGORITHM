@@ -4,49 +4,42 @@ import java.io.*;
 import java.math.*;
 import java.util.*;
 
-public class notepad {
-
-	static HashMap<Integer, Integer> hm = new HashMap<>();
-
-	static int findparent(int n) {
-
-		while (hm.get(n) != n) {
-			n = hm.get(n);
-		}
-
-		return n;
+class top{
+	int hei;
+	int pos;
+	
+		top(int hei, int pos) {
+		this.hei = hei;
+		this.pos = pos;
 	}
+		
+}
+
+public class notepad {
 
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+		Stack<top> stk = new Stack<>();
+		int n = Integer.parseInt(br.readLine());
+		
 		String inp[] = br.readLine().split(" ");
-
-		int n = Integer.parseInt(inp[0]);
-		int m = Integer.parseInt(inp[1]);
-
-		for (int i = 0; i <= n; i++) {
-			hm.put(i, i);
-		}
-
-		for (int i = 0; i < m; i++) {
-			inp = br.readLine().split(" ");
-			int comm = Integer.parseInt(inp[0]);
-			int a = Integer.parseInt(inp[1]);
-			int b = Integer.parseInt(inp[2]);
-
-			if (comm == 0) {
-				if (findparent(a) != findparent(b)) {
-					hm.put(b, findparent(a));
-				}
-			} else {
-				if (findparent(a) == findparent(b))
-					bw.write("YES\n");
-				else
-					bw.write("NO\n");
+		
+		for( int i = 1 ; i <= n ; i++ ) {
+			int t = Integer.parseInt(inp[i-1]);
+			
+			while( !stk.isEmpty() ) {
+				if( stk.peek().hei > t ) break;
+				else stk.pop();
 			}
+			
+			if( stk.isEmpty() ) bw.write("0 ");
+			else bw.write(stk.peek().pos + " ");
+			
+			stk.add(new top(t, i));
+			
 		}
 
 		bw.flush();
