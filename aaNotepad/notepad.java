@@ -6,48 +6,6 @@ import java.util.*;
 
 public class notepad {
 
-	static int tom[][];
-	static int res = 0;
-	static Queue<Integer> y = new LinkedList<>();
-	static Queue<Integer> x = new LinkedList<>();
-	static int yp[] = { 1, -1, -1, 1 };
-	static int xp[] = { 0, 1, -1, -1 };
-	static int n, m;
-
-	static void bfs() {
-
-		while (!y.isEmpty()) {
-
-			int s = y.size();
-
-			for (int j = 0; j < s; j++) {
-				int ypos = y.poll();
-				int xpos = x.poll();
-
-				for (int i = 0; i < 4; i++) {
-					ypos += yp[i];
-					xpos += xp[i];
-					if (ypos == 0 || ypos == m + 1 || xpos == 0 || xpos == n + 1)
-						continue;
-					else if (tom[ypos][xpos] == -1 || tom[ypos][xpos] == 1)
-						continue;
-					else {
-						tom[ypos][xpos] = 1;
-						y.add(ypos);
-						x.add(xpos);
-					}
-
-				}
-
-			}
-
-			res++;
-		}
-
-		res--;
-
-	}
-
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -55,32 +13,41 @@ public class notepad {
 
 		String inp[] = br.readLine().split(" ");
 
-		n = Integer.parseInt(inp[0]);
-		m = Integer.parseInt(inp[1]);
+		int n = Integer.parseInt(inp[0]);
+		int m = Integer.parseInt(inp[1]);
 
-		tom = new int[m + 2][n + 2];
+		if (n >= m)
+			bw.write(n-m + "");
+		else {
 
-		for (int i = 1; i <= m; i++) {
-			inp = br.readLine().split(" ");
-			for (int j = 1; j <= n; j++) {
-				tom[i][j] = Integer.parseInt(inp[j - 1]);
-				if (tom[i][j] == 1) {
-					y.add(i);
-					x.add(j);
+			int search[] = new int[m + 3];
+			Arrays.fill(search, Integer.MAX_VALUE-1);
+
+			search[0] = n;
+			for (int i = n; i >= 1; i--) {
+				search[i] = n - i;
+				for (int j = i * 2; j <= m+1; j *= 2) {
+					if( search[j] > search[i] ) search[j] = search[i];
+					else break;
 				}
 			}
-		}
 
-		bfs();
-
-		for (int i = 1; i <= m; i++) {
-			for (int j = 1; j <= n; j++) {
-				if (tom[i][j] == 0)
-					res = -1;
+			for (int i = n + 1; i <= m; i++) {
+					if (i % 2 == 1)
+						search[i] = Math.min(search[i], Math.min(search[i + 1] + 1,
+								Math.min(search[i - 1] + 1, Math.min(search[i / 2] + 1, search[i / 2 + 1] + 1))));
+					else
+						search[i] = Math.min(search[i],
+								Math.min(search[i + 1] + 1, Math.min(search[i - 1] + 1, search[i / 2])));
+					
+					for (int j = i * 2; j <= m+1; j *= 2) {
+						if( search[j] > search[i] ) search[j] = search[i];
+						else break;
+					}
 			}
-		}
 
-		bw.write(res + "");
+			bw.write(search[m] + "");
+		}
 
 		bw.flush();
 		bw.close();
