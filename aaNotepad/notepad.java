@@ -11,42 +11,45 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+		int n = Integer.parseInt(br.readLine());
 		String inp[] = br.readLine().split(" ");
+		Integer ship[] = new Integer[n];
 
-		int n = Integer.parseInt(inp[0]);
-		int m = Integer.parseInt(inp[1]);
+		for (int i = 0; i < n; i++)
+			ship[i] = Integer.parseInt(inp[i]);
 
-		if (n >= m)
-			bw.write(n-m + "");
+		Arrays.sort(ship, Collections.reverseOrder());
+
+		int m = Integer.parseInt(br.readLine());
+		ArrayList<Integer> bag = new ArrayList<>();
+		inp = br.readLine().split(" ");
+
+		for (int i = 0; i < m; i++)
+			bag.add(Integer.parseInt(inp[i]));
+		Collections.sort(bag, Collections.reverseOrder());
+
+		if (bag.get(0) > ship[0])
+			bw.write("-1");
 		else {
-
-			int search[] = new int[m + 3];
-			Arrays.fill(search, Integer.MAX_VALUE-1);
-
-			search[0] = n;
-			for (int i = n; i >= 1; i--) {
-				search[i] = n - i;
-				for (int j = i * 2; j <= m+1; j *= 2) {
-					if( search[j] > search[i] ) search[j] = search[i];
-					else break;
-				}
-			}
-
-			for (int i = n + 1; i <= m; i++) {
-					if (i % 2 == 1)
-						search[i] = Math.min(search[i], Math.min(search[i + 1] + 1,
-								Math.min(search[i - 1] + 1, Math.min(search[i / 2] + 1, search[i / 2 + 1] + 1))));
-					else
-						search[i] = Math.min(search[i],
-								Math.min(search[i + 1] + 1, Math.min(search[i - 1] + 1, search[i / 2])));
-					
-					for (int j = i * 2; j <= m+1; j *= 2) {
-						if( search[j] > search[i] ) search[j] = search[i];
-						else break;
+			int res = 0;
+			while (!bag.isEmpty()) {
+				int idx = 0;
+				for (int j = 0; j < m; j++) {
+					if (ship[idx] >= bag.get(j)) {
+						bag.remove(j);
+						j--;
+						m--;
+						idx++;
+						if (idx == n)
+							break;
 					}
+				}
+
+				n = idx;
+				res++;
 			}
 
-			bw.write(search[m] + "");
+			bw.write(res + "");
 		}
 
 		bw.flush();
