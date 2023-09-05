@@ -11,45 +11,51 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int n = Integer.parseInt(br.readLine());
-		String inp[] = br.readLine().split(" ");
-		Integer ship[] = new Integer[n];
+		int t = Integer.parseInt(br.readLine());
 
-		for (int i = 0; i < n; i++)
-			ship[i] = Integer.parseInt(inp[i]);
+		for (int i = 0; i < t; i++) {
 
-		Arrays.sort(ship, Collections.reverseOrder());
+			String res = "0\n";
+			String s = br.readLine();
+			int beg = 0;
+			int end = s.length() - 1;
+			int sbeg = -1;
+			int send = -1;
 
-		int m = Integer.parseInt(br.readLine());
-		ArrayList<Integer> bag = new ArrayList<>();
-		inp = br.readLine().split(" ");
-
-		for (int i = 0; i < m; i++)
-			bag.add(Integer.parseInt(inp[i]));
-		Collections.sort(bag, Collections.reverseOrder());
-
-		if (bag.get(0) > ship[0])
-			bw.write("-1");
-		else {
-			int res = 0;
-			while (!bag.isEmpty()) {
-				int idx = 0;
-				for (int j = 0; j < m; j++) {
-					if (ship[idx] >= bag.get(j)) {
-						bag.remove(j);
-						j--;
-						m--;
-						idx++;
-						if (idx == n)
+			while (beg < end) {
+				if (s.charAt(beg) != s.charAt(end)) {
+					if (res.equals("0\n")) {
+						if (s.charAt(beg + 1) == s.charAt(end) && s.charAt(beg) == s.charAt(end - 1)) {
+							sbeg = beg;
+							send = end;
+							res = "1\n";
+							beg++;
+						} else if (s.charAt(beg + 1) == s.charAt(end)) {
+							res = "1\n";
+							beg++;
+						} else if (s.charAt(beg) == s.charAt(end - 1)) {
+							res = "1\n";
+							end--;
+						} else {
+							res = "2\n";
 							break;
+						}
+					} else {
+						if (sbeg != -1) {
+							beg = sbeg;
+							end = send - 1;
+							sbeg = -1;
+						} else {
+							res = "2\n";
+							break;
+						}
 					}
 				}
-
-				n = idx;
-				res++;
+				beg++;
+				end--;
 			}
 
-			bw.write(res + "");
+			bw.write(res);
 		}
 
 		bw.flush();
