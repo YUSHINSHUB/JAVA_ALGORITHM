@@ -11,52 +11,42 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int t = Integer.parseInt(br.readLine());
+		int n = Integer.parseInt(br.readLine());
+		int m = Integer.parseInt(br.readLine());
 
-		for (int i = 0; i < t; i++) {
+		HashMap<Integer, Integer> hm = new HashMap<>();
 
-			String res = "0\n";
-			String s = br.readLine();
-			int beg = 0;
-			int end = s.length() - 1;
-			int sbeg = -1;
-			int send = -1;
-
-			while (beg < end) {
-				if (s.charAt(beg) != s.charAt(end)) {
-					if (res.equals("0\n")) {
-						if (s.charAt(beg + 1) == s.charAt(end) && s.charAt(beg) == s.charAt(end - 1)) {
-							sbeg = beg;
-							send = end;
-							res = "1\n";
-							beg++;
-						} else if (s.charAt(beg + 1) == s.charAt(end)) {
-							res = "1\n";
-							beg++;
-						} else if (s.charAt(beg) == s.charAt(end - 1)) {
-							res = "1\n";
-							end--;
-						} else {
-							res = "2\n";
-							break;
-						}
-					} else {
-						if (sbeg != -1) {
-							beg = sbeg;
-							end = send - 1;
-							sbeg = -1;
-						} else {
-							res = "2\n";
-							break;
-						}
-					}
-				}
-				beg++;
-				end--;
-			}
-
-			bw.write(res);
+		for (int i = 0; i <= 9; i++) {
+			hm.put(i, 1);
 		}
+
+		String inp[] = new String[10];
+		if( m > 0 ) inp = br.readLine().split(" ");
+
+		for (int i = 0; i < m; i++) {
+			hm.put(Integer.parseInt(inp[i]), 0);
+		}
+
+		int res;
+
+		if (n > 100)
+			res = n - 100;
+		else
+			res = 100 - n;
+
+		for (int i = 0; i <= 1000000; i++) {
+			String t = i + "";
+			for (int j = 0; j < t.length(); j++) {
+				if (hm.get(Integer.parseInt(Character.toString(t.charAt(j)))) != 1) {
+					break;
+				}
+				if (j == t.length() - 1) {
+					res = Math.min(res, t.length() + Math.abs(n - i));
+				}
+			}
+		}
+
+		bw.write(res + "");
 
 		bw.flush();
 		bw.close();
