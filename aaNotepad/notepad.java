@@ -6,45 +6,15 @@ import java.util.*;
 
 public class notepad {
 
-	static char map[][] = new char[50][50];
-	static int calc[][] = new int[50][50];
-	static int ypos[] = { 1, 0, -1, 0 };
-	static int xpos[] = { 0, 1, 0, -1 };
-	static int n, m;
-	static int res = 0;
+	static ArrayList<Long> list = new ArrayList<>();
 
-	static void bfs(int y, int x) {
-
-		Queue<Integer> yq = new LinkedList<>();
-		Queue<Integer> xq = new LinkedList<>();
-		yq.add(y);
-		xq.add(x);
-
-		while (!yq.isEmpty()) {
-
-			int yt = yq.poll();
-			int xt = xq.poll();
-
-			for (int i = 0; i < 4; i++) {
-				int yp = yt + ypos[i];
-				int xp = xt + xpos[i];
-				if (yp < 0 || yp >= n || xp < 0 || xp >= m)
-					continue;
-				else if (map[yp][xp] == 'W')
-					continue;
-				else if (calc[yp][xp] >= 0)
-					continue;
-				else {
-					calc[yp][xp] = calc[yt][xt] + 1;
-					yq.add(yp);
-					xq.add(xp);
-					if (calc[yp][xp] > res)
-						res = calc[yp][xp];
+	static void bt(long n) {
+			for (int i = 0; i <= 9; i++) {
+				if (i < n % 10) {
+					list.add(n * 10 + i);
+					bt(n * 10 + i);
 				}
 			}
-
-		}
-
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -52,29 +22,18 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String inp[] = br.readLine().split(" ");
-		n = Integer.parseInt(inp[0]);
-		m = Integer.parseInt(inp[1]);
+		int n = Integer.parseInt(br.readLine());
 
-		for (int i = 0; i < n; i++) {
-			String temp = br.readLine();
-			for (int j = 0; j < m; j++) {
-				map[i][j] = temp.charAt(j);
-			}
+		list.add((long)0);
+		for (int i = 1; i <= 9; i++) {
+			list.add((long)i);
+			bt(i);
 		}
 
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				if (map[i][j] == 'L') {
-					for (int k = 0; k < n; k++)
-						Arrays.fill(calc[k], -1);
-					calc[i][j] = 0;
-					bfs(i, j);
-				}
-			}
-		}
+		Collections.sort(list);
 
-		bw.write(res + "");
+		if( n >= list.size() ) bw.write("-1");
+		else bw.write(list.get(n) + "");
 		bw.flush();
 		bw.close();
 
