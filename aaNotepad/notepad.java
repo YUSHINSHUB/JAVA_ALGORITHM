@@ -6,15 +6,13 @@ import java.util.*;
 
 public class notepad {
 
-	static ArrayList<Long> list = new ArrayList<>();
+	static int check(long a, long b) {
 
-	static void bt(long n) {
-			for (int i = 0; i <= 9; i++) {
-				if (i < n % 10) {
-					list.add(n * 10 + i);
-					bt(n * 10 + i);
-				}
-			}
+		int m = (int) (a % b);
+		if (m == 0)
+			return (int) b;
+
+		return check(b, m);
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -22,18 +20,23 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int n = Integer.parseInt(br.readLine());
+		String inp[] = br.readLine().split(" ");
+		int a = Integer.parseInt(inp[0]);
+		int b = Integer.parseInt(inp[1]);
 
-		list.add((long)0);
-		for (int i = 1; i <= 9; i++) {
-			list.add((long)i);
-			bt(i);
+		long mul = (long) a * (long) b;
+
+		long res1 = 0, res2 = 0;
+
+		for (int i = a; i <= Math.sqrt(mul); i += a) {
+			if (mul % i == 0 && check(i, mul / i) == a) {
+				res1 = i;
+				res2 = mul / i;
+			}
 		}
 
-		Collections.sort(list);
+		bw.write(res1 + " " + res2);
 
-		if( n >= list.size() ) bw.write("-1");
-		else bw.write(list.get(n) + "");
 		bw.flush();
 		bw.close();
 
