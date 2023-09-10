@@ -5,7 +5,7 @@ package Two_Pointer;
 
 import java.io.*;
 
-public class Q17609_PALINDROME {
+public class Q17609_PALINDROME_G5 {
 
 	public static void main(String[] args) throws IOException {
 		// Initialization of input and output streams.
