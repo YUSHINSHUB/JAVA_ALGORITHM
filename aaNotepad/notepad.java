@@ -11,46 +11,23 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int n = Integer.parseInt(br.readLine());
-		int sol[] = new int[n];
+		int n;
+		long a, b, c, res;
 
-		String inp[] = br.readLine().split(" ");
+		n = Integer.parseInt(br.readLine());
 
 		for (int i = 0; i < n; i++) {
-			sol[i] = Integer.parseInt(inp[i]);
+			String inp[] = br.readLine().split(" ");
+			a = Long.parseLong(inp[0]);
+			b = Long.parseLong(inp[1]);
+			c = Long.parseLong(inp[2]);
+			long big = Math.max(a, Math.max(b, c));
+			long sum = a + b + c;
+			sum -= big;
+			res = (big * big) + (sum * sum);
+
+			bw.write(res + "\n");
 		}
-
-		Arrays.sort(sol);
-
-		int low = 0;
-		int hig = n - 1;
-		int clow = 0;
-		int chig = n - 1;
-
-		int cur = Math.abs(sol[0] + sol[n - 1]);
-
-		while (true) {
-			if (clow >= chig || clow == chig-1)
-				break;
-
-			if (cur == 0)
-				break;
-
-			if (Math.abs(sol[clow + 1] + sol[chig]) > Math.abs(sol[clow] + sol[chig - 1])) {
-				chig--;
-			} else {
-				clow++;
-			}
-
-			if (cur > Math.abs(sol[clow] + sol[chig])) {
-				low = clow;
-				hig = chig;
-				cur = Math.abs(sol[clow] + sol[chig]);
-			}
-
-		}
-
-		bw.write(sol[low] + " " + sol[hig]);
 
 		bw.flush();
 		bw.close();
