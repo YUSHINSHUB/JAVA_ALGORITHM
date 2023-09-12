@@ -11,23 +11,35 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int n;
-		long a, b, c, res;
+		int n, m;
+		String inp[] = br.readLine().split(" ");
+		n = Integer.parseInt(inp[0]);
+		m = Integer.parseInt(inp[1]);
 
-		n = Integer.parseInt(br.readLine());
+		int x1 = -1;
+		int x2 = -1;
+		int y1 = -1;
+		int y2 = -1;
 
 		for (int i = 0; i < n; i++) {
-			String inp[] = br.readLine().split(" ");
-			a = Long.parseLong(inp[0]);
-			b = Long.parseLong(inp[1]);
-			c = Long.parseLong(inp[2]);
-			long big = Math.max(a, Math.max(b, c));
-			long sum = a + b + c;
-			sum -= big;
-			res = (big * big) + (sum * sum);
-
-			bw.write(res + "\n");
+			inp = br.readLine().split(" ");
+			for (int j = 0; j < m; j++) {
+				if (inp[j].equals("1")) {
+					if (x1 == -1) {
+						x1 = j;
+						y1 = i;
+					} else {
+						x2 = j;
+						y2 = i;
+						break;
+					}
+				}
+			}
+			if (x2 >= 0)
+				break;
 		}
+
+		bw.write(Math.abs(x2 - x1) + Math.abs(y2 - y1) + "");
 
 		bw.flush();
 		bw.close();
