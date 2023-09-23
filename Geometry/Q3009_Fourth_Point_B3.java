@@ -2,17 +2,17 @@ package Geometry;
 
 import java.io.*;
 
-class pos {
-
-	int x;
-	int y;
-
-	pos(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-}
+//class pos {
+//
+//	int x;
+//	int y;
+//
+//	pos(int x, int y) {
+//		this.x = x;
+//		this.y = y;
+//	}
+//
+//}
 
 public class Q3009_Fourth_Point_B3 {
 
