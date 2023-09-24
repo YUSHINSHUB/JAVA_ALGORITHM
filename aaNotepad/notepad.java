@@ -13,42 +13,67 @@ public class notepad {
 
 		String inp[] = br.readLine().split(" ");
 
-		int lx1 = Integer.parseInt(inp[0]);
-		int ly1 = Integer.parseInt(inp[1]);
-		int lx2 = Integer.parseInt(inp[2]);
-		int ly2 = Integer.parseInt(inp[3]);
+		int x1 = Integer.parseInt(inp[0]);
+		int y1 = Integer.parseInt(inp[1]);
+		int x2 = Integer.parseInt(inp[2]);
+		int y2 = Integer.parseInt(inp[3]);
+		int x3 = Integer.parseInt(inp[4]);
+		int y3 = Integer.parseInt(inp[5]);
 
-		int lxlen = lx2 - lx1;
-		int lylen = ly2 - ly1;
-		int res = lxlen * lylen;
+		if((x2-x1)*(y3-y1)==(x3-x1)*(y2-y1)){
+	         System.out.println(-1);
+	         return;
+	      }
 
-		inp = br.readLine().split(" ");
+		else {
+			double sx, sy, mx, my, ex, ey, x4, y4;
+			double len1, len2;
+			double res1, res2, res3;
 
-		int fx1 = Integer.parseInt(inp[0]);
-		int fy1 = Integer.parseInt(inp[1]);
-		int fx2 = Integer.parseInt(inp[2]);
-		int fy2 = Integer.parseInt(inp[3]);
+			sx = x2;
+			sy = y2;
+			mx = x1;
+			my = y1;
+			ex = x3;
+			ey = y3;
 
-		int fxlen = fx2 - fx1;
-		int fylen = fy2 - fy1;
+			x4 = sx + (ex - mx);
+			y4 = sy + (ey - my);
+			len1 = Math.sqrt(Math.pow(Math.abs(mx - sx), 2) + Math.pow(Math.abs(my - sy), 2));
+			len2 = Math.sqrt(Math.pow(Math.abs(sx - x4), 2) + Math.pow(Math.abs(sy - y4), 2));
+			res1 = len1 + len1 + len2 + len2;
 
-		if (fy1 <= ly1 && fy2 >= ly2) {
-			if (fx1 <= lx1 && fx2 >= lx2) {
-				res = 0;
-			} else if (fx1 >= lx1 && fx1 <= lx2 && fx2 >= lx2) {
-				res = lylen * (fx1 - lx1);
-			} else if (fx1 <= lx1 && fx2 <= lx2 && fx2 >= lx1) {
-				res = lylen * (lx2 - fx2);
-			}
-		} else if (fx1 <= lx1 && fx2 >= lx2) {
-			if (fy1 >= ly1 && fy1 <= ly2 && fy2 >= ly2) {
-				res = lxlen * (fy1 - ly1);
-			} else if (fy1 <= ly1 && fy2 <= ly2 && fy2 >= ly1) {
-				res = lxlen * (ly2 - fy2);
-			}
+			sx = x1;
+			sy = y1;
+			mx = x2;
+			my = y2;
+			ex = x3;
+			ey = y3;
+
+			x4 = sx + (ex - mx);
+			y4 = sy + (ey - my);
+			len1 = Math.sqrt(Math.pow(Math.abs(mx - sx), 2) + Math.pow(Math.abs(my - sy), 2));
+			len2 = Math.sqrt(Math.pow(Math.abs(sx - x4), 2) + Math.pow(Math.abs(sy - y4), 2));
+			res2 = len1 + len1 + len2 + len2;
+
+			sx = x1;
+			sy = y1;
+			mx = x3;
+			my = y3;
+			ex = x2;
+			ey = y2;
+
+			x4 = sx + (ex - mx);
+			y4 = sy + (ey - my);
+			len1 = Math.sqrt(Math.pow(Math.abs(mx - sx), 2) + Math.pow(Math.abs(my - sy), 2));
+			len2 = Math.sqrt(Math.pow(Math.abs(sx - x4), 2) + Math.pow(Math.abs(sy - y4), 2));
+			res3 = len1 + len1 + len2 + len2;
+
+			double r1 = Math.min(res1, Math.min(res2, res3));
+			double r2 = Math.max(res1, Math.max(res2, res3));
+
+			bw.write(r2 - r1 + "");
 		}
-
-		bw.write(res + "");
 
 		bw.flush();
 		bw.close();
