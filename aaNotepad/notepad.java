@@ -11,26 +11,29 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String inp[] = br.readLine().split(" ");
-		int x1 = Integer.parseInt(inp[0]);
-		int y1 = Integer.parseInt(inp[1]);
-		int p1 = Integer.parseInt(inp[2]);
-		int q1 = Integer.parseInt(inp[3]);
+		int n = Integer.parseInt(br.readLine());
+		int x[] = new int[n];
+		int y[] = new int[n];
+		double xs = 0;
+		double ys = 0;
 
-		inp = br.readLine().split(" ");
-		int x2 = Integer.parseInt(inp[0]);
-		int y2 = Integer.parseInt(inp[1]);
-		int p2 = Integer.parseInt(inp[2]);
-		int q2 = Integer.parseInt(inp[3]);
+		for (int i = 0; i < n; i++) {
+			String inp[] = br.readLine().split(" ");
+			x[i] = Integer.parseInt(inp[0]);
+			y[i] = Integer.parseInt(inp[1]);
+		}
 
-		if (x1 > p2 || y1 > q2 || p1 < x2 || q1 < y2)
-			bw.write("NULL");
-		else if ((x1 == p2 && y1 == q2) || (p1 == x2 && y1 == q2) || (x1 == p2 && q1 == y2) || (p1 == x2 && q1 == y2))
-			bw.write("POINT");
-		else if ((x1 == p2) || (y1 == q2) || (p1 == x2) || (q1 == y2))
-			bw.write("LINE");
-		else
-			bw.write("FACE");
+		for (int i = 0; i < n - 1; i++) {
+			xs += x[i] * y[i + 1];
+			ys += y[i] * x[i + 1];
+		}
+
+		xs += x[n - 1] * y[0];
+		ys += y[n - 1] * x[0];
+
+		xs -= ys;
+		xs = Math.abs(xs);
+		bw.write(xs / 2 + "");
 
 		bw.flush();
 		bw.close();
