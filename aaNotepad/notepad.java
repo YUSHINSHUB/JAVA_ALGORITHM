@@ -12,15 +12,15 @@ public class notepad {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		int n = Integer.parseInt(br.readLine());
-		int x[] = new int[n];
-		int y[] = new int[n];
+		double x[] = new double[n];
+		double y[] = new double[n];
 		double xs = 0;
 		double ys = 0;
 
 		for (int i = 0; i < n; i++) {
 			String inp[] = br.readLine().split(" ");
-			x[i] = Integer.parseInt(inp[0]);
-			y[i] = Integer.parseInt(inp[1]);
+			x[i] = Double.parseDouble(inp[0]);
+			y[i] = Double.parseDouble(inp[1]);
 		}
 
 		for (int i = 0; i < n - 1; i++) {
@@ -31,9 +31,13 @@ public class notepad {
 		xs += x[n - 1] * y[0];
 		ys += y[n - 1] * x[0];
 
-		xs -= ys;
-		xs = Math.abs(xs);
-		bw.write(xs / 2 + "");
+		xs = Math.abs(xs - ys);
+
+		long res = (long) xs;
+		if (res % 2 == 0)
+			bw.write(res / 2 + ".0");
+		else
+			bw.write(res / 2 + ".5");
 
 		bw.flush();
 		bw.close();
