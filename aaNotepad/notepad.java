@@ -6,52 +6,109 @@ import java.util.*;
 
 public class notepad {
 
-	static int m, n, h;
-	static int tom[][][];
-	static int res = 0;
+	static int n;
+	static char rgb[][];
+	static int nres = 0;
+	static int yres = 0;
 	static Queue<Integer> yq = new LinkedList<>();
 	static Queue<Integer> xq = new LinkedList<>();
-	static Queue<Integer> hq = new LinkedList<>();
-	static int ypos[] = { 1, -1, -1, 1, 0, 0 };
-	static int xpos[] = { 0, 1, -1, -1, 1, 0 };
-	static int hpos[] = { 0, 0, 0, 0, 1, -2 };
+	static int ypos[] = { 1, -1, -1, 1, };
+	static int xpos[] = { 0, 1, -1, -1, };
 
 	static void bfs() {
 
+		char yrgb[][] = new char[n][n];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++)
+				yrgb[i][j] = rgb[i][j];
+		}
+
 		while (true) {
-			Queue<Integer> ytq = new LinkedList<>();
-			Queue<Integer> xtq = new LinkedList<>();
-			Queue<Integer> htq = new LinkedList<>();
-			while (!yq.isEmpty()) {
-				ytq.add(yq.poll());
-				xtq.add(xq.poll());
-				htq.add(hq.poll());
+
+			char chk = ' ';
+
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					if (rgb[i][j] != 'C') {
+						chk = rgb[i][j];
+						rgb[i][j] = 'C';
+						yq.add(i);
+						xq.add(j);
+						break;
+					}
+				}
+				if (chk != ' ')
+					break;
 			}
 
-			if (ytq.isEmpty())
+			if (chk == ' ')
 				break;
 
-			res++;
+			nres++;
 
-			while (!ytq.isEmpty()) {
+			while (!yq.isEmpty()) {
 
-				int y = ytq.poll();
-				int x = xtq.poll();
-				int z = htq.poll();
+				int y = yq.poll();
+				int x = xq.poll();
 
-				for (int i = 0; i < 6; i++) {
+				for (int i = 0; i < 4; i++) {
 					y += ypos[i];
 					x += xpos[i];
-					z += hpos[i];
 
-					if (y < 0 || y >= m || x < 0 || x >= n || z < 0 || z >= h)
+					if (y < 0 || y >= n || x < 0 || x >= n)
 						continue;
 
-					if (tom[y][x][z] == 0) {
+					if (rgb[y][x] == chk) {
 						yq.add(y);
 						xq.add(x);
-						hq.add(z);
-						tom[y][x][z] = 1;
+						rgb[y][x] = 'C';
+					}
+
+				}
+
+			}
+
+		}
+
+		while (true) {
+
+			char chk = ' ';
+
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					if (yrgb[i][j] != 'C') {
+						chk = yrgb[i][j];
+						yrgb[i][j] = 'C';
+						yq.add(i);
+						xq.add(j);
+						break;
+					}
+				}
+				if (chk != ' ')
+					break;
+			}
+
+			if (chk == ' ')
+				break;
+
+			yres++;
+
+			while (!yq.isEmpty()) {
+
+				int y = yq.poll();
+				int x = xq.poll();
+
+				for (int i = 0; i < 4; i++) {
+					y += ypos[i];
+					x += xpos[i];
+
+					if (y < 0 || y >= n || x < 0 || x >= n)
+						continue;
+
+					if (yrgb[y][x] == chk || (yrgb[y][x] == 'R' && chk == 'G') || (yrgb[y][x] == 'G' && chk == 'R')) {
+						yq.add(y);
+						xq.add(x);
+						yrgb[y][x] = 'C';
 					}
 
 				}
@@ -67,40 +124,19 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String inp[] = br.readLine().split(" ");
-		m = Integer.parseInt(inp[0]);
-		n = Integer.parseInt(inp[1]);
-		h = Integer.parseInt(inp[2]);
+		n = Integer.parseInt(br.readLine());
+		rgb = new char[n][n];
 
-		tom = new int[m][n][h];
-
-		for (int i = 0; i < h; i++) {
+		for (int i = 0; i < n; i++) {
+			String temp = br.readLine();
 			for (int j = 0; j < n; j++) {
-				inp = br.readLine().split(" ");
-				for (int k = 0; k < m; k++) {
-					tom[k][j][i] = Integer.parseInt(inp[k]);
-					if (tom[k][j][i] == 1) {
-						yq.add(k);
-						xq.add(j);
-						hq.add(i);
-					}
-				}
+				rgb[i][j] = temp.charAt(j);
 			}
 		}
 
 		bfs();
 
-		for (int i = 0; i < h; i++) {
-			for (int j = 0; j < n; j++) {
-				for (int k = 0; k < m; k++) {
-					if (tom[k][j][i] == 0) {
-						res = 0;
-					}
-				}
-			}
-		}
-
-		bw.write(res - 1 + "");
+		bw.write(nres + " " + yres);
 		bw.flush();
 		bw.close();
 
