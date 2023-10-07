@@ -13,17 +13,19 @@ public class notepad {
 
 		for (int i = idx; i <= 100; i++) {
 
-			for (int j = 1; j <= 6; j++) {
-				int s = i - j;
-				if( s < 1 ) s = 1;
-				grp[i] = Math.min(grp[s] + 1, grp[i]);
+			if (hm.getOrDefault(i, -1) == -1) {
+				for (int j = i; j <= i + 6; j++) {
+					if (j > 100)
+						break;
+					grp[j] = Math.min(grp[i] + 1, grp[j]);
+				}
 			}
 
 			if (hm.getOrDefault(i, -1) != -1) {
 				int s = hm.get(i);
-				if( grp[s] > grp[i] ) {
+				if (grp[s] > grp[i]) {
 					grp[s] = grp[i];
-					search(s+1);
+					search(s);
 				}
 			}
 
@@ -59,7 +61,7 @@ public class notepad {
 			hm.put(x, y);
 		}
 
-		search(2);
+		search(1);
 
 		bw.write(grp[100] + "");
 
