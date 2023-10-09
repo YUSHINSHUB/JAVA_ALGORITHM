@@ -6,33 +6,6 @@ import java.util.*;
 
 public class notepad {
 
-	static HashMap<Integer, Integer> hm = new HashMap<>();
-	static int grp[] = new int[101];
-
-	static void search(int idx) {
-
-		for (int i = idx; i <= 100; i++) {
-
-			if (hm.getOrDefault(i, -1) == -1) {
-				for (int j = i; j <= i + 6; j++) {
-					if (j > 100)
-						break;
-					grp[j] = Math.min(grp[i] + 1, grp[j]);
-				}
-			}
-
-			if (hm.getOrDefault(i, -1) != -1) {
-				int s = hm.get(i);
-				if (grp[s] > grp[i]) {
-					grp[s] = grp[i];
-					search(s);
-				}
-			}
-
-		}
-
-	}
-
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -41,30 +14,81 @@ public class notepad {
 		String inp[] = br.readLine().split(" ");
 		int n = Integer.parseInt(inp[0]);
 		int m = Integer.parseInt(inp[1]);
-
-		int x, y;
-
-		Arrays.fill(grp, 100);
-		grp[1] = 0;
+		int res = 0;
+		int ypos = 0, xpos = 0;
+		int grp[][] = new int[n][m];
+		int ver6[][] = new int[3][2];
+		int hor6[][] = new int[2][3];
 
 		for (int i = 0; i < n; i++) {
 			inp = br.readLine().split(" ");
-			x = Integer.parseInt(inp[0]);
-			y = Integer.parseInt(inp[1]);
-			hm.put(x, y);
+			for (int j = 0; j < m; j++) {
+				grp[i][j] = Integer.parseInt(inp[j]);
+			}
 		}
 
-		for (int i = 0; i < m; i++) {
-			inp = br.readLine().split(" ");
-			x = Integer.parseInt(inp[0]);
-			y = Integer.parseInt(inp[1]);
-			hm.put(x, y);
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (i >= 3) {
+					res = Math.max(res, grp[i][j] + grp[i - 1][j] + grp[i - 2][j] + grp[i - 3][j]);
+				}
+
+				if (j >= 3) {
+					res = Math.max(res, grp[i][j] + grp[i][j - 1] + grp[i][j - 2] + grp[i][j - 3]);
+				}
+
+				if (i >= 1 && j >= 1) {
+					res = Math.max(res, grp[i][j] + grp[i - 1][j] + grp[i][j - 1] + grp[i - 1][j - 1]);
+				}
+
+				if (i >= 2 && j >= 1) {
+					int ver = 0;
+					for (int k = i; k >= i - 2; k--) {
+						for (int l = j; l >= j - 1; l--) {
+							ver += grp[k][l];
+							ver6[i - k][j - l] = grp[k][l];
+						}
+					}
+
+					res = Math.max(res, ver - ver6[0][1] - ver6[1][1]);
+					res = Math.max(res, ver - ver6[1][1] - ver6[2][1]);
+					res = Math.max(res, ver - ver6[0][0] - ver6[1][0]);
+					res = Math.max(res, ver - ver6[1][0] - ver6[2][0]);
+
+					res = Math.max(res, ver - ver6[0][0] - ver6[2][1]);
+					res = Math.max(res, ver - ver6[2][0] - ver6[0][1]);
+
+					res = Math.max(res, ver - ver6[0][0] - ver6[2][0]);
+					res = Math.max(res, ver - ver6[0][1] - ver6[2][1]);
+
+				}
+
+				if (j >= 2 && i >= 1) {
+					int hor = 0;
+					for (int k = i; k >= i - 1; k--) {
+						for (int l = j; l >= j - 2; l--) {
+							hor += grp[k][l];
+							hor6[i - k][j - l] = grp[k][l];
+						}
+					}
+
+					res = Math.max(res, hor - hor6[1][0] - hor6[1][1]);
+					res = Math.max(res, hor - hor6[1][1] - hor6[1][2]);
+					res = Math.max(res, hor - hor6[0][0] - hor6[0][1]);
+					res = Math.max(res, hor - hor6[0][1] - hor6[0][2]);
+
+					res = Math.max(res, hor - hor6[0][0] - hor6[1][2]);
+					res = Math.max(res, hor - hor6[0][2] - hor6[1][0]);
+
+					res = Math.max(res, hor - hor6[0][0] - hor6[0][2]);
+					res = Math.max(res, hor - hor6[1][0] - hor6[1][2]);
+
+				}
+
+			}
 		}
 
-		search(1);
-
-		bw.write(grp[100] + "");
-
+		bw.write(res + "");
 		bw.flush();
 		bw.close();
 
