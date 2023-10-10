@@ -6,89 +6,127 @@ import java.util.*;
 
 public class notepad {
 
+	static int idx = 0;
+	static int n, m;
+	static int sea[][];
+	static int by[] = { 1, -1, -1, 1 };
+	static int bx[] = { 0, 1, -1, -1 };
+
+	static int bfs() {
+
+		Queue<Integer> yq = new LinkedList<>();
+		Queue<Integer> xq = new LinkedList<>();
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (sea[i][j] != 0) {
+					yq.add(i);
+					xq.add(j);
+					break;
+				}
+			}
+			if (!yq.isEmpty())
+				break;
+		}
+
+		if (yq.isEmpty())
+			return 0;
+
+		int tsea[][] = new int[n][m];
+		for (int i = 0; i < n; i++) {
+			tsea[i] = sea[i].clone();
+		}
+		tsea[yq.peek()][xq.peek()] = 0;
+
+		while (!yq.isEmpty()) {
+
+			int y = yq.poll();
+			int x = xq.poll();
+
+			for (int i = 0; i < 4; i++) {
+				y += by[i];
+				x += bx[i];
+				if (y < 0 || x < 0 || y >= n || x >= m)
+					continue;
+
+				if (tsea[y][x] > 0) {
+					yq.add(y);
+					xq.add(x);
+					tsea[y][x] = 0;
+				}
+
+			}
+
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (tsea[i][j] > 0)
+					return 1;
+			}
+		}
+
+		return 2;
+
+	}
+
+	static void melt() {
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (sea[i][j] == 0) {
+					int y = i;
+					int x = j;
+					for (int k = 0; k < 4; k++) {
+						y += by[k];
+						x += bx[k];
+						if (y < 0 || x < 0 || y >= n || x >= m)
+							continue;
+						else if (sea[y][x] > 0) {
+							sea[y][x]--;
+							if (sea[y][x] == 0)
+								sea[y][x]--;
+						}
+					}
+				} else if (sea[i][j] < 0)
+					sea[i][j]++;
+			}
+		}
+
+	}
+
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		String inp[] = br.readLine().split(" ");
-		int n = Integer.parseInt(inp[0]);
-		int m = Integer.parseInt(inp[1]);
-		int res = 0;
-		int ypos = 0, xpos = 0;
-		int grp[][] = new int[n][m];
-		int ver6[][] = new int[3][2];
-		int hor6[][] = new int[2][3];
+		int chk = 2;
+		n = Integer.parseInt(inp[0]);
+		m = Integer.parseInt(inp[1]);
+		sea = new int[n][m];
 
 		for (int i = 0; i < n; i++) {
 			inp = br.readLine().split(" ");
 			for (int j = 0; j < m; j++) {
-				grp[i][j] = Integer.parseInt(inp[j]);
+				sea[i][j] = Integer.parseInt(inp[j]);
 			}
 		}
 
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				if (i >= 3) {
-					res = Math.max(res, grp[i][j] + grp[i - 1][j] + grp[i - 2][j] + grp[i - 3][j]);
-				}
+		while (true) {
+			chk = bfs();
+			if (chk == 0) {
+				idx = 0;
+				break;
+			} else if (chk == 1)
+				break;
 
-				if (j >= 3) {
-					res = Math.max(res, grp[i][j] + grp[i][j - 1] + grp[i][j - 2] + grp[i][j - 3]);
-				}
-
-				if (i >= 1 && j >= 1) {
-					res = Math.max(res, grp[i][j] + grp[i - 1][j] + grp[i][j - 1] + grp[i - 1][j - 1]);
-				}
-
-				if (i >= 2 && j >= 1) {
-					int ver = 0;
-					for (int k = i; k >= i - 2; k--) {
-						for (int l = j; l >= j - 1; l--) {
-							ver += grp[k][l];
-							ver6[i - k][j - l] = grp[k][l];
-						}
-					}
-
-					res = Math.max(res, ver - ver6[0][1] - ver6[1][1]);
-					res = Math.max(res, ver - ver6[1][1] - ver6[2][1]);
-					res = Math.max(res, ver - ver6[0][0] - ver6[1][0]);
-					res = Math.max(res, ver - ver6[1][0] - ver6[2][0]);
-
-					res = Math.max(res, ver - ver6[0][0] - ver6[2][1]);
-					res = Math.max(res, ver - ver6[2][0] - ver6[0][1]);
-
-					res = Math.max(res, ver - ver6[0][0] - ver6[2][0]);
-					res = Math.max(res, ver - ver6[0][1] - ver6[2][1]);
-
-				}
-
-				if (j >= 2 && i >= 1) {
-					int hor = 0;
-					for (int k = i; k >= i - 1; k--) {
-						for (int l = j; l >= j - 2; l--) {
-							hor += grp[k][l];
-							hor6[i - k][j - l] = grp[k][l];
-						}
-					}
-
-					res = Math.max(res, hor - hor6[1][0] - hor6[1][1]);
-					res = Math.max(res, hor - hor6[1][1] - hor6[1][2]);
-					res = Math.max(res, hor - hor6[0][0] - hor6[0][1]);
-					res = Math.max(res, hor - hor6[0][1] - hor6[0][2]);
-
-					res = Math.max(res, hor - hor6[0][0] - hor6[1][2]);
-					res = Math.max(res, hor - hor6[0][2] - hor6[1][0]);
-
-					res = Math.max(res, hor - hor6[0][0] - hor6[0][2]);
-					res = Math.max(res, hor - hor6[1][0] - hor6[1][2]);
-
-				}
-
-			}
+			idx++;
+			melt();
 		}
 
-		bw.write(res + "");
+		bw.write(idx + "");
+
 		bw.flush();
 		bw.close();
 
