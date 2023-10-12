@@ -6,64 +6,61 @@ import java.util.*;
 
 public class notepad {
 
-	static int n;
-	static int pal[];
-	static boolean mem[][];
-	static boolean visited[][];
-
-	static boolean dp(int s, int e) {
-
-		if (visited[s][e])
-			return mem[s][e];
-		else {
-			mem[s][e] = dp(s + 1, e - 1);
-			visited[s][e] = true;
-			return mem[s][e];
-		}
-
-	}
-
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		n = Integer.parseInt(br.readLine());
-		pal = new int[n + 1];
-		mem = new boolean[n + 1][n + 1];
-		visited = new boolean[n + 1][n + 1];
+		int n = Integer.parseInt(br.readLine());
+		int res = 0;
+		int bi[] = new int[n];
+		int mem[][] = new int[n][2];
+		int chk[] = new int[1001];
+		Arrays.fill(chk, -1);
+		chk[0] = 0;
 
 		String inp[] = br.readLine().split(" ");
-
-		for (int i = 1; i <= n; i++) {
-			pal[i] = Integer.parseInt(inp[i - 1]);
-		}
-
-		mem[1][1] = true;
-		visited[1][1] = true;
-		for (int i = 2; i <= n; i++) {
-			mem[i][i] = true;
-			visited[i][i] = true;
-			if (pal[i] == pal[i - 1]) {
-				mem[i - 1][i] = true;
-				visited[i - 1][i] = true;
-			} else {
-				mem[i - 1][i] = false;
-				visited[i - 1][i] = true;
-			}
-		}
-
-		n = Integer.parseInt(br.readLine());
-
 		for (int i = 0; i < n; i++) {
-			inp = br.readLine().split(" ");
-			int s = Integer.parseInt(inp[0]);
-			int e = Integer.parseInt(inp[1]);
-			if (dp(s, e))
-				bw.write("1\n");
-			else
-				bw.write("0\n");
+			bi[i] = Integer.parseInt(inp[i]);
+
+			for (int j = bi[i] - 1; j >= 0; j--) {
+				if (chk[j] >= 0) {
+					chk[bi[i]] = chk[j] + 1;
+					mem[i][0] = chk[bi[i]];
+					break;
+				}
+			}
+
+			if (i == 0) {
+				chk[bi[i]] = 1;
+				mem[i][0] = 1;
+			}
+
 		}
+
+		Arrays.fill(chk, -1);
+		chk[0] = 0;
+
+		for (int i = n - 1; i >= 0; i--) {
+
+			for (int j = bi[i] - 1; j >= 0; j--) {
+				if (chk[j] >= 0) {
+					chk[bi[i]] = chk[j] + 1;
+					mem[i][1] = chk[bi[i]];
+					break;
+				}
+			}
+
+			if (i == n - 1) {
+				chk[bi[i]] = 1;
+				mem[i][1] = 1;
+			}
+
+			if (mem[i][0] + mem[i][1] > res)
+				res = mem[i][0] + mem[i][1] - 1;
+		}
+
+		bw.write(res + "");
 
 		bw.flush();
 		bw.close();
