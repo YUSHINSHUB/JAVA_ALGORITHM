@@ -6,39 +6,41 @@ import java.util.*;
 
 public class notepad {
 
-	static int dp[];
-	static boolean visited[];
-
-	static int recur(int idx) {
-
-		if (visited[idx])
-			return dp[idx];
-		else {
-			visited[idx] = true;
-			dp[idx] = recur(idx - 2) * 3;
-			for (int i = idx - 4; i >= 0; i -= 2) {
-				dp[idx] += recur(i) * 2;
-			}
-			return dp[idx];
-		}
-	}
-
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int n = Integer.parseInt(br.readLine());
-		dp = new int[n + 1];
-		visited = new boolean[n + 1];
-		dp[0] = 1;
-		visited[0] = true;
+		int idx = 0;
 
-		if (n % 2 != 0)
-			bw.write("0");
+		String s = br.readLine();
+		String b = br.readLine();
+		char c = b.charAt(b.length() - 1);
+		StringBuilder sb = new StringBuilder("");
+
+		while (idx < s.length()) {
+
+			if (sb.length() < b.length()) {
+				while (sb.length() != b.length()) {
+					sb.append(s.charAt(idx));
+					idx++;
+				}
+			} else {
+				sb.append(s.charAt(idx));
+				idx++;
+			}
+
+			if (sb.charAt(sb.length() - 1) == c
+					&& sb.toString().substring(sb.length() - b.length(), sb.length()).equals(b)) {
+				sb.delete(sb.length() - b.length(), sb.length());
+			}
+
+		}
+
+		if (sb.isEmpty())
+			bw.write("FRULA");
 		else
-			bw.write(recur(n) + "");
-
+			bw.write(sb.toString());
 		bw.flush();
 		bw.close();
 
