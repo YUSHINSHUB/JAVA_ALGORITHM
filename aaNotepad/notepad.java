@@ -13,20 +13,58 @@ public class notepad {
 
 		int N = Integer.parseInt(br.readLine());
 		int res = 0;
-		PriorityQueue<Integer> pq = new PriorityQueue<>();
+		PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
 
 		for (int i = 0; i < N; i++) {
 			pq.add(Integer.parseInt(br.readLine()));
 		}
 
-		while (pq.size() > 1) {
-			int a = pq.poll();
-			int b = pq.poll();
+		while (!pq.isEmpty()) {
+			int a, b;
+			a = pq.poll();
+			if (pq.isEmpty()) {
+				res += a;
+				break;
+			}
 
-			a += b;
-			res += a;
-			pq.add(a);
+			b = pq.poll();
+			if (a > 1 && b > 1) {
+				res += a * b;
+			} else {
+				if (a == 1) {
+					res += a;
+					pq.add(b);
+					break;
+				} else if (b == 1) {
+					res += a;
+					res += b;
+					break;
+				} else if (a < 1) {
+					pq.add(a);
+					pq.add(b);
+					break;
+				}
 
+			}
+
+		}
+
+		if (!pq.isEmpty()) {
+			PriorityQueue<Integer> pq2 = new PriorityQueue<>();
+			while (!pq.isEmpty())
+				pq2.add(pq.poll());
+			while (!pq2.isEmpty()) {
+				int a, b;
+				a = pq2.poll();
+				if (pq2.isEmpty()) {
+					res += a;
+					break;
+				}
+
+				b = pq2.poll();
+				res += a * b;
+
+			}
 		}
 
 		bw.write(res + "");
