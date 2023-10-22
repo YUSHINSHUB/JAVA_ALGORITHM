@@ -31,14 +31,13 @@ public class notepad {
 			if (a > 1 && b > 1) {
 				res += a * b;
 			} else {
-				if (a == 1) {
+				if (a >= 1 && b < 1) {
 					res += a;
 					pq.add(b);
 					break;
 				} else if (b == 1) {
 					res += a;
 					res += b;
-					break;
 				} else if (a < 1) {
 					pq.add(a);
 					pq.add(b);
