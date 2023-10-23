@@ -12,62 +12,43 @@ public class notepad {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		int N = Integer.parseInt(br.readLine());
+		String inp[] = new String[N];
 		int res = 0;
-		PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+		int cnt[] = new int[26];
+		int conv[] = new int[26];
+		int idx = 9;
+		Arrays.fill(cnt, 0);
 
 		for (int i = 0; i < N; i++) {
-			pq.add(Integer.parseInt(br.readLine()));
+			inp[i] = br.readLine();
+			for (int j = 0; j < inp[i].length(); j++) {
+				cnt[inp[i].charAt(j) - 'A'] += Math.pow(10, inp[i].length() - j);
+			}
 		}
 
-		while (!pq.isEmpty()) {
-			int a, b;
-			a = pq.poll();
-			if (pq.isEmpty()) {
-				res += a;
+		while (true) {
+			int hig = 0;
+			int hidx = -1;
+			for (int i = 0; i < 26; i++) {
+				if (cnt[i] > hig) {
+					hig = cnt[i];
+					hidx = i;
+				}
+			}
+			if (hig == 0)
 				break;
-			}
-
-			b = pq.poll();
-			if (a > 1 && b > 1) {
-				res += a * b;
-			} else {
-				if (a >= 1 && b < 1) {
-					res += a;
-					pq.add(b);
-					break;
-				} else if (b == 1) {
-					res += a;
-					res += b;
-				} else if (a < 1) {
-					pq.add(a);
-					pq.add(b);
-					break;
-				}
-
-			}
-
+			conv[hidx] = idx;
+			cnt[hidx] = 0;
+			idx--;
 		}
 
-		if (!pq.isEmpty()) {
-			PriorityQueue<Integer> pq2 = new PriorityQueue<>();
-			while (!pq.isEmpty())
-				pq2.add(pq.poll());
-			while (!pq2.isEmpty()) {
-				int a, b;
-				a = pq2.poll();
-				if (pq2.isEmpty()) {
-					res += a;
-					break;
-				}
-
-				b = pq2.poll();
-				res += a * b;
-
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < inp[i].length(); j++) {
+				res += Math.pow(10, inp[i].length() - j-1) * conv[inp[i].charAt(j) - 'A'];
 			}
 		}
 
 		bw.write(res + "");
-
 		bw.flush();
 		bw.close();
 
