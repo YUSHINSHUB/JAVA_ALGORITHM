@@ -6,76 +6,52 @@ import java.util.*;
 
 public class notepad {
 
-	static int board[][];
-	static int N;
-	static int res = 0;
+	static int V, E;
+	static Queue<Integer>[] q = new LinkedList[20001];
+	static int chk[] = new int[20001];
 
-	static void bt(int idx) {
-		boolean pass = false;
+	static boolean bfs() {
+		boolean res = true;
+		int idx = 0;
+		Queue<Integer> bq = new LinkedList<>();
+		for (int i = 1; i <= V; i++) {
+			if (chk[i] == 0) {
+				idx = 1;
+				chk[i] = 1;
+				bq.add(i);
+				while (!bq.isEmpty()) {
+					int temp = bq.poll();
+					while (!q[temp].isEmpty()) {
+						int t = q[temp].poll();
 
-		if (idx == N) {
-			res++;
-			return;
+						if (chk[t] == 0) {
+							if (idx == 1) {
+								chk[t] = 2;
+								bq.add(t);
+							} else {
+								bq.add(t);
+								chk[t] = 1;
+							}
+						} else if ((idx == 1 && chk[t] == 1) || (idx == 2 && chk[t] == 2)) {
+							res = false;
+							break;
+						}
+					}
+
+					if (!res)
+						break;
+
+					if (idx == 1)
+						idx = 2;
+					else
+						idx = 1;
+				}
+				if (!res)
+					break;
+				idx = 0;
+			}
 		}
-
-		for (int j = 0; j < N; j++) {
-			pass = false;
-
-			for (int k = j - 1; k >= 0; k--) {
-				if (board[idx][k] == 1) {
-					pass = true;
-					break;
-				}
-			}
-
-			if (pass)
-				continue;
-
-			for (int k = idx - 1; k >= 0; k--) {
-				if (board[k][j] == 1) {
-					pass = true;
-					break;
-				}
-			}
-
-			if (pass)
-				continue;
-
-			int yt = idx - 1;
-			int xt = j - 1;
-
-			while (yt >= 0 && xt >= 0) {
-				if (board[yt][xt] == 1) {
-					pass = true;
-					break;
-				}
-				yt--;
-				xt--;
-			}
-
-			if (pass)
-				continue;
-
-			yt = idx - 1;
-			xt = j + 1;
-
-			while (yt >= 0 && xt < N) {
-				if (board[yt][xt] == 1) {
-					pass = true;
-					break;
-				}
-				yt--;
-				xt++;
-			}
-
-			if (pass)
-				continue;
-
-			board[idx][j] = 1;
-			bt(idx + 1);
-			board[idx][j] = 0;
-
-		}
+		return res;
 
 	}
 
@@ -84,12 +60,32 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		N = Integer.parseInt(br.readLine());
-		board = new int[N][N];
+		int K = Integer.parseInt(br.readLine());
 
-		bt(0);
+		for (int i = 0; i < K; i++) {
+			String inp[] = br.readLine().split(" ");
+			V = Integer.parseInt(inp[0]);
+			E = Integer.parseInt(inp[1]);
+			Arrays.fill(chk, 0);
 
-		bw.write(res + "");
+			for (int j = 1; j <= V; j++)
+				q[j] = new LinkedList<>();
+
+			for (int j = 0; j < E; j++) {
+				inp = br.readLine().split(" ");
+				int a = Integer.parseInt(inp[0]);
+				int b = Integer.parseInt(inp[1]);
+
+				q[a].add(b);
+				q[b].add(a);
+			}
+
+			if (bfs()) {
+				bw.write("YES\n");
+			} else {
+				bw.write("NO\n");
+			}
+		}
 
 		bw.flush();
 		bw.close();
