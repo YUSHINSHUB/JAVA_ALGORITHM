@@ -5,23 +5,32 @@ import java.util.*;
 
 public class notepad {
 
-	static int D[];
-	static int visited[];
-	static Queue<Integer>[] grp = new Queue[1001];
+	static int mem[][];
+	static int grp[][];
+	static int ny[] = { -1, 1, 0, 1 };
+	static int nx[] = { 0, -1, 2, -1 };
+	static int N;
 
-	static int dp(int idx) {
-		if (visited[idx] >= 0) {
-			return visited[idx];
+	static int dp(int y, int x) {
+
+		if (mem[y][x] >= 0)
+			return mem[y][x];
+		else {
+			mem[y][x] = 1;
+			int cy = y;
+			int cx = x;
+			for (int i = 0; i < 4; i++) {
+				cy += ny[i];
+				cx += nx[i];
+				if (cx < 0 || cy < 0 || cx >= N || cy >= N)
+					continue;
+				else if (grp[cy][cx] <= grp[y][x])
+					continue;
+				mem[y][x] = Math.max(mem[y][x], dp(cy, cx) + 1);
+			}
+
+			return mem[y][x];
 		}
-
-		while (!grp[idx].isEmpty()) {
-			visited[idx] = Math.max(dp(grp[idx].poll()) + D[idx], visited[idx]);
-		}
-
-		if (visited[idx] < 0)
-			visited[idx] = D[idx];
-
-		return visited[idx];
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -29,28 +38,27 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int T = Integer.parseInt(br.readLine());
+		N = Integer.parseInt(br.readLine());
+		int res = 0;
+		grp = new int[N][N];
+		mem = new int[N][N];
 
-		for (int cs = 0; cs < T; cs++) {
+		for (int i = 0; i < N; i++) {
+			Arrays.fill(mem[i], -1);
 			String inp[] = br.readLine().split(" ");
-			int N = Integer.parseInt(inp[0]);
-			D = new int[N + 1];
-			visited = new int[N + 1];
-			Arrays.fill(visited, -1);
-			int K = Integer.parseInt(inp[1]);
-			inp = br.readLine().split(" ");
-			for (int i = 1; i <= N; i++) {
-				D[i] = Integer.parseInt(inp[i - 1]);
-				grp[i] = new LinkedList<>();
+			for (int j = 0; j < N; j++) {
+				grp[i][j] = Integer.parseInt(inp[j]);
 			}
-			for (int i = 0; i < K; i++) {
-				inp = br.readLine().split(" ");
-				grp[Integer.parseInt(inp[1])].add(Integer.parseInt(inp[0]));
-			}
-
-			int W = Integer.parseInt(br.readLine());
-			bw.write(dp(W) + "\n");
 		}
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				res = Math.max(res, dp(i, j));
+			}
+		}
+
+		bw.write(res + "");
+
 		bw.flush();
 		bw.close();
 
