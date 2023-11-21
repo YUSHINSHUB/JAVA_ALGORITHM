@@ -2,7 +2,7 @@ package Graph_Theory;
 
 import java.io.*;
 
-public class Q13450_Laszlo_Babai {
+public class Q13450_Laszlo_Babai_B1 {
 
 	public static void main(String[] args) throws IOException {
 

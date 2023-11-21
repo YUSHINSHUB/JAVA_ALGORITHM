@@ -3,34 +3,47 @@ package aaNotepad;
 import java.io.*;
 import java.util.*;
 
+class route {
+	int to, lim;
+
+	route(int to, int lim) {
+		this.to = to;
+		this.lim = lim;
+	}
+}
+
 public class notepad {
 
-	static int mem[][];
-	static int grp[][];
-	static int ny[] = { -1, 1, 0, 1 };
-	static int nx[] = { 0, -1, 2, -1 };
-	static int N;
+	static int N, M;
+	static boolean visited[];
+	static int f1, f2;
+	static int hig = Integer.MIN_VALUE;
+	static int low = Integer.MAX_VALUE;
+	static int mid = 0;
+	static ArrayList<route>[] list;
 
-	static int dp(int y, int x) {
+	static boolean search(int idx) {
 
-		if (mem[y][x] >= 0)
-			return mem[y][x];
-		else {
-			mem[y][x] = 1;
-			int cy = y;
-			int cx = x;
-			for (int i = 0; i < 4; i++) {
-				cy += ny[i];
-				cx += nx[i];
-				if (cx < 0 || cy < 0 || cx >= N || cy >= N)
-					continue;
-				else if (grp[cy][cx] <= grp[y][x])
-					continue;
-				mem[y][x] = Math.max(mem[y][x], dp(cy, cx) + 1);
+		Arrays.fill(visited, false);
+		visited[f1] = true;
+		Queue<Integer> q = new LinkedList<>();
+		q.add(f1);
+		while (!q.isEmpty()) {
+			int t = q.poll();
+			if (t == f2) {
+				return true;
+			}
+			for (int i = 0; i < list[t].size(); i++) {
+				if (list[t].get(i).lim >= idx && !visited[list[t].get(i).to]) {
+					q.add(list[t].get(i).to);
+					visited[list[t].get(i).to] = true;
+				}
 			}
 
-			return mem[y][x];
 		}
+
+		return false;
+
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -38,27 +51,48 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		N = Integer.parseInt(br.readLine());
 		int res = 0;
-		grp = new int[N][N];
-		mem = new int[N][N];
+		String inp[] = br.readLine().split(" ");
+		N = Integer.parseInt(inp[0]);
+		M = Integer.parseInt(inp[1]);
+		visited = new boolean[N + 1];
+		list = new ArrayList[N + 1];
 
-		for (int i = 0; i < N; i++) {
-			Arrays.fill(mem[i], -1);
-			String inp[] = br.readLine().split(" ");
-			for (int j = 0; j < N; j++) {
-				grp[i][j] = Integer.parseInt(inp[j]);
-			}
+		Arrays.fill(visited, false);
+		for (int i = 1; i <= N; i++) {
+			list[i] = new ArrayList<>();
+		}
+		for (int i = 0; i < M; i++) {
+			inp = br.readLine().split(" ");
+			int A = Integer.parseInt(inp[0]);
+			int B = Integer.parseInt(inp[1]);
+			int C = Integer.parseInt(inp[2]);
+
+			list[A].add(new route(B, C));
+			list[B].add(new route(A, C));
+
+			hig = Math.max(hig, C);
+			low = Math.min(low, C);
 		}
 
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				res = Math.max(res, dp(i, j));
+		mid = (low + hig) / 2;
+
+		inp = br.readLine().split(" ");
+		f1 = Integer.parseInt(inp[0]);
+		f2 = Integer.parseInt(inp[1]);
+		visited[f1] = true;
+
+		while (low <= hig) {
+			mid = (low + hig) / 2;
+			if (search(mid)) {
+				low = mid + 1;
+				res = mid;
+			} else {
+				hig = mid - 1;
 			}
 		}
 
 		bw.write(res + "");
-
 		bw.flush();
 		bw.close();
 
