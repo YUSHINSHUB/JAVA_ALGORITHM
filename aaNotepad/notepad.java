@@ -5,103 +5,127 @@ import java.util.*;
 
 public class notepad {
 
-	static int N, M;
-	static int grp[][];
-	static int visited[][];
-	static int ny[] = { -1, 1, 0, 1 };
-	static int nx[] = { 0, -1, 2, -1 };
-
-	static void search() {
-
-		Queue<Integer> yq = new LinkedList<>();
-		Queue<Integer> xq = new LinkedList<>();
-		Queue<Integer> wyq = new LinkedList<>();
-		Queue<Integer> wxq = new LinkedList<>();
-		yq.add(0);
-		xq.add(0);
-
-		while (!yq.isEmpty()) {
-			int cy = yq.poll();
-			int cx = xq.poll();
-
-			int y = cy;
-			int x = cx;
-
-			for (int i = 0; i < 4; i++) {
-				y += ny[i];
-				x += nx[i];
-				if (y < 0 || x < 0 || y >= N || x >= M)
-					continue;
-				else if (visited[y][x] >= 0)
-					continue;
-				else if (grp[y][x] == 1) {
-					visited[y][x] = visited[cy][cx] + 1;
-					wyq.add(y);
-					wxq.add(x);
-					continue;
-				}
-
-				visited[y][x] = visited[cy][cx] + 1;
-				yq.add(y);
-				xq.add(x);
-
-			}
-		}
-
-		while (!wyq.isEmpty()) {
-			yq.add(wyq.poll());
-			xq.add(wxq.poll());
-
-			while (!yq.isEmpty()) {
-				int cy = yq.poll();
-				int cx = xq.poll();
-
-				int y = cy;
-				int x = cx;
-
-				for (int i = 0; i < 4; i++) {
-					y += ny[i];
-					x += nx[i];
-					if (y < 0 || y >= N || x < 0 || x >= M)
-						continue;
-					else if (grp[y][x] == 1)
-						continue;
-					else if (visited[y][x] >= 0 && visited[y][x] <= visited[cy][cx] + 1)
-						continue;
-
-					visited[y][x] = visited[cy][cx] + 1;
-					yq.add(y);
-					xq.add(x);
-				}
-			}
-		}
-
-	}
-
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String inp[] = br.readLine().split(" ");
-		N = Integer.parseInt(inp[0]);
-		M = Integer.parseInt(inp[1]);
-		grp = new int[N][M];
-		visited = new int[N][M];
+		int N = Integer.parseInt(br.readLine());
+		int day[] = new int[366];
+		int res = 0;
+		boolean quit = false;
+		Arrays.fill(day, 0);
 
 		for (int i = 0; i < N; i++) {
-			String temp = br.readLine();
-			Arrays.fill(visited[i], -1);
-			for (int j = 0; j < M; j++)
-				grp[i][j] = Integer.parseInt(Character.toString(temp.charAt(j)));
+			String inp[] = br.readLine().split(" ");
+			int bm = Integer.parseInt(inp[0]);
+			int bd = Integer.parseInt(inp[1]);
+			int wm = Integer.parseInt(inp[2]);
+			int wd = Integer.parseInt(inp[3]);
+			int start = 0;
+			int end = 0;
+			int len = 0;
+
+			switch (bm) {
+			case 1:
+				start = bd;
+				break;
+			case 2:
+				start = 31 + bd;
+				break;
+			case 3:
+				start = 59 + bd;
+				break;
+			case 4:
+				start = 90 + bd;
+				break;
+			case 5:
+				start = 120 + bd;
+				break;
+			case 6:
+				start = 151 + bd;
+				break;
+			case 7:
+				start = 181 + bd;
+				break;
+			case 8:
+				start = 212 + bd;
+				break;
+			case 9:
+				start = 243 + bd;
+				break;
+			case 10:
+				start = 273 + bd;
+				break;
+			case 11:
+				start = 304 + bd;
+				break;
+			case 12:
+				start = 334 + bd;
+				break;
+			}
+
+			switch (wm) {
+			case 1:
+				end = wd;
+				break;
+			case 2:
+				end = 31 + wd;
+				break;
+			case 3:
+				end = 59 + wd;
+				break;
+			case 4:
+				end = 90 + wd;
+				break;
+			case 5:
+				end = 120 + wd;
+				break;
+			case 6:
+				end = 151 + wd;
+				break;
+			case 7:
+				end = 181 + wd;
+				break;
+			case 8:
+				end = 212 + wd;
+				break;
+			case 9:
+				end = 243 + wd;
+				break;
+			case 10:
+				end = 273 + wd;
+				break;
+			case 11:
+				end = 304 + wd;
+				break;
+			case 12:
+				end = 334 + wd;
+				break;
+			}
+
+			day[start] = Math.max(day[start], end - start);
 		}
 
-		visited[N-1][M-1] = -2;
-		visited[0][0] = 0;
-		
-		search();
+		int idx = 60;
+		while (idx <= 334) {
+			int hig = Integer.MIN_VALUE;
+			for (int i = idx; i >= 1; i--) {
+				hig = Math.max((i + day[i] - 1) - idx, hig);
+			}
+			if (hig < 0) {
+				quit = true;
+				break;
+			}
 
-		bw.write(visited[N - 1][M - 1] + 1 + "");
+			idx += hig + 1;
+			res++;
+		}
+
+		if (quit)
+			bw.write("0");
+		else
+			bw.write(res + "");
 
 		bw.flush();
 		bw.close();
