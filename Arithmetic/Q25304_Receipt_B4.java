@@ -1,8 +1,8 @@
-package Implementation;
+package Arithmetic;
 
 import java.io.*;
 
-public class Q25304_Receipt_B5 {
+public class Q25304_Receipt_B4 {
 	public static void main(String args[]) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,7 +24,7 @@ public class Q25304_Receipt_B5 {
 			bw.write("Yes");
 		else
 			bw.write("No");
-		
+
 		bw.flush();
 		bw.close();
 

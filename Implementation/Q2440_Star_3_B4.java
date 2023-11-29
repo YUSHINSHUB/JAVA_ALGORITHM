@@ -1,19 +1,27 @@
-package Mathematics;
+package Implementation;
 
 import java.io.*;
 
-public class Q24266_Execution_Time_5_B3 {
+public class Q2440_Star_3_B4 {
 
 	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		long n = Long.parseLong(br.readLine());
+		int n = Integer.parseInt(br.readLine());
 
-		bw.write(n * n * n + "\n3");
+		for (int i = n; i > 0; i--) {
+			for (int z = 0; z < i; z++) {
+				bw.write("*");
+			}
+			bw.write("\n");
+		}
+
 		bw.flush();
 		bw.close();
 
 	}
+
 }

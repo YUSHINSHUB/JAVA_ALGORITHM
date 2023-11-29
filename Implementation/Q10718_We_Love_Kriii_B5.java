@@ -2,17 +2,14 @@ package Implementation;
 
 import java.io.*;
 
-public class Q10926_qqe_B5 {
+public class Q10718_We_Love_Kriii_B5 {
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		String neu = br.readLine();
-
-		bw.write(neu + "??!");
+		bw.write("강한친구 대한육군\n강한친구 대한육군");
 
 		bw.flush();
 		bw.close();
