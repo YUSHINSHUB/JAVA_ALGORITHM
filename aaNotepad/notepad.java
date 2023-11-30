@@ -1,7 +1,6 @@
 package aaNotepad;
 
 import java.io.*;
-import java.math.*;
 
 public class notepad {
 
@@ -10,21 +9,23 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int n;
-		BigInteger bi = new BigInteger("1");
-		String fibo[];
+		long N, K;
+		long res = 0;
 
-		n = Integer.parseInt(br.readLine());
-		fibo = new String[10001];
-		fibo[1] = "1";
-		fibo[2] = "1";
+		String inp[] = br.readLine().split(" ");
+		N = Long.parseLong(inp[0]);
+		K = Long.parseLong(inp[1]);
 
-		for (int i = 3; i <= n; i++) {
-			bi = bi.add(new BigInteger(fibo[i - 2]));
-			fibo[i] = bi.toString();
+		if (K == 1)
+			bw.write("-1");
+		else {
+			if ((N * K) % (K - 1) != 0)
+				res = ((N * K) / (K - 1)) + 1;
+			else
+				res = (N * K) / (K - 1);
+			bw.write(res + "");
 		}
 
-		bw.write(fibo[n]);
 		bw.flush();
 		bw.close();
 
