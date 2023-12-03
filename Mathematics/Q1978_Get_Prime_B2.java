@@ -1,8 +1,8 @@
-package Number_Theory;
+package Mathematics;
 
 import java.io.*;
 
-public class Q1978_PRIME_B2 {
+public class Q1978_Get_Prime_B2 {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub

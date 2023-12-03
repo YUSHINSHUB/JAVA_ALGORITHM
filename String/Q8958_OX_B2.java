@@ -1,9 +1,9 @@
-package Implementation;
+package String;
 
 import java.io.*;
 import java.util.*;
 
-public class Q2675_Repeat_String_B2 {
+public class Q8958_OX_B2 {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -12,19 +12,31 @@ public class Q2675_Repeat_String_B2 {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		int n = Integer.parseInt(br.readLine());
+		int scr[] = new int[n];
 
 		for (int i = 0; i < n; i++) {
-			String[] temp = br.readLine().split(" ");
-			for (int z = 0; z < temp[1].length(); z++) {
-				for (int x = 0; x < Integer.parseInt(temp[0]); x++) {
-					bw.write(temp[1].charAt(z));
+			String ox = br.readLine();
+			int sum = 0;
+			int add = 0;
+
+			for (int a = 0; a < ox.length(); a++) {
+				if (ox.charAt(a) == 'X') {
+					add = 0;
+				} else {
+					add++;
+					sum = sum + add;
 				}
 			}
-			bw.write("\n");
+
+			scr[i] = sum;
+		}
+
+		for (int i = 0; i < n; i++) {
+			bw.write(String.valueOf(scr[i]) + '\n');
 		}
 
 		bw.flush();
 		bw.close();
-
 	}
+
 }

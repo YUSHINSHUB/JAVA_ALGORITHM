@@ -1,9 +1,9 @@
-package Number_Theory;
+package Mathematics;
 
 import java.io.*;
 import java.util.*;
 
-public class Q2581_Prime_Number_B2 {
+public class Q2581_Prime_B2 {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub

@@ -1,6 +1,7 @@
 package aaNotepad;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class notepad {
 
@@ -9,21 +10,35 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		long N, K;
-		long res = 0;
+		int cnt[] = new int[26];
+		int c = 0;
+		int a = 0;
 
-		String inp[] = br.readLine().split(" ");
-		N = Long.parseLong(inp[0]);
-		K = Long.parseLong(inp[1]);
+		Arrays.fill(cnt, 0);
+		String inp[] = br.readLine().split("\\|");
 
-		if (K == 1)
-			bw.write("-1");
+		for (int i = 0; i < inp.length; i++) {
+			cnt[inp[i].charAt(0) - 'A']++;
+		}
+
+		c += cnt[2];
+		c += cnt[5];
+		c += cnt[6];
+		a += cnt[0];
+		a += cnt[3];
+		a += cnt[4];
+
+		if (a > c)
+			bw.write("A-minor");
+		else if (c > a)
+			bw.write("C-major");
 		else {
-			if ((N * K) % (K - 1) != 0)
-				res = ((N * K) / (K - 1)) + 1;
+			if (inp[inp.length - 1].charAt(inp[inp.length - 1].length() - 1) == 'A'
+					|| inp[inp.length - 1].charAt(inp[inp.length - 1].length() - 1) == 'D'
+					|| inp[inp.length - 1].charAt(inp[inp.length - 1].length() - 1) == 'E')
+				bw.write("A-minor");
 			else
-				res = (N * K) / (K - 1);
-			bw.write(res + "");
+				bw.write("C-major");
 		}
 
 		bw.flush();
