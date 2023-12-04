@@ -1,7 +1,6 @@
 package aaNotepad;
 
 import java.io.*;
-import java.util.Arrays;
 
 public class notepad {
 
@@ -10,35 +9,44 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int cnt[] = new int[26];
-		int c = 0;
-		int a = 0;
+		int y1, m1, d1, y2, m2, d2;
+		int res = 0;
+		int mon[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-		Arrays.fill(cnt, 0);
-		String inp[] = br.readLine().split("\\|");
+		String inp[] = br.readLine().split(" ");
+		y1 = Integer.parseInt(inp[0]);
+		m1 = Integer.parseInt(inp[1]);
+		d1 = Integer.parseInt(inp[2]);
+		inp = br.readLine().split(" ");
+		y2 = Integer.parseInt(inp[0]);
+		m2 = Integer.parseInt(inp[1]);
+		d2 = Integer.parseInt(inp[2]);
 
-		for (int i = 0; i < inp.length; i++) {
-			cnt[inp[i].charAt(0) - 'A']++;
-		}
-
-		c += cnt[2];
-		c += cnt[5];
-		c += cnt[6];
-		a += cnt[0];
-		a += cnt[3];
-		a += cnt[4];
-
-		if (a > c)
-			bw.write("A-minor");
-		else if (c > a)
-			bw.write("C-major");
-		else {
-			if (inp[inp.length - 1].charAt(inp[inp.length - 1].length() - 1) == 'A'
-					|| inp[inp.length - 1].charAt(inp[inp.length - 1].length() - 1) == 'D'
-					|| inp[inp.length - 1].charAt(inp[inp.length - 1].length() - 1) == 'E')
-				bw.write("A-minor");
-			else
-				bw.write("C-major");
+		if (y2 > y1 + 1000) {
+			bw.write("gg");
+		} else if (y2 == y1 + 1000 && m2 > m1) {
+			bw.write("gg");
+		} else if (y2 == y1 + 1000 && m2 == m1 && d2 >= d1) {
+			bw.write("gg");
+		} else {
+			while (true) {
+				res += mon[m1];
+				if (m1 == 2) {
+					if (y1 % 400 == 0)
+						res++;
+					else if (y1 % 100 != 0 && y1 % 4 == 0)
+						res++;
+				}
+				m1++;
+				if (m1 == 13) {
+					m1 = 1;
+					y1++;
+				}
+				if (y1 == y2 && m1 == m2)
+					break;
+			}
+			res += d2 - d1;
+			bw.write("D-" + res);
 		}
 
 		bw.flush();

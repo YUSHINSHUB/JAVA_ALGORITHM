@@ -1,4 +1,4 @@
-package Implementation;
+package Mathematics;
 
 import java.io.*;
 import java.util.*;
