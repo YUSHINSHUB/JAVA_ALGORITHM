@@ -1,20 +1,10 @@
-package Dynamic_Programming;
+package Sorting;
 
 import java.io.*;
+import java.math.*;
 import java.util.*;
 
-public class Q11726_2xn_Tile_S3 {
-
-	static int dp[] = new int[1001];
-
-	static int recur(int n) {
-
-		if (dp[n] == 0) {
-			dp[n] = recur(n - 1) + recur(n - 2);
-		}
-
-		return dp[n] % 10007;
-	}
+public class Q2217_Rope_S4 {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -22,12 +12,23 @@ public class Q11726_2xn_Tile_S3 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		dp[1] = 1;
-		dp[2] = 2;
-
 		int n = Integer.parseInt(br.readLine());
+		int rnum = n;
+		int res = 0;
 
-		bw.write(recur(n) + "");
+		int rop[] = new int[n];
+		for (int i = 0; i < n; i++) {
+			rop[i] = Integer.parseInt(br.readLine());
+		}
+
+		Arrays.sort(rop);
+
+		for (int i = 0; i < n; i++) {
+			res = Math.max(res, rop[i] * rnum);
+			rnum--;
+		}
+
+		bw.write(res + "");
 
 		bw.flush();
 		bw.close();
