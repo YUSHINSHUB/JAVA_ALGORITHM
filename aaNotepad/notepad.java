@@ -5,24 +5,23 @@ import java.util.*;
 
 public class notepad {
 
+	static int sequence[];
+	static int mem[];
 	static int N;
-	static long mem1[] = new long[91];
-	static long mem0[] = new long[91];
 
-	static long dp(int idx, int cur) {
+	static int dp(int idx) {
 
-		if (cur == 1) {
-			if (mem1[idx] > 0)
-				return mem1[idx];
-			mem1[idx] = dp(idx + 1, 0);
-			return mem1[idx];
-		} else {
-			if (mem0[idx] > 0)
-				return mem0[idx];
-			mem0[idx] = dp(idx + 1, 1) + dp(idx + 1, 0);
-			return mem0[idx];
+		if (mem[idx] > 0)
+			return mem[idx];
+
+		mem[idx] = sequence[idx];
+		for (int i = idx - 1; i >= 0; i--) {
+			if (sequence[i] < sequence[idx]) {
+				mem[idx] = Math.max(dp(i) + sequence[idx], mem[idx]);
+			}
 		}
 
+		return mem[idx];
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -30,16 +29,20 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		Arrays.fill(mem1, -1);
-		Arrays.fill(mem0, -1);
+		int res = 0;
+
 		N = Integer.parseInt(br.readLine());
-		mem1[N] = 1;
-		mem0[N] = 1;
+		mem = new int[N];
+		Arrays.fill(mem, 0);
+		sequence = new int[N];
+		String inp[] = br.readLine().split(" ");
+		for (int i = 0; i < N; i++)
+			sequence[i] = Integer.parseInt(inp[i]);
 
-		dp(1, 1);
+		for (int i = N - 1; i >= 0; i--)
+			res = Math.max(res, dp(i));
 
-		bw.write(mem1[1] + "");
-
+		bw.write(res + "");
 		bw.flush();
 		bw.close();
 
