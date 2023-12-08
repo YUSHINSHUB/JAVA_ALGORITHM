@@ -1,4 +1,4 @@
-package Prefix_Sum;
+package Dynamic_Programming;
 
 //Commented by ChatGPT
 //The problem asks for the sum of submatrix elements within a given matrix. 
