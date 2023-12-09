@@ -5,46 +5,47 @@ import java.util.*;
 
 public class notepad {
 
+	static int N;
+	static int board[][];
+	static long mem[][];
+
+	static long dp(int y, int x) {
+
+		if (mem[y][x] >= 0)
+			return mem[y][x];
+		else if (board[y][x] == 0) {
+			mem[y][x] = 0;
+			return 0;
+		} else if (y + board[y][x] >= N && x + board[y][x] >= N)
+			mem[y][x] = 0;
+		else if (y + board[y][x] >= N)
+			mem[y][x] = dp(y, x + board[y][x]);
+		else if (x + board[y][x] >= N)
+			mem[y][x] = dp(y + board[y][x], x);
+		else
+			mem[y][x] = dp(y, x + board[y][x]) + dp(y + board[y][x], x);
+
+		return mem[y][x];
+
+	}
+
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int N;
-		int a, b;
-		int res[];
-		ArrayList<Integer> list[];
-		Queue<Integer> q = new LinkedList<>();
-
 		N = Integer.parseInt(br.readLine());
-		list = new ArrayList[N + 1];
-		for (int i = 1; i <= N; i++)
-			list[i] = new ArrayList<>();
-		res = new int[N + 1];
-		Arrays.fill(res, 0);
-		q.add(1);
-
-		for (int i = 0; i < N - 1; i++) {
+		board = new int[N][N];
+		mem = new long[N][N];
+		for (int i = 0; i < N; i++) {
+			Arrays.fill(mem[i], -1);
 			String inp[] = br.readLine().split(" ");
-			a = Integer.parseInt(inp[0]);
-			b = Integer.parseInt(inp[1]);
-			list[a].add(b);
-			list[b].add(a);
+			for (int j = 0; j < N; j++)
+				board[i][j] = Integer.parseInt(inp[j]);
 		}
+		mem[N - 1][N - 1] = 1;
 
-		while (!q.isEmpty()) {
-			int idx = q.poll();
-			for (int i = 0; i < list[idx].size(); i++) {
-				if (res[list[idx].get(i)] == 0) {
-					res[list[idx].get(i)] = idx;
-					q.add(list[idx].get(i));
-				}
-			}
-		}
-
-		for (int i = 2; i <= N; i++)
-			bw.write(res[i] + "\n");
-
+		bw.write(dp(0, 0) + "");
 		bw.flush();
 		bw.close();
 
