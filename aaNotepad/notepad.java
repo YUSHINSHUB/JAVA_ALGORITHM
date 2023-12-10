@@ -5,27 +5,45 @@ import java.util.*;
 
 public class notepad {
 
-	static int N;
-	static int board[][];
-	static long mem[][];
+	static ArrayList<Character> sym = new ArrayList<>();
+	static int K;
+	static long low = Long.MAX_VALUE, hig = Long.MIN_VALUE;
+	static String lout, hout;
+	static boolean visited[] = new boolean[10];
 
-	static long dp(int y, int x) {
+	static void bt(int idx, String res, int cur) {
 
-		if (mem[y][x] >= 0)
-			return mem[y][x];
-		else if (board[y][x] == 0) {
-			mem[y][x] = 0;
-			return 0;
-		} else if (y + board[y][x] >= N && x + board[y][x] >= N)
-			mem[y][x] = 0;
-		else if (y + board[y][x] >= N)
-			mem[y][x] = dp(y, x + board[y][x]);
-		else if (x + board[y][x] >= N)
-			mem[y][x] = dp(y + board[y][x], x);
-		else
-			mem[y][x] = dp(y, x + board[y][x]) + dp(y + board[y][x], x);
+		if (idx == K) {
+			long temp = Long.parseLong(res);
+			if (low > temp) {
+				lout = res;
+				low = temp;
+			}
 
-		return mem[y][x];
+			if (hig < temp) {
+				hout = res;
+				hig = temp;
+			}
+			return;
+		}
+
+		if (sym.get(idx) == '>') {
+			for (int i = cur - 1; i >= 0; i--) {
+				if (visited[i])
+					continue;
+				visited[i] = true;
+				bt(idx + 1, res + i, i);
+				visited[i] = false;
+			}
+		} else {
+			for (int i = cur + 1; i <= 9; i++) {
+				if (visited[i])
+					continue;
+				visited[i] = true;
+				bt(idx + 1, res + i, i);
+				visited[i] = false;
+			}
+		}
 
 	}
 
@@ -34,18 +52,20 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		N = Integer.parseInt(br.readLine());
-		board = new int[N][N];
-		mem = new long[N][N];
-		for (int i = 0; i < N; i++) {
-			Arrays.fill(mem[i], -1);
-			String inp[] = br.readLine().split(" ");
-			for (int j = 0; j < N; j++)
-				board[i][j] = Integer.parseInt(inp[j]);
+		Arrays.fill(visited, false);
+		K = Integer.parseInt(br.readLine());
+		String in = br.readLine();
+		for (int i = 0; i <= K * 2 - 2; i += 2) {
+			sym.add(in.charAt(i));
 		}
-		mem[N - 1][N - 1] = 1;
 
-		bw.write(dp(0, 0) + "");
+		for (int i = 0; i <= 9; i++) {
+			visited[i] = true;
+			bt(0, "" + i, i);
+			visited[i] = false;
+		}
+
+		bw.write(hout + "\n" + lout);
 		bw.flush();
 		bw.close();
 
