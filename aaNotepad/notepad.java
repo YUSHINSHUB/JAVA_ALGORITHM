@@ -5,44 +5,31 @@ import java.util.*;
 
 public class notepad {
 
-	static ArrayList<Character> sym = new ArrayList<>();
-	static int K;
-	static long low = Long.MAX_VALUE, hig = Long.MIN_VALUE;
-	static String lout, hout;
-	static boolean visited[] = new boolean[10];
+	static int floor[];
 
-	static void bt(int idx, String res, int cur) {
+	static void bfs(int F, int S, int U, int D) {
 
-		if (idx == K) {
-			long temp = Long.parseLong(res);
-			if (low > temp) {
-				lout = res;
-				low = temp;
+		int res = 0;
+		Queue<Integer> q = new LinkedList<>();
+		q.add(S);
+
+		while (!q.isEmpty()) {
+			int cur = q.poll();
+			if (cur + U <= F && cur + U > 0 && U != 0) {
+				int temp = cur + U;
+				if (floor[temp] == 0) {
+					floor[temp] = floor[cur] + 1;
+					q.add(temp);
+				}
+			}
+			if (cur - D <= F && cur - D > 0 && D != 0) {
+				int temp = cur - D;
+				if (floor[temp] == 0) {
+					floor[temp] = floor[cur] + 1;
+					q.add(temp);
+				}
 			}
 
-			if (hig < temp) {
-				hout = res;
-				hig = temp;
-			}
-			return;
-		}
-
-		if (sym.get(idx) == '>') {
-			for (int i = cur - 1; i >= 0; i--) {
-				if (visited[i])
-					continue;
-				visited[i] = true;
-				bt(idx + 1, res + i, i);
-				visited[i] = false;
-			}
-		} else {
-			for (int i = cur + 1; i <= 9; i++) {
-				if (visited[i])
-					continue;
-				visited[i] = true;
-				bt(idx + 1, res + i, i);
-				visited[i] = false;
-			}
 		}
 
 	}
@@ -52,20 +39,25 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		Arrays.fill(visited, false);
-		K = Integer.parseInt(br.readLine());
-		String in = br.readLine();
-		for (int i = 0; i <= K * 2 - 2; i += 2) {
-			sym.add(in.charAt(i));
-		}
+		int F, S, G, U, D;
 
-		for (int i = 0; i <= 9; i++) {
-			visited[i] = true;
-			bt(0, "" + i, i);
-			visited[i] = false;
-		}
+		String inp[] = br.readLine().split(" ");
+		F = Integer.parseInt(inp[0]);
+		S = Integer.parseInt(inp[1]);
+		G = Integer.parseInt(inp[2]);
+		U = Integer.parseInt(inp[3]);
+		D = Integer.parseInt(inp[4]);
+		floor = new int[F + 1];
+		Arrays.fill(floor, 0);
 
-		bw.write(hout + "\n" + lout);
+		bfs(F, S, U, D);
+
+		if (S == G)
+			bw.write("0");
+		else if (floor[G] > 0)
+			bw.write(floor[G] + "");
+		else
+			bw.write("use the stairs");
 		bw.flush();
 		bw.close();
 
