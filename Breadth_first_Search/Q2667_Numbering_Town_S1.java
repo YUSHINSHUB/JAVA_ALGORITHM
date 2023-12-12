@@ -1,4 +1,4 @@
-package Graph_Traversal;
+package Breadth_first_Search;
 
 /* 
 Commented by ChatGPT

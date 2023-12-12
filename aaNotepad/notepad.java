@@ -5,32 +5,29 @@ import java.util.*;
 
 public class notepad {
 
-	static int floor[];
+	static Queue<Integer> q = new LinkedList<>();
+	static ArrayList<Integer> list[];
+	static int mem[];
+	static int a, b;
+	static int N, M;
 
-	static void bfs(int F, int S, int U, int D) {
+	static int bfs() {
 
-		int res = 0;
-		Queue<Integer> q = new LinkedList<>();
-		q.add(S);
+		q.add(a);
 
 		while (!q.isEmpty()) {
-			int cur = q.poll();
-			if (cur + U <= F && cur + U > 0 && U != 0) {
-				int temp = cur + U;
-				if (floor[temp] == 0) {
-					floor[temp] = floor[cur] + 1;
-					q.add(temp);
-				}
-			}
-			if (cur - D <= F && cur - D > 0 && D != 0) {
-				int temp = cur - D;
-				if (floor[temp] == 0) {
-					floor[temp] = floor[cur] + 1;
+			int idx = q.poll();
+			for (int i = 0; i < list[idx].size(); i++) {
+				int temp = list[idx].get(i);
+				if (mem[temp] < 0) {
+					mem[temp] = mem[idx] + 1;
 					q.add(temp);
 				}
 			}
 
 		}
+
+		return mem[b];
 
 	}
 
@@ -39,25 +36,28 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int F, S, G, U, D;
-
 		String inp[] = br.readLine().split(" ");
-		F = Integer.parseInt(inp[0]);
-		S = Integer.parseInt(inp[1]);
-		G = Integer.parseInt(inp[2]);
-		U = Integer.parseInt(inp[3]);
-		D = Integer.parseInt(inp[4]);
-		floor = new int[F + 1];
-		Arrays.fill(floor, 0);
+		a = Integer.parseInt(inp[0]);
+		b = Integer.parseInt(inp[1]);
 
-		bfs(F, S, U, D);
+		inp = br.readLine().split(" ");
+		N = Integer.parseInt(inp[0]);
+		M = Integer.parseInt(inp[1]);
 
-		if (S == G)
-			bw.write("0");
-		else if (floor[G] > 0)
-			bw.write(floor[G] + "");
-		else
-			bw.write("use the stairs");
+		list = new ArrayList[N + 1];
+		mem = new int[N + 1];
+		Arrays.fill(mem, -1);
+		mem[a] = 0;
+		for (int i = 1; i <= N; i++)
+			list[i] = new ArrayList<>();
+
+		for (int i = 0; i < M; i++) {
+			inp = br.readLine().split(" ");
+			list[Integer.parseInt(inp[0])].add(Integer.parseInt(inp[1]));
+			list[Integer.parseInt(inp[1])].add(Integer.parseInt(inp[0]));
+		}
+
+		bw.write(bfs() + "");
 		bw.flush();
 		bw.close();
 
