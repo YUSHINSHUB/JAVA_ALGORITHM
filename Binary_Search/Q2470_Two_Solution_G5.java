@@ -1,4 +1,4 @@
-package Sorting;
+package Binary_Search;
 
 /*
 commented by ChatGPT

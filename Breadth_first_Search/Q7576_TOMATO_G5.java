@@ -1,4 +1,4 @@
-package Graph_Traversal;
+package Breadth_first_Search;
 
 //commented by ChatGPT
 //Summary: A Java program that simulates the spreading process in a 2D grid using BFS. 

@@ -1,4 +1,4 @@
-package String;
+package Dynamic_Programming;
 
 /* 
 commented by ChatGPT
@@ -6,6 +6,7 @@ This code finds the length of the Longest Common Subsequence (LCS) between two s
 */
 
 import java.io.*;
+import java.math.*;
 import java.util.*;
 
 public class Q9251_LCS_G5 {
@@ -68,8 +69,11 @@ public class Q9251_LCS_G5 {
 			Arrays.fill(lcs[i], -1);
 		}
 
+		// Invoke the dp function to calculate the LCS.
+		dp(alen, blen);
+
 		// Write the result to the output.
-		bw.write(dp(alen, blen) + "");
+		bw.write(lcs[alen][blen] + "");
 
 		// Flush and close the BufferedWriter.
 		bw.flush();
