@@ -7,7 +7,7 @@ package Breadth_first_Search;
 import java.io.*;
 import java.util.*;
 
-public class Q7576_TOMATO_G5 {
+public class Q7576_Tomato_G5 {
 
 	// The main grid where the spread is simulated.
 	static int tom[][];

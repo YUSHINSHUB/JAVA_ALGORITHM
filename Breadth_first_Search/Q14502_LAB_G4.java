@@ -12,7 +12,7 @@ The virus can spread up, down, left, and right. To find the non-infected area, t
 import java.io.*;
 import java.util.*;
 
-public class Q14502_LAB_G4 {
+public class Q14502_Lab_G4 {
 
 	static int n, m; // 행과 열의 크기 (Dimensions of the rows and columns)
 	static int res = 0; // 최대 안전 영역의 크기 (Size of the maximum safe area)

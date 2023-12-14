@@ -5,59 +5,25 @@ import java.util.*;
 
 public class notepad {
 
-	static int N;
-	static int road[][];
-	static int mem[][];
-	static int lmem[][];
+	static ArrayList<Integer> peo[];
+	static Boolean mem[];
+	static Boolean res = false;
 
-	static int recur(int y, int x) {
+	static void dfs(int cur, int idx) {
 
-		if (y == N)
-			return road[y][x];
-
-		if (mem[y][x] >= 0)
-			return mem[y][x];
-
-		if (x == 1) {
-
-			mem[y][x] = Math.max(mem[y][x], recur(y + 1, 0) + road[y][x]);
-			mem[y][x] = Math.max(mem[y][x], recur(y + 1, 1) + road[y][x]);
-			mem[y][x] = Math.max(mem[y][x], recur(y + 1, 2) + road[y][x]);
-
-		} else if (x == 0) {
-			mem[y][x] = Math.max(mem[y][x], recur(y + 1, 0) + road[y][x]);
-			mem[y][x] = Math.max(mem[y][x], recur(y + 1, 1) + road[y][x]);
-		} else {
-			mem[y][x] = Math.max(mem[y][x], recur(y + 1, 1) + road[y][x]);
-			mem[y][x] = Math.max(mem[y][x], recur(y + 1, 2) + road[y][x]);
+		if (idx == 5) {
+			res = true;
+			return;
 		}
 
-		return mem[y][x];
-	}
-
-	static int recur2(int y, int x) {
-
-		if (y == N)
-			return road[y][x];
-
-		if (lmem[y][x] < 1000000)
-			return lmem[y][x];
-
-		if (x == 1) {
-
-			lmem[y][x] = Math.min(lmem[y][x], recur2(y + 1, 0) + road[y][x]);
-			lmem[y][x] = Math.min(lmem[y][x], recur2(y + 1, 1) + road[y][x]);
-			lmem[y][x] = Math.min(lmem[y][x], recur2(y + 1, 2) + road[y][x]);
-
-		} else if (x == 0) {
-			lmem[y][x] = Math.min(lmem[y][x], recur2(y + 1, 0) + road[y][x]);
-			lmem[y][x] = Math.min(lmem[y][x], recur2(y + 1, 1) + road[y][x]);
-		} else {
-			lmem[y][x] = Math.min(lmem[y][x], recur2(y + 1, 1) + road[y][x]);
-			lmem[y][x] = Math.min(lmem[y][x], recur2(y + 1, 2) + road[y][x]);
+		for (int i = 0; i < peo[cur].size(); i++) {
+			if (mem[peo[cur].get(i)]) {
+				mem[peo[cur].get(i)] = false;
+				dfs(peo[cur].get(i), idx + 1);
+				mem[peo[cur].get(i)] = true;
+			}
 		}
 
-		return lmem[y][x];
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -65,22 +31,38 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		N = Integer.parseInt(br.readLine());
-		road = new int[N + 1][3];
-		mem = new int[N + 1][3];
-		lmem = new int[N + 1][3];
-		for (int i = 0; i < N; i++) {
-			Arrays.fill(mem[i], -1);
-			Arrays.fill(lmem[i], Integer.MAX_VALUE);
-			String inp[] = br.readLine().split(" ");
-			road[i + 1][0] = Integer.parseInt(inp[0]);
-			road[i + 1][1] = Integer.parseInt(inp[1]);
-			road[i + 1][2] = Integer.parseInt(inp[2]);
-		}
-		mem[0][1] = -1;
-		lmem[0][1] = Integer.MAX_VALUE;
+		int N, M;
+		int a, b;
 
-		bw.write(recur(0, 1) + " " + recur2(0, 1));
+		String inp[] = br.readLine().split(" ");
+		N = Integer.parseInt(inp[0]);
+		M = Integer.parseInt(inp[1]);
+		peo = new ArrayList[N];
+		mem = new Boolean[N];
+
+		for (int i = 0; i < N; i++)
+			peo[i] = new ArrayList<>();
+		for (int i = 0; i < M; i++) {
+			inp = br.readLine().split(" ");
+			a = Integer.parseInt(inp[0]);
+			b = Integer.parseInt(inp[1]);
+			peo[a].add(b);
+			peo[b].add(a);
+		}
+		Arrays.fill(mem, true);
+
+		for (int i = 0; i < N; i++) {
+			mem[i] = false;
+			dfs(i, 1);
+			mem[i] = true;
+			if (res)
+				break;
+		}
+
+		if (res)
+			bw.write("1");
+		else
+			bw.write("0");
 		bw.flush();
 		bw.close();
 
