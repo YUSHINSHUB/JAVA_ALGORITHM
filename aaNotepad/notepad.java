@@ -5,25 +5,48 @@ import java.util.*;
 
 public class notepad {
 
-	static ArrayList<Integer> peo[];
-	static Boolean mem[];
-	static Boolean res = false;
+	static int sea[][];
+	static int nexty[] = { 1, 0, 0, -1, 0, -1, 0, 0 };
+	static int nextx[] = { -1, 1, 1, -2, 2, -2, 1, 1 };
 
-	static void dfs(int cur, int idx) {
+	static void bfs(int w, int h, int y, int x) {
 
-		if (idx == 5) {
-			res = true;
-			return;
-		}
+		Queue<Integer> yq = new LinkedList<>();
+		Queue<Integer> xq = new LinkedList<>();
+		yq.add(y);
+		xq.add(x);
 
-		for (int i = 0; i < peo[cur].size(); i++) {
-			if (mem[peo[cur].get(i)]) {
-				mem[peo[cur].get(i)] = false;
-				dfs(peo[cur].get(i), idx + 1);
-				mem[peo[cur].get(i)] = true;
+		while (!yq.isEmpty()) {
+			int cury = yq.poll();
+			int curx = xq.poll();
+			for (int i = 0; i < 8; i++) {
+				cury += nexty[i];
+				curx += nextx[i];
+				if (cury < 0 || curx < 0 || cury >= h || curx >= w)
+					continue;
+				if (sea[cury][curx] == 0)
+					continue;
+				sea[cury][curx] = 0;
+				yq.add(cury);
+				xq.add(curx);
 			}
 		}
 
+	}
+
+	static int search(int w, int h) {
+
+		int res = 0;
+		for (int i = 0; i < h; i++) {
+			for (int j = 0; j < w; j++) {
+				if (sea[i][j] == 1) {
+					res++;
+					sea[i][j] = 0;
+					bfs(w, h, i, j);
+				}
+			}
+		}
+		return res;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -31,38 +54,26 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int N, M;
-		int a, b;
+		int w, h;
 
-		String inp[] = br.readLine().split(" ");
-		N = Integer.parseInt(inp[0]);
-		M = Integer.parseInt(inp[1]);
-		peo = new ArrayList[N];
-		mem = new Boolean[N];
-
-		for (int i = 0; i < N; i++)
-			peo[i] = new ArrayList<>();
-		for (int i = 0; i < M; i++) {
-			inp = br.readLine().split(" ");
-			a = Integer.parseInt(inp[0]);
-			b = Integer.parseInt(inp[1]);
-			peo[a].add(b);
-			peo[b].add(a);
-		}
-		Arrays.fill(mem, true);
-
-		for (int i = 0; i < N; i++) {
-			mem[i] = false;
-			dfs(i, 1);
-			mem[i] = true;
-			if (res)
+		while (true) {
+			String inp[] = br.readLine().split(" ");
+			w = Integer.parseInt(inp[0]);
+			h = Integer.parseInt(inp[1]);
+			if (w + h == 0)
 				break;
+			sea = new int[h][w];
+			
+			for (int i = 0; i < h; i++) {
+				inp = br.readLine().split(" ");
+				for (int j = 0; j < w; j++) {
+					sea[i][j] = Integer.parseInt(inp[j]);
+				}
+			}
+
+			bw.write(search(w, h) + "\n");
 		}
 
-		if (res)
-			bw.write("1");
-		else
-			bw.write("0");
 		bw.flush();
 		bw.close();
 
