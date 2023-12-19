@@ -5,39 +5,36 @@ import java.util.*;
 
 public class notepad {
 
-	static int M, N, K;
-	static int board[][];
-	static ArrayList<Integer> list = new ArrayList<>();
-	static int nexty[] = { 1, -1, 0, -1 };
-	static int nextx[] = { 0, -1, 2, -1 };
+	static int mem[];
+	static ArrayList<Integer> fam[];
+	static int parent[];
+	static int a, b;
 
-	static void bfs(int y, int x) {
+	static int search() {
 
-		int idx = 1;
-		Queue<Integer> yq = new LinkedList<>();
-		Queue<Integer> xq = new LinkedList<>();
-		yq.add(y);
-		xq.add(x);
-		board[y][x] = 1;
+		Queue<Integer> q = new LinkedList<>();
+		q.add(a);
+		mem[a] = 0;
 
-		while (!yq.isEmpty()) {
-			int cury = yq.poll();
-			int curx = xq.poll();
-			for (int i = 0; i < 4; i++) {
-				cury += nexty[i];
-				curx += nextx[i];
-				if (cury >= M || curx >= N || cury < 0 || curx < 0)
+		while (!q.isEmpty()) {
+			int cur = q.poll();
+			if (parent[cur] > 0 && mem[parent[cur]] < 0) {
+				q.add(parent[cur]);
+				mem[parent[cur]] = mem[cur] + 1;
+				if (parent[cur] == b)
+					break;
+			}
+			for (int i = 0; i < fam[cur].size(); i++) {
+				if (mem[fam[cur].get(i)] >= 0)
 					continue;
-				else if (board[cury][curx] == 1)
-					continue;
-				board[cury][curx] = 1;
-				idx++;
-				yq.add(cury);
-				xq.add(curx);
+				q.add(fam[cur].get(i));
+				mem[fam[cur].get(i)] = mem[cur] + 1;
+				if (fam[cur].get(i) == b)
+					break;
 			}
 		}
 
-		list.add(idx);
+		return mem[b];
 
 	}
 
@@ -46,43 +43,31 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int dx, dy, ux, uy;
-		int cnt = 0;
+		int n, m;
 
+		n = Integer.parseInt(br.readLine());
 		String inp[] = br.readLine().split(" ");
-		M = Integer.parseInt(inp[0]);
-		N = Integer.parseInt(inp[1]);
-		K = Integer.parseInt(inp[2]);
-		board = new int[M][N];
-		for (int i = 0; i < M; i++) {
-			Arrays.fill(board[i], 0);
-		}
-		for (int i = 0; i < K; i++) {
+		a = Integer.parseInt(inp[0]);
+		b = Integer.parseInt(inp[1]);
+		m = Integer.parseInt(br.readLine());
+		fam = new ArrayList[n + 1];
+		parent = new int[n + 1];
+		mem = new int[n + 1];
+		Arrays.fill(parent, 0);
+		Arrays.fill(mem, -1);
+		for (int i = 1; i <= n; i++)
+			fam[i] = new ArrayList<Integer>();
+
+		for (int i = 0; i < m; i++) {
 			inp = br.readLine().split(" ");
-			dx = Integer.parseInt(inp[0]);
-			dy = Integer.parseInt(inp[1]);
-			ux = Integer.parseInt(inp[2])-1;
-			uy = Integer.parseInt(inp[3])-1;
-			for (int j = dy; j <= uy; j++) {
-				for (int k = dx; k <= ux; k++)
-					board[j][k] = 1;
-			}
+			int x, y;
+			x = Integer.parseInt(inp[0]);
+			y = Integer.parseInt(inp[1]);
+			fam[x].add(y);
+			parent[y] = x;
 		}
 
-		for (int i = 0; i < M; i++) {
-			for (int j = 0; j < N; j++) {
-				if (board[i][j] == 0) {
-					cnt++;
-					bfs(i, j);
-				}
-			}
-		}
-
-		Collections.sort(list);
-		bw.write(cnt + "\n");
-		for (int i = 0; i < list.size(); i++)
-			bw.write(list.get(i) + " ");
-
+		bw.write(search() + "");
 		bw.flush();
 		bw.close();
 
