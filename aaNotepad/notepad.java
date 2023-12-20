@@ -5,37 +5,41 @@ import java.util.*;
 
 public class notepad {
 
-	static int mem[];
-	static ArrayList<Integer> fam[];
-	static int parent[];
-	static int a, b;
+	static int grid[][];
 
-	static int search() {
+	static String recur(int idx, int y, int x) {
 
-		Queue<Integer> q = new LinkedList<>();
-		q.add(a);
-		mem[a] = 0;
+		String res = "";
+		int sym;
+		if (grid[y][x] == 0)
+			sym = 0;
+		else
+			sym = 1;
 
-		while (!q.isEmpty()) {
-			int cur = q.poll();
-			if (parent[cur] > 0 && mem[parent[cur]] < 0) {
-				q.add(parent[cur]);
-				mem[parent[cur]] = mem[cur] + 1;
-				if (parent[cur] == b)
+		for (int i = y; i < y + idx; i++) {
+			for (int j = x; j < x + idx; j++) {
+				if (grid[i][j] != sym) {
+					sym = -1;
 					break;
+				}
 			}
-			for (int i = 0; i < fam[cur].size(); i++) {
-				if (mem[fam[cur].get(i)] >= 0)
-					continue;
-				q.add(fam[cur].get(i));
-				mem[fam[cur].get(i)] = mem[cur] + 1;
-				if (fam[cur].get(i) == b)
-					break;
-			}
+			if (sym < 0)
+				break;
 		}
 
-		return mem[b];
+		if (sym >= 0) {
+			res += sym;
+		} else {
+			idx /= 2;
+			res += "(";
+			res += recur(idx, y, x);
+			res += recur(idx, y, x + idx);
+			res += recur(idx, y + idx, x);
+			res += recur(idx, y + idx, x + idx);
+			res += ")";
+		}
 
+		return res;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -43,31 +47,18 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int n, m;
+		int N;
 
-		n = Integer.parseInt(br.readLine());
-		String inp[] = br.readLine().split(" ");
-		a = Integer.parseInt(inp[0]);
-		b = Integer.parseInt(inp[1]);
-		m = Integer.parseInt(br.readLine());
-		fam = new ArrayList[n + 1];
-		parent = new int[n + 1];
-		mem = new int[n + 1];
-		Arrays.fill(parent, 0);
-		Arrays.fill(mem, -1);
-		for (int i = 1; i <= n; i++)
-			fam[i] = new ArrayList<Integer>();
-
-		for (int i = 0; i < m; i++) {
-			inp = br.readLine().split(" ");
-			int x, y;
-			x = Integer.parseInt(inp[0]);
-			y = Integer.parseInt(inp[1]);
-			fam[x].add(y);
-			parent[y] = x;
+		N = Integer.parseInt(br.readLine());
+		grid = new int[N][N];
+		for (int i = 0; i < N; i++) {
+			String inp = br.readLine();
+			for (int j = 0; j < N; j++) {
+				grid[i][j] = inp.charAt(j) - '0';
+			}
 		}
 
-		bw.write(search() + "");
+		bw.write(recur(N, 0, 0));
 		bw.flush();
 		bw.close();
 
