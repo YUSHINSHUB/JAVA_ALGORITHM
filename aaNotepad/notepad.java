@@ -5,105 +5,36 @@ import java.util.*;
 
 public class notepad {
 
-	static int ny[] = { -1, 1, 0, 1 };
-	static int nx[] = { 0, -1, 2, -1 };
-	static int N, L, R;
-	static int grid[][];
-	static Boolean visited[][];
+	static int fee[][];
+	static ArrayList<Integer> route[];
+	static int departure, arrival;
+	static Boolean visited[];
+	static long mem[];
 
-	static void bfs(int y, int x) {
+	static long dijk() {
 
-		int sum = grid[y][x];
-		int size = 1;
-		Queue<Integer> ay = new LinkedList<>();
-		Queue<Integer> ax = new LinkedList<>();
-		Queue<Integer> yq = new LinkedList<>();
-		Queue<Integer> xq = new LinkedList<>();
-		yq.add(y);
-		xq.add(x);
-		ay.add(y);
-		ax.add(x);
-
-		while (!yq.isEmpty()) {
-
-			int cy = yq.poll();
-			int cx = xq.poll();
-			int ly = cy;
-			int lx = cx;
-
-			for (int i = 0; i < 4; i++) {
-				ly += ny[i];
-				lx += nx[i];
-				if (ly >= N || lx >= N || ly < 0 || lx < 0)
-					continue;
-				else if (visited[ly][lx])
-					continue;
-				else if ((int) Math.abs(grid[ly][lx] - grid[cy][cx]) >= L
-						&& (int) Math.abs(grid[ly][lx] - grid[cy][cx]) <= R) {
-					visited[ly][lx] = true;
-					yq.add(ly);
-					xq.add(lx);
-					ay.add(ly);
-					ax.add(lx);
-					sum += grid[ly][lx];
-					size++;
-				}
-			}
-
-		}
-
-		sum /= size;
-
-		while (!ay.isEmpty()) {
-			int ly = ay.poll();
-			int lx = ax.poll();
-			grid[ly][lx] = sum;
-		}
-
-	}
-
-	static int search() {
-
-		int res = 0;
-		int y, x;
-
-		while (true) {
-
-			for (int i = 0; i < N; i++)
-				Arrays.fill(visited[i], false);
-
-			Boolean pass = false;
-			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < N; j++) {
-					if (visited[i][j])
-						continue;
-					y = i;
-					x = j;
-					for (int k = 0; k < 4; k++) {
-						y += ny[k];
-						x += nx[k];
-						if (y >= N || x >= N || y < 0 || x < 0)
-							continue;
-						else if (visited[y][x])
-							continue;
-						if ((int) Math.abs(grid[i][j] - grid[y][x]) >= L
-								&& (int) Math.abs(grid[i][j] - grid[y][x]) <= R) {
-							pass = true;
-							visited[i][j] = true;
-							bfs(i, j);
-							break;
-						}
-					}
-				}
-			}
-
-			if (!pass)
-				break;
+		PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> {
+			if (mem[o1] > mem[o2])
+				return 1;
 			else
-				res++;
+				return -1;
+		});
+
+		pq.add(departure);
+
+		while (!pq.isEmpty()) {
+			int idx = pq.poll();
+			if (visited[idx])
+				continue;
+			visited[idx] = true;
+			for (int i = 0; i < route[idx].size(); i++) {
+				int temp = route[idx].get(i);
+				mem[temp] = Math.min(mem[temp], mem[idx] + fee[idx][temp]);
+				pq.add(temp);
+			}
 		}
 
-		return res;
+		return mem[arrival];
 
 	}
 
@@ -112,21 +43,39 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String inp[] = br.readLine().split(" ");
-		N = Integer.parseInt(inp[0]);
-		L = Integer.parseInt(inp[1]);
-		R = Integer.parseInt(inp[2]);
-		grid = new int[N][N];
-		visited = new Boolean[N][N];
+		int dep, arr, pri;
+		int N, M;
 
-		for (int i = 0; i < N; i++) {
-			inp = br.readLine().split(" ");
-			for (int j = 0; j < N; j++) {
-				grid[i][j] = Integer.parseInt(inp[j]);
-			}
+		N = Integer.parseInt(br.readLine());
+		M = Integer.parseInt(br.readLine());
+		fee = new int[N + 1][N + 1];
+		route = new ArrayList[N + 1];
+		visited = new Boolean[N + 1];
+		mem = new long[N + 1];
+
+		Arrays.fill(visited, false);
+		Arrays.fill(mem, Long.MAX_VALUE);
+		for (int i = 1; i <= N; i++) {
+			Arrays.fill(fee[i], Integer.MAX_VALUE);
+			route[i] = new ArrayList<Integer>();
 		}
 
-		bw.write(search() + "");
+		for (int i = 0; i < M; i++) {
+			String inp[] = br.readLine().split(" ");
+			dep = Integer.parseInt(inp[0]);
+			arr = Integer.parseInt(inp[1]);
+			pri = Integer.parseInt(inp[2]);
+
+			fee[dep][arr] = Math.min(fee[dep][arr], pri);
+			route[dep].add(arr);
+		}
+
+		String inp[] = br.readLine().split(" ");
+		departure = Integer.parseInt(inp[0]);
+		arrival = Integer.parseInt(inp[1]);
+		mem[departure] = 0;
+
+		bw.write(dijk() + "");
 		bw.flush();
 		bw.close();
 
