@@ -1,9 +1,9 @@
-package aaNotepad;
+package Breadth_first_Search;
 
 import java.io.*;
 import java.util.*;
 
-public class notepad {
+public class Q13460_Bead_2_G1 {
 
 	static char grid[][];
 	static int mem[][][][];
