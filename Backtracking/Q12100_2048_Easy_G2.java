@@ -1,9 +1,9 @@
-package aaNotepad;
+package Backtracking;
 
 import java.io.*;
 import java.util.*;
 
-public class notepad {
+public class Q12100_2048_Easy_G2 {
 
 	static ArrayList<Integer> pick = new ArrayList<>();
 	static int grid[][];
