@@ -5,207 +5,54 @@ import java.util.*;
 
 public class notepad {
 
-	static int N, M;
-	static int res = 65;
-	static int grid[][];
-	static ArrayList<Integer> ylist = new ArrayList<>();
-	static ArrayList<Integer> xlist = new ArrayList<>();
+	static int dice[] = new int[7];
 
-	static void up(int yt, int xt) {
-		for (int i = yt + 1; i < N; i++) {
-			if (grid[i][xt] == 6)
-				break;
-			else if (grid[i][xt] < 10)
-				continue;
-			grid[i][xt]++;
-		}
+	static void mn() {
+		int d1 = dice[1];
+		int d3 = dice[3];
+		int d5 = dice[5];
+		int d6 = dice[6];
+
+		dice[1] = d6;
+		dice[3] = d1;
+		dice[5] = d3;
+		dice[6] = d5;
 	}
 
-	static void dp(int yt, int xt) {
-		for (int i = yt - 1; i >= 0; i--) {
-			if (grid[i][xt] == 6)
-				break;
-			else if (grid[i][xt] < 10)
-				continue;
-			grid[i][xt]++;
-		}
+	static void ms() {
+		int d1 = dice[1];
+		int d3 = dice[3];
+		int d5 = dice[5];
+		int d6 = dice[6];
+
+		dice[1] = d3;
+		dice[3] = d5;
+		dice[5] = d6;
+		dice[6] = d1;
 	}
 
-	static void lp(int yt, int xt) {
-		for (int i = xt - 1; i >= 0; i--) {
-			if (grid[yt][i] == 6)
-				break;
-			else if (grid[yt][i] < 10)
-				continue;
-			grid[yt][i]++;
-		}
+	static void me() {
+		int d2 = dice[2];
+		int d3 = dice[3];
+		int d4 = dice[4];
+		int d6 = dice[6];
+
+		dice[2] = d3;
+		dice[3] = d4;
+		dice[4] = d6;
+		dice[6] = d2;
 	}
 
-	static void rp(int yt, int xt) {
-		for (int i = xt + 1; i < M; i++) {
-			if (grid[yt][i] == 6)
-				break;
-			else if (grid[yt][i] < 10)
-				continue;
-			grid[yt][i]++;
-		}
-	}
+	static void mw() {
+		int d2 = dice[2];
+		int d3 = dice[3];
+		int d4 = dice[4];
+		int d6 = dice[6];
 
-	static void um(int yt, int xt) {
-		for (int i = yt + 1; i < N; i++) {
-			if (grid[i][xt] == 6)
-				break;
-			else if (grid[i][xt] < 10)
-				continue;
-			grid[i][xt]--;
-		}
-	}
-
-	static void dm(int yt, int xt) {
-		for (int i = yt - 1; i >= 0; i--) {
-			if (grid[i][xt] == 6)
-				break;
-			else if (grid[i][xt] < 10)
-				continue;
-			grid[i][xt]--;
-		}
-	}
-
-	static void lm(int yt, int xt) {
-		for (int i = xt - 1; i >= 0; i--) {
-			if (grid[yt][i] == 6)
-				break;
-			else if (grid[yt][i] < 10)
-				continue;
-			grid[yt][i]--;
-		}
-	}
-
-	static void rm(int yt, int xt) {
-		for (int i = xt + 1; i < M; i++) {
-			if (grid[yt][i] == 6)
-				break;
-			else if (grid[yt][i] < 10)
-				continue;
-			grid[yt][i]--;
-		}
-	}
-
-	static void bt(int idx) {
-
-		if (idx == ylist.size()) {
-			int r = 0;
-			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < M; j++) {
-					if (grid[i][j] == 10)
-						r++;
-				}
-			}
-			res = Math.min(res, r);
-			return;
-		} else {
-
-			int yt = ylist.get(idx);
-			int xt = xlist.get(idx);
-
-			switch (grid[yt][xt]) {
-			case 1:
-				up(yt, xt);
-				bt(idx + 1);
-				um(yt, xt);
-
-				dp(yt, xt);
-				bt(idx + 1);
-				dm(yt, xt);
-
-				lp(yt, xt);
-				bt(idx + 1);
-				lm(yt, xt);
-
-				rp(yt, xt);
-				bt(idx + 1);
-				rm(yt, xt);
-
-				break;
-			case 2:
-
-				up(yt, xt);
-				dp(yt, xt);
-				bt(idx + 1);
-				um(yt, xt);
-				dm(yt, xt);
-
-				lp(yt, xt);
-				rp(yt, xt);
-				bt(idx + 1);
-				lm(yt, xt);
-				rm(yt, xt);
-
-				break;
-			case 3:
-
-				up(yt, xt);
-				rp(yt, xt);
-				bt(idx + 1);
-				um(yt, xt);
-				rm(yt, xt);
-
-				rp(yt, xt);
-				dp(yt, xt);
-				bt(idx + 1);
-				rm(yt, xt);
-				dm(yt, xt);
-
-				dp(yt, xt);
-				lp(yt, xt);
-				bt(idx + 1);
-				dm(yt, xt);
-				lm(yt, xt);
-
-				up(yt, xt);
-				lp(yt, xt);
-				bt(idx + 1);
-				um(yt, xt);
-				lm(yt, xt);
-
-				break;
-			case 4:
-
-				up(yt, xt);
-				lp(yt, xt);
-				rp(yt, xt);
-				bt(idx + 1);
-				um(yt, xt);
-				lm(yt, xt);
-				rm(yt, xt);
-
-				rp(yt, xt);
-				up(yt, xt);
-				dp(yt, xt);
-				bt(idx + 1);
-				rm(yt, xt);
-				um(yt, xt);
-				dm(yt, xt);
-
-				dp(yt, xt);
-				lp(yt, xt);
-				rp(yt, xt);
-				bt(idx + 1);
-				dm(yt, xt);
-				lm(yt, xt);
-				rm(yt, xt);
-
-				lp(yt, xt);
-				up(yt, xt);
-				dp(yt, xt);
-				bt(idx + 1);
-				lm(yt, xt);
-				um(yt, xt);
-				dm(yt, xt);
-
-				break;
-			}
-		}
+		dice[2] = d6;
+		dice[3] = d2;
+		dice[4] = d3;
+		dice[6] = d4;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -213,39 +60,83 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+		int N, M, y, x, K;
+		Arrays.fill(dice, 0);
+		int cur = 6;
+		int grid[][];
+
 		String inp[] = br.readLine().split(" ");
 		N = Integer.parseInt(inp[0]);
 		M = Integer.parseInt(inp[1]);
+		y = Integer.parseInt(inp[2]);
+		x = Integer.parseInt(inp[3]);
+		K = Integer.parseInt(inp[4]);
 		grid = new int[N][M];
 
 		for (int i = 0; i < N; i++) {
 			inp = br.readLine().split(" ");
-			for (int j = 0; j < M; j++) {
+			for (int j = 0; j < M; j++)
 				grid[i][j] = Integer.parseInt(inp[j]);
-				if (grid[i][j] >= 1 && grid[i][j] <= 5) {
-					ylist.add(i);
-					xlist.add(j);
-				} else if (grid[i][j] == 0)
-					grid[i][j] = 10;
+		}
+
+		inp = br.readLine().split(" ");
+		for (int cs = 0; cs < K; cs++) {
+			switch (Integer.parseInt(inp[cs])) {
+			case 1:
+				if (x + 1 >= M)
+					break;
+				x++;
+				me();
+				if (grid[y][x] == 0) {
+					grid[y][x] = dice[6];
+				} else {
+					dice[6] = grid[y][x];
+					grid[y][x] = 0;
+				}
+				bw.write(dice[3] + "\n");
+				break;
+			case 2:
+				if (x - 1 < 0)
+					break;
+				x--;
+				mw();
+				if (grid[y][x] == 0) {
+					grid[y][x] = dice[6];
+				} else {
+					dice[6] = grid[y][x];
+					grid[y][x] = 0;
+				}
+				bw.write(dice[3] + "\n");
+				break;
+			case 3:
+				if (y - 1 < 0)
+					break;
+				y--;
+				mn();
+				if (grid[y][x] == 0) {
+					grid[y][x] = dice[6];
+				} else {
+					dice[6] = grid[y][x];
+					grid[y][x] = 0;
+				}
+				bw.write(dice[3] + "\n");
+				break;
+			case 4:
+				if (y + 1 >= N)
+					break;
+				y++;
+				ms();
+				if (grid[y][x] == 0) {
+					grid[y][x] = dice[6];
+				} else {
+					dice[6] = grid[y][x];
+					grid[y][x] = 0;
+				}
+				bw.write(dice[3] + "\n");
+				break;
 			}
 		}
 
-		for (int i = 0; i < ylist.size(); i++) {
-			if (grid[ylist.get(i)][xlist.get(i)] == 5) {
-				int yt = ylist.get(i);
-				int xt = xlist.get(i);
-				up(yt, xt);
-				dp(yt, xt);
-				lp(yt, xt);
-				rp(yt, xt);
-				ylist.remove(i);
-				xlist.remove(i);
-				i--;
-			}
-		}
-
-		bt(0);
-		bw.write(res + "");
 		bw.flush();
 		bw.close();
 
