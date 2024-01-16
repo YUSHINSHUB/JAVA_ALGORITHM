@@ -1,17 +1,29 @@
-package String;
+package Mathematics;
 
 import java.io.*;
 
-public class Q27866_String_B5 {
+public class Q10870_Fibonacci_5_B2 {
+
 	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String s = br.readLine();
 		int n = Integer.parseInt(br.readLine());
 
-		bw.write(s.charAt(n - 1) + "");
+		int[] res = new int[21];
+		res[0] = 0;
+		res[1] = 1;
+
+		for (int i = 2; i <= n; i++) {
+			res[i] = res[i - 1] + res[i - 2];
+		}
+
+		bw.write(String.valueOf(res[n]));
+
 		bw.flush();
 		bw.close();
 	}
+
 }

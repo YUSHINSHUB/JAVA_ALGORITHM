@@ -5,69 +5,47 @@ import java.util.*;
 
 public class notepad {
 
-	static int n;
-	static node nodes[];
-	static Boolean visited[];
-	static int edge = 0;
-	static int res = 0;
+	static char c[][];
+	static int N;
 
-	static class node {
-		ArrayList<Integer> child = new ArrayList<>();
-		ArrayList<Integer> dist = new ArrayList<>();
-
-		node() {
+	static void recur(int y, int x, int idx) {
+		if (idx == 3) {
+			c[y][x] = '*';
+			c[y + 1][x - 1] = '*';
+			c[y + 1][x + 1] = '*';
+			c[y + 2][x - 2] = '*';
+			c[y + 2][x - 1] = '*';
+			c[y + 2][x] = '*';
+			c[y + 2][x + 1] = '*';
+			c[y + 2][x + 2] = '*';
+		} else {
+			int nx = idx / 2;
+			recur(y, x, nx);
+			recur(y + nx, x - nx, nx);
+			recur(y + nx, x + nx, nx);
 		}
-	}
-
-	static void dfs(int idx, int len) {
-
-		if (len > res) {
-			res = len;
-			edge = idx;
-		}
-
-		for (int i = 0; i < nodes[idx].child.size(); i++) {
-			if (visited[nodes[idx].child.get(i)])
-				continue;
-			visited[nodes[idx].child.get(i)] = true;
-			dfs(nodes[idx].child.get(i), len + nodes[idx].dist.get(i));
-			visited[nodes[idx].child.get(i)] = false;
-		}
-
 	}
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String inp[];
-		int in;
+		StringBuilder sb = new StringBuilder("");
+		
+		N = Integer.parseInt(br.readLine());
+		c = new char[N][N * 2];
+		
+		for( int i = 0 ; i < N ; i++ ) Arrays.fill(c[i], ' ');
+		
+		recur(0, N - 1, N);
 
-		n = Integer.parseInt(br.readLine());
-		nodes = new node[n + 1];
-		visited = new Boolean[n + 1];
-		Arrays.fill(visited, false);
-
-		for (int i = 1; i <= n; i++)
-			nodes[i] = new node();
-		for (int i = 0; i < n; i++) {
-			inp = br.readLine().split(" ");
-			in = Integer.parseInt(inp[0]);
-			for (int j = 1; !inp[j].equals("-1"); j += 2) {
-				nodes[in].child.add(Integer.parseInt(inp[j]));
-				nodes[in].dist.add(Integer.parseInt(inp[j + 1]));
-
-			}
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N * 2; j++)
+				sb.append(c[i][j]);
+			sb.append("\n");
 		}
-
-		visited[1] = true;
-		dfs(1, 0);
-		visited[1] = false;
-
-		visited[edge] = true;
-		dfs(edge, 0);
-
-		bw.write(res + "");
+		
+		bw.write(sb.toString());
 		bw.flush();
 		bw.close();
 	}

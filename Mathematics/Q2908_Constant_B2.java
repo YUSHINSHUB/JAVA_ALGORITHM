@@ -1,8 +1,9 @@
 package Mathematics;
 
 import java.io.*;
+import java.util.*;
 
-public class Q2475_Serial_B5 {
+public class Q2908_Constant_B2 {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -10,21 +11,20 @@ public class Q2475_Serial_B5 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String elm[] = br.readLine().split(" ");
+		int a;
+		int b;
+		String[] s = br.readLine().split(" ");
 
-		int sig = 0;
+		a = Integer.parseInt(s[0]);
+		b = Integer.parseInt(s[1]);
 
-		for (int i = 0; i < 5; i++) {
-			sig = sig + (Integer.parseInt(elm[i]) * Integer.parseInt(elm[i]));
-		}
+		a = (a % 10 * 100) + (a % 100 / 10 * 10) + (a / 100);
+		b = (b % 10 * 100) + (b % 100 / 10 * 10) + (b / 100);
 
-		sig = sig % 10;
-
-		bw.write(String.valueOf(sig));
+		bw.write(String.valueOf(Math.max(a, b)));
 
 		bw.flush();
 		bw.close();
 
 	}
-
 }

@@ -2,16 +2,20 @@ package Mathematics;
 
 import java.util.Scanner;
 
-class Q8393_Sum_B5 {
+class Q1110_Cycle_B1 {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 
-		int a = sc.nextInt();
+		int n = sc.nextInt();
+
+		int a = n;
 		int b = 0;
 
-		for (int i = 1; i <= a; i++) {
-			b = b + i;
-		}
+		do {
+			a = (((a % 10) + (a / 10)) % 10) + ((a % 10) * 10);
+			b++;
+		} while (a != n);
+
 		System.out.println(b);
 	}
 }
