@@ -1,9 +1,21 @@
-package aaNotepad;
+package Breadth_first_Search;
+
+/*
+commented by ChatGPT
+This Java code simulates a process using a Breadth-First Search (BFS) algorithm on a grid. 
+The grid is represented by a 2D integer array 'grid', and a corresponding 2D Boolean array 'visited' tracks whether each cell has been visited. 
+The BFS algorithm explores the grid, modifying cell values and counting specific cell types. 
+The main function reads grid dimensions and values, then repeatedly calls the BFS function until a certain condition is met, recording the number of iterations and the count of a specific cell type during the last iteration.
+이 Java 코드는 격자에서 너비 우선 탐색(BFS) 알고리즘을 사용하는 프로세스를 시뮬레이션합니다. 
+격자는 2차원 정수 배열 'grid'로 표현되며, 각 셀이 방문되었는지를 추적하는 2차원 불리언 배열 'visited'가 있습니다. 
+BFS 알고리즘은 격자를 탐색하면서 셀 값을 수정하고 특정 셀 유형을 계산합니다. 
+메인 함수는 격자의 크기와 값을 읽은 후 특정 조건이 충족될 때까지 반복적으로 BFS 함수를 호출하며, 마지막 반복 동안 특정 셀 유형의 수와 반복 횟수를 기록합니다.
+*/
 
 import java.io.*;
 import java.util.*;
 
-public class notepad {
+public class Q2636_Cheese_G4 {
 
 	static int grid[][] = new int[100][100];
 	static Boolean visited[][] = new Boolean[100][100];
