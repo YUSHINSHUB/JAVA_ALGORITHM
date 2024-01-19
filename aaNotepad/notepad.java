@@ -2,58 +2,35 @@ package aaNotepad;
 
 import java.io.*;
 import java.util.*;
+import java.math.*;
 
 public class notepad {
-
-	static Queue<Integer> input = new LinkedList<>();
-	static StringBuilder sb = new StringBuilder("");
-
-	static void recur(int node, int hig, int low) {
-
-		if (input.isEmpty()) {
-			sb.append(node + "\n");
-			return;
-		}
-
-		int cur = input.peek();
-		if (cur < hig && cur > low) {
-			if (cur < node) {
-				input.poll();
-				recur(cur, node, low);
-			}
-		}
-
-		if (input.isEmpty()) {
-			sb.append(node + "\n");
-			return;
-		}
-
-		cur = input.peek();
-		if (cur < hig && cur > low) {
-			if (cur > node) {
-				input.poll();
-				recur(cur, hig, node);
-			}
-		}
-
-		sb.append(node + "\n");
-	}
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String inp;
+		int N, len;
+		int pl = 9;
+		int res = 0;
 
-		while ((inp = br.readLine()) != null) {
-			input.add(Integer.parseInt(inp));
+		N = Integer.parseInt(br.readLine());
+		len = (int) Math.log10(N);
+
+		for (int i = 1; i <= len; i++) {
+			res += pl * i;
+			pl *= 10;
 		}
 
-		int top = input.poll();
+		pl /= 10;
+		pl += (pl / 9) - 1;
 
-		recur(top, 1000000, -1);
+		res += (len + 1) * (N - pl);
 
-		bw.write(sb.toString() + "");
+		if (N / 10 == 0)
+			res = N;
+
+		bw.write(res + "");
 
 		bw.flush();
 		bw.close();
