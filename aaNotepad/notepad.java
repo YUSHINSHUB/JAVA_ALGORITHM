@@ -6,74 +6,65 @@ import java.math.*;
 
 public class notepad {
 
-	static char str[][] = new char[2][1000];
-	static int mem[][] = new int[1000][1000];
+	static int n;
+	static int out = 0;
+	static int choice[] = new int[100001];
+	static Boolean visited[] = new Boolean[100001];
+	static Boolean loop[] = new Boolean[100001];
 
-	static int dp(int idx1, int idx2) {
+	static void dfs(int idx) {
 
-		if (mem[idx1][idx2] >= 0)
-			return mem[idx1][idx2];
+		if (visited[idx])
+			return;
 
-		if (str[0][idx1] == str[1][idx2])
-			if (idx1 == 0 || idx2 == 0)
-				mem[idx1][idx2] = 1;
-			else
-				mem[idx1][idx2] = dp(idx1 - 1, idx2 - 1) + 1;
-		else {
-			if (idx1 == 0 && idx2 == 0)
-				mem[idx1][idx2] = 0;
-			else if (idx1 == 0)
-				mem[idx1][idx2] = dp(idx1, idx2 - 1);
-			else if (idx2 == 0)
-				mem[idx1][idx2] = dp(idx1 - 1, idx2);
-			else
-				mem[idx1][idx2] = Math.max(dp(idx1 - 1, idx2), dp(idx1, idx2 - 1));
+		visited[idx] = true;
+
+		int nidx = choice[idx];
+		
+		if(!visited[nidx] ) {
+			dfs(nidx);
+		}
+		if (visited[nidx] && !loop[nidx]) {
+			out++;
+				for (int i = nidx; i != idx; i = choice[i])
+					out++;
 		}
 
-		return mem[idx1][idx2];
+		loop[idx] = true;
+
+	}
+
+	static int search() {
+
+		for (int i = 1; i <= n; i++) {
+			dfs(i);
+		}
+
+		return out;
 
 	}
 
 	public static void main(String[] args) throws IOException {
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String in;
-		StringBuilder sb = new StringBuilder("");
-		int alen, blen;
+		int T;
 
-		in = br.readLine();
-		alen = in.length() - 1;
+		T = Integer.parseInt(br.readLine());
 
-		for (int i = 0; i <= alen; i++)
-			str[0][i] = in.charAt(i);
-
-		in = br.readLine();
-		blen = in.length() - 1;
-
-		for (int i = 0; i <= blen; i++)
-			str[1][i] = in.charAt(i);
-
-		for (int i = 0; i < 1000; i++) {
-			Arrays.fill(mem[i], -1);
-		}
-		if (alen == -1 || blen == -1)
-			bw.write("0");
-		else {
-			int len = dp(alen, blen);
-			while (len > 0) {
-				for (int i = alen; i >= 0; i--) {
-					if (mem[i][blen] == len && str[0][i] == str[1][blen]) {
-						sb.append(str[1][blen]);
-						alen = i-1;
-						len--;
-						break;
-					}
-				}
-				blen--;
+		for (int cs = 0; cs < T; cs++) {
+			n = Integer.parseInt(br.readLine());
+			out = 0;
+			Arrays.fill(loop, false);
+			Arrays.fill(visited, false);
+			String inp[] = br.readLine().split(" ");
+			for (int i = 1; i <= n; i++) {
+				choice[i] = Integer.parseInt(inp[i - 1]);
 			}
-			bw.write(sb.toString().length() + "\n" + sb.reverse().toString());
+			bw.write(n - search() + "\n");
 		}
+
 		bw.flush();
 		bw.close();
 	}
