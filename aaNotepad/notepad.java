@@ -6,42 +6,20 @@ import java.math.*;
 
 public class notepad {
 
-	static int n;
-	static int out = 0;
-	static int choice[] = new int[100001];
-	static Boolean visited[] = new Boolean[100001];
-	static Boolean loop[] = new Boolean[100001];
+	static int mat[] = new int[501];
+	static int mem[][] = new int[500][500];
 
-	static void dfs(int idx) {
+	static int dp(int start, int end) {
 
-		if (visited[idx])
-			return;
+		if (mem[start][end] < Integer.MAX_VALUE)
+			return mem[start][end];
 
-		visited[idx] = true;
-
-		int nidx = choice[idx];
-		
-		if(!visited[nidx] ) {
-			dfs(nidx);
-		}
-		if (visited[nidx] && !loop[nidx]) {
-			out++;
-				for (int i = nidx; i != idx; i = choice[i])
-					out++;
+		for (int i = start; i < end; i++) {
+			mem[start][end] = Math.min(mem[start][end],
+					dp(start, i) + dp(i + 1, end) + (mat[start] * mat[i + 1] * mat[end + 1]));
 		}
 
-		loop[idx] = true;
-
-	}
-
-	static int search() {
-
-		for (int i = 1; i <= n; i++) {
-			dfs(i);
-		}
-
-		return out;
-
+		return mem[start][end];
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -49,21 +27,19 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int T;
+		int N;
 
-		T = Integer.parseInt(br.readLine());
+		N = Integer.parseInt(br.readLine());
 
-		for (int cs = 0; cs < T; cs++) {
-			n = Integer.parseInt(br.readLine());
-			out = 0;
-			Arrays.fill(loop, false);
-			Arrays.fill(visited, false);
+		for (int i = 0; i < N; i++) {
 			String inp[] = br.readLine().split(" ");
-			for (int i = 1; i <= n; i++) {
-				choice[i] = Integer.parseInt(inp[i - 1]);
-			}
-			bw.write(n - search() + "\n");
+			mat[i] = Integer.parseInt(inp[0]);
+			mat[i + 1] = Integer.parseInt(inp[1]);
+			Arrays.fill(mem[i], Integer.MAX_VALUE);
+			mem[i][i] = 0;
 		}
+
+		bw.write(dp(0, N - 1) + "");
 
 		bw.flush();
 		bw.close();
