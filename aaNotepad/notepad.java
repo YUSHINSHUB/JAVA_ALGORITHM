@@ -6,23 +6,77 @@ import java.math.*;
 
 public class notepad {
 
-	static int chapter[] = new int[500];
-	static long mem[][] = new long[500][500];
+	static int mem[] = new int[110000];
+	static ArrayList<Integer> list = new ArrayList<>();
 
-	static long dp(int start, int end) {
+	static void bfs(int N, int K) {
 
-		if (mem[start][end] < Long.MAX_VALUE)
-			return mem[start][end];
+		Arrays.fill(mem, -1);
+		mem[N] = 0;
+		Queue<Integer> q = new LinkedList<>();
+		q.add(N);
 
-		long val = 0;
-		for (int i = start; i <= end; i++)
-			val += chapter[i];
-
-		for (int i = start; i < end; i++) {
-			mem[start][end] = Math.min(mem[start][end], dp(start, i) + dp(i + 1, end) + val);
+		while (!q.isEmpty()) {
+			int cur = q.poll();
+			int next = cur + 1;
+			if (next < 110000 && next >= 0) {
+				if (mem[next] < 0) {
+					q.add(next);
+					mem[next] = mem[cur] + 1;
+				}
+			}
+			next = cur - 1;
+			if (next < 110000 && next >= 0) {
+				if (mem[next] < 0) {
+					q.add(next);
+					mem[next] = mem[cur] + 1;
+				}
+			}
+			next = cur * 2;
+			if (next < 110000 && next >= 0) {
+				if (mem[next] < 0) {
+					q.add(next);
+					mem[next] = mem[cur] + 1;
+				}
+			}
 		}
 
-		return mem[start][end];
+	}
+
+	static void find(int cur) {
+
+		list.add(cur);
+
+		if (mem[cur] == 0)
+			return;
+
+		int next = cur + 1;
+
+		if (next < 110000 && next >= 0) {
+			if (mem[next] == mem[cur] - 1) {
+				find(next);
+				return;
+			}
+		}
+
+		next = cur - 1;
+
+		if (next < 110000 && next >= 0) {
+			if (mem[next] == mem[cur] - 1) {
+				find(next);
+				return;
+			}
+		}
+
+		next = cur / 2;
+
+		if (next < 110000 && next >= 0) {
+			if (mem[next] == mem[cur] - 1) {
+				find(next);
+				return;
+			}
+		}
+
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -30,30 +84,19 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int T, N;
+		int N, K;
 		String inp[];
 
-		T = Integer.parseInt(br.readLine());
+		inp = br.readLine().split(" ");
+		N = Integer.parseInt(inp[0]);
+		K = Integer.parseInt(inp[1]);
 
-		for (int cs = 0; cs < T; cs++) {
+		bfs(N, K);
+		find(K);
 
-			N = Integer.parseInt(br.readLine());
-			inp = br.readLine().split(" ");
-
-			for (int i = 0; i < N; i++) {
-				chapter[i] = Integer.parseInt(inp[i]);
-				Arrays.fill(mem[i], Long.MAX_VALUE);
-			}
-
-			for (int i = 0; i < N; i++) {
-				mem[i][i] = 0;
-				if (i > 0)
-					mem[i - 1][i] = chapter[i - 1] + chapter[i];
-			}
-			bw.write(dp(0, N - 1) + "\n");
-
-		}
-
+		bw.write(mem[K] + "\n");
+		for (int i = mem[K]; i >= 0; i--)
+			bw.write(list.get(i) + " ");
 		bw.flush();
 		bw.close();
 	}
