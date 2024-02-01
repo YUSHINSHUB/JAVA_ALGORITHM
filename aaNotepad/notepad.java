@@ -5,94 +5,119 @@ import java.util.*;
 import java.math.*;
 
 public class notepad {
-	static int mem[] = new int[110000]; // Array to keep track of minimum steps to each position
-	static Boolean visited[] = new Boolean[110000];
+
+	static int ny[] = { -1, 0, 0, 1 };
+	static int nx[] = { 0, -1, 1, 0 };
+	static int grid[][] = new int[100][100];
+	static Boolean visited[][] = new Boolean[100][100];
+	static int N;
 	static int res = 0;
 
-// BFS to find the minimum steps from N to K
-	static void bfs(int N, int K) {
-		Arrays.fill(mem, -1); // Initialize all positions as unvisited
-		mem[N] = 0; // Starting position
-		Queue<Integer> q = new LinkedList<>();
-		q.add(N);
+	static void find_island() {
 
-		// Explore all possible moves
-		while (!q.isEmpty()) {
-			int cur = q.poll(); // Current position
-			int next;
+		Queue<Integer> yq = new LinkedList<>();
+		Queue<Integer> xq = new LinkedList<>();
+		int idx = 2;
 
-			// Move forward
-			next = cur + 1;
-			if (next < 110000 && next >= 0 && mem[next] < 0) {
-				q.add(next);
-				mem[next] = mem[cur] + 1;
-			}
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (grid[i][j] == 1) {
+					yq.add(i);
+					xq.add(j);
+					grid[i][j] = idx;
 
-			// Move backward
-			next = cur - 1;
-			if (next < 110000 && next >= 0 && mem[next] < 0) {
-				q.add(next);
-				mem[next] = mem[cur] + 1;
-			}
+					while (!yq.isEmpty()) {
 
-			// Teleport
-			next = cur * 2;
-			if (next < 110000 && next >= 0 && mem[next] < 0) {
-				q.add(next);
-				mem[next] = mem[cur] + 1;
+						int cy = yq.poll();
+						int cx = xq.poll();
+
+						for (int k = 0; k < 4; k++) {
+							int ynext = cy + ny[k];
+							int xnext = cx + nx[k];
+							if (ynext < 0 || xnext < 0 || ynext >= N || xnext >= N)
+								continue;
+							if (grid[ynext][xnext] == 0 || grid[ynext][xnext] == idx)
+								continue;
+
+							grid[ynext][xnext] = idx;
+							yq.add(ynext);
+							xq.add(xnext);
+						}
+
+					}
+					idx++;
+				}
 			}
 		}
+
 	}
 
-// Function to find the path from K to N
-	static void find(int cur) {
+	static int bridge(int y, int x, int idx) {
 
-		if (mem[cur] == 0) {
-			res++;
-			return;
-		}
-		if (visited[cur])
-			return;
+		for (int i = 0; i < N; i++)
+			Arrays.fill(visited[i], false);
 
-		visited[cur] = true;
-		int next;
+		Queue<Integer> yq = new LinkedList<>();
+		Queue<Integer> xq = new LinkedList<>();
+		Queue<Integer> b = new LinkedList<>();
+		yq.add(y);
+		xq.add(x);
+		b.add(0);
 
-		// Trace the path in reverse order
-		next = cur + 1;
-		if (next < 110000 && next >= 0 && mem[next] == mem[cur] - 1) {
-			find(next);
-		}
+		while (!yq.isEmpty()) {
 
-		next = cur - 1;
-		if (next < 110000 && next >= 0 && mem[next] == mem[cur] - 1) {
-			find(next);
-		}
+			int cy = yq.poll();
+			int cx = xq.poll();
+			int cb = b.poll();
 
-		if (cur % 2 == 0) {
-			next = cur / 2;
-			if (next < 110000 && next >= 0 && mem[next] == mem[cur] - 1) {
-				find(next);
+			for (int i = 0; i < 4; i++) {
+				int ynext = cy + ny[i];
+				int xnext = cx + nx[i];
+				if (ynext < 0 || xnext < 0 || ynext >= N || xnext >= N)
+					continue;
+				if (visited[ynext][xnext])
+					continue;
+				if (grid[ynext][xnext] == idx)
+					continue;
+				if (grid[ynext][xnext] > 0 && grid[ynext][xnext] != idx)
+					return cb;
+
+				yq.add(ynext);
+				xq.add(xnext);
+				b.add(cb + 1);
+				visited[ynext][xnext] = true;
 			}
+
 		}
+
+		return Integer.MAX_VALUE;
 	}
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int N, K; // Starting position N and target position K
-		String inp[];
-		Arrays.fill(visited, false);
+		int res = Integer.MAX_VALUE;
 
-		inp = br.readLine().split(" ");
-		N = Integer.parseInt(inp[0]);
-		K = Integer.parseInt(inp[1]);
+		N = Integer.parseInt(br.readLine());
 
-		bfs(N, K); // Perform BFS to find the minimum steps
-		find(K); // Find the path
+		for (int i = 0; i < N; i++) {
+			String inp[] = br.readLine().split(" ");
+			for (int j = 0; j < N; j++)
+				grid[i][j] = Integer.parseInt(inp[j]);
+		}
 
-		// Output the minimum steps and the path
-		bw.write(mem[K] + "\n" + res);
+		find_island();
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (grid[i][j] > 1) {
+					res = Math.min(res, bridge(i, j, grid[i][j]));
+				}
+			}
+		}
+
+		bw.write(res + "");
 		bw.flush();
 		bw.close();
 	}
