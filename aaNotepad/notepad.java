@@ -6,69 +6,63 @@ import java.math.*;
 
 public class notepad {
 
-	static ArrayList<Integer> ylist = new ArrayList<>();
-	static ArrayList<Integer> xlist = new ArrayList<>();
-	static Boolean visited[];
-	static int n, fy, fx;
+	static int visited[] = new int[1000001];
+	static ArrayList<Integer> seq = new ArrayList<>();
+	static int X;
 
-	static Boolean bfs(int y, int x) {
+	static void dp(int cur, int idx) {
 
-		Queue<Integer> yq = new LinkedList<>();
-		Queue<Integer> xq = new LinkedList<>();
-		yq.add(y);
-		xq.add(x);
+		if (cur == 1) {
+			visited[1] = idx;
+			return;
+		}
+		if (visited[cur] <= idx || idx >= visited[1])
+			return;
 
-		while (!yq.isEmpty()) {
-			int cy = yq.poll();
-			int cx = xq.poll();
-			if ((Math.abs(cy - fy) + Math.abs(cx - fx)) <= 1000)
-				return true;
-			for (int i = 0; i < n; i++) {
-				if (visited[i])
-					continue;
-				if ((Math.abs(cy - ylist.get(i)) + Math.abs(cx - xlist.get(i))) <= 1000) {
-					visited[i] = true;
-					yq.add(ylist.get(i));
-					xq.add(xlist.get(i));
-				}
-			}
+		visited[cur] = idx;
+		if (cur % 6 == 0) {
+			dp(cur / 3, idx + 1);
+			dp(cur / 2, idx + 1);
+			dp(cur - 1, idx + 1);
+		} else if (cur % 3 == 0) {
+			dp(cur / 3, idx + 1);
+			dp(cur - 1, idx + 1);
+		} else if (cur % 2 == 0) {
+			dp(cur / 2, idx + 1);
+			dp(cur - 1, idx + 1);
+		} else {
+			dp(cur - 1, idx + 1);
 		}
 
-		return false;
+	}
+
+	static void find(int cur) {
+		seq.add(cur);
+		if (cur == X)
+			return;
+
+		if (visited[cur + 1] == visited[cur] - 1)
+			find(cur + 1);
+		else if (visited[cur * 2] == visited[cur] - 1)
+			find(cur * 2);
+		else if (visited[cur * 3] == visited[cur] - 1)
+			find(cur * 3);
+
 	}
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int t, y, x;
-		String inp[];
+		Arrays.fill(visited, 1000001);
 
-		t = Integer.parseInt(br.readLine());
+		X = Integer.parseInt(br.readLine());
+		dp(X, 0);
 
-		for (int i = 0; i < t; i++) {
-			ylist.clear();
-			xlist.clear();
-			n = Integer.parseInt(br.readLine());
-			visited = new Boolean[n + 1];
-			Arrays.fill(visited, false);
-			inp = br.readLine().split(" ");
-			y = Integer.parseInt(inp[0]);
-			x = Integer.parseInt(inp[1]);
-			for (int j = 0; j < n; j++) {
-				inp = br.readLine().split(" ");
-				ylist.add(Integer.parseInt(inp[0]));
-				xlist.add(Integer.parseInt(inp[1]));
-			}
-			inp = br.readLine().split(" ");
-			fy = Integer.parseInt(inp[0]);
-			fx = Integer.parseInt(inp[1]);
-			if (bfs(y, x))
-				bw.write("happy\n");
-			else
-				bw.write("sad\n");
-		}
-
+		bw.write(visited[1] + "\n");
+		find(1);
+		for (int i = seq.size() - 1; i >= 0; i--)
+			bw.write(seq.get(i) + " ");
 		bw.flush();
 		bw.close();
 	}
