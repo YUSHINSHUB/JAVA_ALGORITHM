@@ -6,63 +6,74 @@ import java.math.*;
 
 public class notepad {
 
-	static int visited[] = new int[1000001];
-	static ArrayList<Integer> seq = new ArrayList<>();
-	static int X;
+	static class party {
+		ArrayList<Integer> mem = new ArrayList<>();
 
-	static void dp(int cur, int idx) {
+		party() {
 
-		if (cur == 1) {
-			visited[1] = idx;
-			return;
 		}
-		if (visited[cur] <= idx || idx >= visited[1])
-			return;
-
-		visited[cur] = idx;
-		if (cur % 6 == 0) {
-			dp(cur / 3, idx + 1);
-			dp(cur / 2, idx + 1);
-			dp(cur - 1, idx + 1);
-		} else if (cur % 3 == 0) {
-			dp(cur / 3, idx + 1);
-			dp(cur - 1, idx + 1);
-		} else if (cur % 2 == 0) {
-			dp(cur / 2, idx + 1);
-			dp(cur - 1, idx + 1);
-		} else {
-			dp(cur - 1, idx + 1);
-		}
-
-	}
-
-	static void find(int cur) {
-		seq.add(cur);
-		if (cur == X)
-			return;
-
-		if (visited[cur + 1] == visited[cur] - 1)
-			find(cur + 1);
-		else if (visited[cur * 2] == visited[cur] - 1)
-			find(cur * 2);
-		else if (visited[cur * 3] == visited[cur] - 1)
-			find(cur * 3);
-
 	}
 
 	public static void main(String[] args) throws IOException {
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		Arrays.fill(visited, 1000001);
+		int N, M;
+		Boolean know[] = new Boolean[51];
+		String inp[];
+		ArrayList<party> plist = new ArrayList<>();
 
-		X = Integer.parseInt(br.readLine());
-		dp(X, 0);
+		Arrays.fill(know, false);
+		inp = br.readLine().split(" ");
+		N = Integer.parseInt(inp[0]);
+		M = Integer.parseInt(inp[1]);
 
-		bw.write(visited[1] + "\n");
-		find(1);
-		for (int i = seq.size() - 1; i >= 0; i--)
-			bw.write(seq.get(i) + " ");
+		inp = br.readLine().split(" ");
+		for (int i = 1; i <= Integer.parseInt(inp[0]); i++) {
+			know[Integer.parseInt(inp[i])] = true;
+		}
+
+		for (int i = 0; i < M; i++) {
+			party p = new party();
+			Boolean b = false;
+			inp = br.readLine().split(" ");
+			for (int j = 1; j <= Integer.parseInt(inp[0]); j++) {
+				p.mem.add(Integer.parseInt(inp[j]));
+				if (know[Integer.parseInt(inp[j])])
+					b = true;
+			}
+			if (b) {
+				for (int j = 1; j <= Integer.parseInt(inp[0]); j++) {
+					know[Integer.parseInt(inp[j])] = true;
+				}
+				M--;
+				i--;
+			} else {
+				plist.add(p);
+			}
+		}
+
+		for (int i = 0; i < M; i++) {
+			party p = plist.get(i);
+			Boolean b = false;
+			for (int j = 0; j < p.mem.size(); j++) {
+				if (know[p.mem.get(j)]) {
+					b = true;
+					break;
+				}
+			}
+			if (b) {
+				for (int j = 0; j < p.mem.size(); j++) {
+					know[p.mem.get(j)] = true;
+				}
+				plist.remove(i);
+				M--;
+				i = -1;
+			}
+		}
+
+		bw.write(M + "");
 		bw.flush();
 		bw.close();
 	}
