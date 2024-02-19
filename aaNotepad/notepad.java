@@ -12,31 +12,18 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String inp[];
-		long low, hig;
-		int res = 0;
-		Boolean era[] = new Boolean[1000001];
-		
-		inp = br.readLine().split(" ");
-		low = Long.parseLong(inp[0]);
-		hig = Long.parseLong(inp[1]);
-		Arrays.fill(era, false);
+		int fib[] = new int[1500000];
+		int n;
+		long inp;
 
-		for (long i = 2; i * i <= hig; i++) {
-			if (low % (i * i) == 0)
-				era[0] = true;
-			for (long j = low + (i * i) - (low % (i * i)); j <= hig; j += i * i) {
-				era[(int) (j - low)] = true;
-			}
+		inp = Long.parseLong(br.readLine());
+		n = (int) (inp % 1500000);
+		Arrays.fill(fib, 0);
+		fib[1] = 1;
+		for (int i = 2; i <= n; i++)
+			fib[i] = (fib[i - 1] + fib[i - 2])%1000000;
 
-		}
-
-		for (int i = 0; i <= hig - low; i++) {
-			if (!era[i])
-				res++;
-		}
-
-		bw.write(res + "");
+		bw.write(fib[n] + "");
 		bw.flush();
 		bw.close();
 	}
