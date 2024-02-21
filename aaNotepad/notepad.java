@@ -7,56 +7,65 @@ import java.math.*;
 
 public class notepad {
 
-	static int cost[] = new int[1001];
-	static int edge[][] = new int[1001][1001];
-	static ArrayList<Integer> next[] = new ArrayList[1001];
-	static ArrayList<Integer> prev[] = new ArrayList[1001];
-	static ArrayList<Integer> path = new ArrayList<>();
-	static int from, to;
-	static Boolean visited[] = new Boolean[1001];
+	static Queue<Integer> jy = new LinkedList<>();
+	static Queue<Integer> jx = new LinkedList<>();
+	static Queue<Integer> fy = new LinkedList<>();
+	static Queue<Integer> fx = new LinkedList<>();
+	static int ny[] = { 1, 0, 0, -1 };
+	static int nx[] = { 0, -1, 1, 0 };
+	static int R, C;
+	static Boolean visited[][] = new Boolean[1000][1000];
+	static int grid[][] = new int[1000][1000];
 
-	static PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> {
-		return cost[o1] - cost[o2];
-	});
+	static int bfs() {
 
-	static int dajikstra() {
+		while (!jy.isEmpty()) {
+			int s = jy.size();
+			for (int i = 0; i < s; i++) {
 
-		pq.add(from);
-		cost[from] = 0;
-
-		while (!pq.isEmpty()) {
-			int cur = pq.poll();
-			visited[cur] = true;
-			for (int i = 0; i < next[cur].size(); i++) {
-				int temp = next[cur].get(i);
-				if (visited[temp])
+				int y = jy.poll();
+				int x = jx.poll();
+				if (grid[y][x] == -1)
 					continue;
-				if (cost[temp] > cost[cur] + edge[cur][temp]) {
-					cost[temp] = cost[cur] + edge[cur][temp];
-					pq.add(temp);
+
+				for (int j = 0; j < 4; j++) {
+					int cy = y + ny[j];
+					int cx = x + nx[j];
+					if (cy >= R || cx >= C || cy < 0 || cx < 0)
+						return grid[y][x] + 1;
+					if (grid[cy][cx] == -1)
+						continue;
+					if (visited[cy][cx])
+						continue;
+					jy.add(cy);
+					jx.add(cx);
+					grid[cy][cx] = grid[y][x] + 1;
+					visited[cy][cx] = true;
+				}
+
+			}
+
+			s = fy.size();
+
+			for (int i = 0; i < s; i++) {
+				int y = fy.poll();
+				int x = fx.poll();
+				for (int j = 0; j < 4; j++) {
+					int cy = y + ny[j];
+					int cx = x + nx[j];
+					if (cy < 0 || cx < 0 || cy >= R || cx >= C)
+						continue;
+					if (grid[cy][cx] == -1)
+						continue;
+					fy.add(cy);
+					fx.add(cx);
+					grid[cy][cx] = -1;
 				}
 			}
+
 		}
 
-		return cost[to];
-	}
-
-	static void find_path() {
-
-		int cur = to;
-		path.add(to);
-
-		while (cur != from) {
-			for (int i = 0; i < prev[cur].size(); i++) {
-				int p = prev[cur].get(i);
-				if (cost[p] + edge[p][cur] == cost[cur]) {
-					path.add(p);
-					cur = p;
-					break;
-				}
-			}
-		}
-
+		return -1;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -65,39 +74,36 @@ public class notepad {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		String inp[];
-		int n, m, res;
-
-		Arrays.fill(visited, false);
-		Arrays.fill(cost, Integer.MAX_VALUE);
-		n = Integer.parseInt(br.readLine());
-		m = Integer.parseInt(br.readLine());
-
-		for (int i = 1; i <= n; i++) {
-			next[i] = new ArrayList<>();
-			prev[i] = new ArrayList<>();
-			Arrays.fill(edge[i], Integer.MAX_VALUE);
-		}
-		for (int i = 0; i < m; i++) {
-			inp = br.readLine().split(" ");
-			int a = Integer.parseInt(inp[0]);
-			int b = Integer.parseInt(inp[1]);
-			int c = Integer.parseInt(inp[2]);
-			
-			next[a].add(b);
-			prev[b].add(a);
-			edge[a][b]= Math.min(edge[a][b], c);
-		}
 
 		inp = br.readLine().split(" ");
-		from = Integer.parseInt(inp[0]);
-		to = Integer.parseInt(inp[1]);
+		R = Integer.parseInt(inp[0]);
+		C = Integer.parseInt(inp[1]);
 
-		res = dajikstra();
-		find_path();
+		for (int i = 0; i < R; i++) {
+			Arrays.fill(visited[i], false);
+			String in = br.readLine();
+			for (int j = 0; j < C; j++) {
+				grid[i][j] = 0;
+				if (in.charAt(j) == '#')
+					grid[i][j] = -1;
+				else if (in.charAt(j) == 'J') {
+					visited[i][j] = true;
+					jy.add(i);
+					jx.add(j);
+				} else if (in.charAt(j) == 'F') {
+					grid[i][j] = -1;
+					fy.add(i);
+					fx.add(j);
+				}
+			}
+		}
 
-		bw.write(res + "\n" + path.size() + "\n");
-		for (int i = path.size() - 1; i >= 0; i--)
-			bw.write(path.get(i) + " ");
+		int res = bfs();
+		if (res < 0)
+			bw.write("IMPOSSIBLE");
+		else
+			bw.write(res + "");
+
 		bw.flush();
 		bw.close();
 	}
