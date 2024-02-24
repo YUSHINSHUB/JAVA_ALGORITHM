@@ -7,14 +7,61 @@ import java.math.*;
 
 public class notepad {
 
-	static int parent[] = new int[200000];
-	static int groupcnt[] = new int[200000];
+	static int n;
+	static int idx = 0;
+	static int in[] = new int[100001];
+	static int post[] = new int[100001];
+	static int inpos[] = new int[100001];
+	static Boolean visited[] = new Boolean[100003];
+	static int left[] = new int[100001];
+	static int right[] = new int[100001];
+	static StringBuilder sb = new StringBuilder("");
 
-	static int find_parent(int no) {
-		if (parent[no] == no) {
-			return no;
+	static void make_tree() {
+
+		if (idx == 0)
+			return;
+
+		int node = post[idx];
+		visited[inpos[node]] = true;
+		int next = post[idx - 1];
+
+		for (int i = inpos[node] + 1; i < n; i++) {
+			if (visited[i])
+				break;
+			if (in[i] == next) {
+				right[node] = next;
+				idx--;
+				make_tree();
+				break;
+			}
+			
 		}
-		return parent[no] = find_parent(parent[no]);
+
+		if( idx == 0 ) return;
+		next = post[idx - 1];
+
+		for (int i = inpos[node] - 1; i >= 0; i--) {
+			if (visited[i])
+				break;
+			if (in[i] == next) {
+				left[node] = next;
+				idx--;
+				make_tree();
+				break;
+			}
+		}
+
+	}
+
+	static void get_pre(int node) {
+
+		sb.append(node + " ");
+		if (left[node] > 0)
+			get_pre(left[node]);
+		if (right[node] > 0)
+			get_pre(right[node]);
+
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -22,39 +69,27 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int T;
+		String inp[];
 
-		T = Integer.parseInt(br.readLine());
+		Arrays.fill(visited, false);
+		Arrays.fill(left, 0);
+		Arrays.fill(right, 0);
 
-		for (int c = 0; c < T; c++) {
-			Arrays.fill(parent, 0);
-			Arrays.fill(groupcnt, 0);
-			HashMap<String, Integer> hm = new HashMap<>();
-			int F = Integer.parseInt(br.readLine());
-			int cnt = 0;
-			for (int i = 0; i < F; i++) {
-				String inp[] = br.readLine().split(" ");
-				if (!hm.containsKey(inp[0])) {
-					hm.put(inp[0], cnt++);
-					parent[hm.get(inp[0])] = hm.get(inp[0]);
-					groupcnt[hm.get(inp[0])] = 1;
-				}
-				int a = hm.get(inp[0]);
-				if (!hm.containsKey(inp[1])) {
-					hm.put(inp[1], cnt++);
-					parent[hm.get(inp[1])] = hm.get(inp[1]);
-					groupcnt[hm.get(inp[1])] = 1;
-				}
-				int b = hm.get(inp[1]);
-				if (find_parent(a) != find_parent(b)) {
-					groupcnt[parent[a]] += groupcnt[parent[b]];
-					groupcnt[parent[b]] = 0;
-					parent[parent[b]] = parent[a];
-				}
-				bw.write(groupcnt[parent[a]] + "\n");
-			}
+		n = Integer.parseInt(br.readLine());
+		idx = n - 1;
+		inp = br.readLine().split(" ");
+		for (int i = 0; i < n; i++) {
+			in[i] = Integer.parseInt(inp[i]);
+			inpos[Integer.parseInt(inp[i])] = i;
 		}
+		inp = br.readLine().split(" ");
+		for (int i = 0; i < n; i++)
+			post[i] = Integer.parseInt(inp[i]);
 
+		make_tree();
+		get_pre(post[n-1]);
+
+		bw.write(sb.toString());
 		bw.flush();
 		bw.close();
 	}
