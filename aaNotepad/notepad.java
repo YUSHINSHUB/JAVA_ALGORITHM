@@ -7,61 +7,48 @@ import java.math.*;
 
 public class notepad {
 
-	static int n;
-	static int idx = 0;
-	static int in[] = new int[100001];
-	static int post[] = new int[100001];
-	static int inpos[] = new int[100001];
-	static Boolean visited[] = new Boolean[100003];
-	static int left[] = new int[100001];
-	static int right[] = new int[100001];
-	static StringBuilder sb = new StringBuilder("");
+	static int init[][] = { { 1, 1 }, { 1, 0 } };
+	static long matrix[][] = { { 1, 1 }, { 1, 0 } };
 
-	static void make_tree() {
+	static void square() {
 
-		if (idx == 0)
-			return;
+		long temp[][] = new long[2][2];
 
-		int node = post[idx];
-		visited[inpos[node]] = true;
-		int next = post[idx - 1];
+		temp[0][0] = ((matrix[0][0] * matrix[0][0]) + (matrix[0][1] * matrix[1][0])) % 1000000007;
+		temp[0][1] = ((matrix[0][0] * matrix[0][1]) + (matrix[0][1] * matrix[1][1])) % 1000000007;
+		temp[1][0] = ((matrix[1][0] * matrix[0][0]) + (matrix[1][1] * matrix[1][0])) % 1000000007;
+		temp[1][1] = ((matrix[1][0] * matrix[0][1]) + (matrix[1][1] * matrix[1][1])) % 1000000007;
+		matrix[0][0] = temp[0][0];
+		matrix[0][1] = temp[0][1];
+		matrix[1][0] = temp[1][0];
+		matrix[1][1] = temp[1][1];
+	}
 
-		for (int i = inpos[node] + 1; i < n; i++) {
-			if (visited[i])
-				break;
-			if (in[i] == next) {
-				right[node] = next;
-				idx--;
-				make_tree();
-				break;
-			}
-			
-		}
+	static void mul() {
 
-		if( idx == 0 ) return;
-		next = post[idx - 1];
-
-		for (int i = inpos[node] - 1; i >= 0; i--) {
-			if (visited[i])
-				break;
-			if (in[i] == next) {
-				left[node] = next;
-				idx--;
-				make_tree();
-				break;
-			}
-		}
+		long temp[][] = new long[2][2];
+		temp[0][0] = ((matrix[0][0] * init[0][0]) + (matrix[0][1] * init[1][0])) % 1000000007;
+		temp[0][1] = ((matrix[0][0] * init[0][1]) + (matrix[0][1] * init[1][1])) % 1000000007;
+		temp[1][0] = ((matrix[1][0] * init[0][0]) + (matrix[1][1] * init[1][0])) % 1000000007;
+		temp[1][1] = ((matrix[1][0] * init[0][1]) + (matrix[1][1] * init[1][1])) % 1000000007;
+		matrix[0][0] = temp[0][0];
+		matrix[0][1] = temp[0][1];
+		matrix[1][0] = temp[1][0];
+		matrix[1][1] = temp[1][1];
 
 	}
 
-	static void get_pre(int node) {
-
-		sb.append(node + " ");
-		if (left[node] > 0)
-			get_pre(left[node]);
-		if (right[node] > 0)
-			get_pre(right[node]);
-
+	static void recur(long cur) {
+		if (cur == 1)
+			return;
+		if (cur % 2 == 0) {
+			recur(cur / 2);
+			square();
+		} else {
+			recur(cur/2);
+			square();
+			mul();
+		}
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -69,27 +56,11 @@ public class notepad {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String inp[];
+		long n = Long.parseLong(br.readLine());
+		recur(n);
 
-		Arrays.fill(visited, false);
-		Arrays.fill(left, 0);
-		Arrays.fill(right, 0);
+		bw.write(matrix[1][0] % 1000000007 + "");
 
-		n = Integer.parseInt(br.readLine());
-		idx = n - 1;
-		inp = br.readLine().split(" ");
-		for (int i = 0; i < n; i++) {
-			in[i] = Integer.parseInt(inp[i]);
-			inpos[Integer.parseInt(inp[i])] = i;
-		}
-		inp = br.readLine().split(" ");
-		for (int i = 0; i < n; i++)
-			post[i] = Integer.parseInt(inp[i]);
-
-		make_tree();
-		get_pre(post[n-1]);
-
-		bw.write(sb.toString());
 		bw.flush();
 		bw.close();
 	}
