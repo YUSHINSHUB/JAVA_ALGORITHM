@@ -7,60 +7,50 @@ import java.math.*;
 
 public class notepad {
 
-	static int init[][] = { { 1, 1 }, { 1, 0 } };
-	static long matrix[][] = { { 1, 1 }, { 1, 0 } };
-
-	static void square() {
-
-		long temp[][] = new long[2][2];
-
-		temp[0][0] = ((matrix[0][0] * matrix[0][0]) + (matrix[0][1] * matrix[1][0])) % 1000000007;
-		temp[0][1] = ((matrix[0][0] * matrix[0][1]) + (matrix[0][1] * matrix[1][1])) % 1000000007;
-		temp[1][0] = ((matrix[1][0] * matrix[0][0]) + (matrix[1][1] * matrix[1][0])) % 1000000007;
-		temp[1][1] = ((matrix[1][0] * matrix[0][1]) + (matrix[1][1] * matrix[1][1])) % 1000000007;
-		matrix[0][0] = temp[0][0];
-		matrix[0][1] = temp[0][1];
-		matrix[1][0] = temp[1][0];
-		matrix[1][1] = temp[1][1];
-	}
-
-	static void mul() {
-
-		long temp[][] = new long[2][2];
-		temp[0][0] = ((matrix[0][0] * init[0][0]) + (matrix[0][1] * init[1][0])) % 1000000007;
-		temp[0][1] = ((matrix[0][0] * init[0][1]) + (matrix[0][1] * init[1][1])) % 1000000007;
-		temp[1][0] = ((matrix[1][0] * init[0][0]) + (matrix[1][1] * init[1][0])) % 1000000007;
-		temp[1][1] = ((matrix[1][0] * init[0][1]) + (matrix[1][1] * init[1][1])) % 1000000007;
-		matrix[0][0] = temp[0][0];
-		matrix[0][1] = temp[0][1];
-		matrix[1][0] = temp[1][0];
-		matrix[1][1] = temp[1][1];
-
-	}
-
-	static void recur(long cur) {
-		if (cur == 1)
-			return;
-		if (cur % 2 == 0) {
-			recur(cur / 2);
-			square();
-		} else {
-			recur(cur/2);
-			square();
-			mul();
-		}
-	}
-
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		long n = Long.parseLong(br.readLine());
-		recur(n);
+		String inp[];
+		int res = 0;
+		int grid[][] = new int[500][500];
+		int H, W;
 
-		bw.write(matrix[1][0] % 1000000007 + "");
+		inp = br.readLine().split(" ");
+		H = Integer.parseInt(inp[0]);
+		W = Integer.parseInt(inp[1]);
 
+		for (int i = 0; i < H; i++)
+			Arrays.fill(grid[i], 0);
+
+		inp = br.readLine().split(" ");
+		for (int i = 0; i < W; i++) {
+			int cur = Integer.parseInt(inp[i]);
+			for (int j = 0; j < cur; j++) {
+				grid[j][i] = 1;
+			}
+		}
+
+		for (int i = 0; i < H; i++) {
+			int idx = 0;
+			while (grid[i][idx] == 0) {
+				idx++;
+				if (idx == W)
+					break;
+			}
+			int temp = 0;
+			for (int j = idx + 1; j < W; j++) {
+				if (grid[i][j] == 0)
+					temp++;
+				if (grid[i][j] == 1) {
+					res += temp;
+					temp = 0;
+				}
+			}
+		}
+
+		bw.write(res + "");
 		bw.flush();
 		bw.close();
 	}
