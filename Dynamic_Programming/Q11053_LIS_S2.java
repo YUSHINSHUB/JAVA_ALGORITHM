@@ -4,7 +4,7 @@ import java.io.*;
 import java.math.*;
 import java.util.*;
 
-public class Q11053_Increasing_S2 {
+public class Q11053_LIS_S2 {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub

@@ -13,44 +13,58 @@ public class notepad {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		String inp[];
-		int res = 0;
-		int grid[][] = new int[500][500];
-		int H, W;
+		int N = Integer.parseInt(br.readLine());
+		int sequence[] = new int[1000001];
+		int mem[] = new int[1000001];
+		int res[] = new int[1000001];
+		int idx = 1;
+		ArrayList<Integer> arr = new ArrayList<>();
 
+		Arrays.fill(sequence, 0);
 		inp = br.readLine().split(" ");
-		H = Integer.parseInt(inp[0]);
-		W = Integer.parseInt(inp[1]);
 
-		for (int i = 0; i < H; i++)
-			Arrays.fill(grid[i], 0);
+		for (int i = 0; i < N; i++)
+			sequence[i] = Integer.parseInt(inp[i]);
+		res[0] = sequence[0];
 
-		inp = br.readLine().split(" ");
-		for (int i = 0; i < W; i++) {
-			int cur = Integer.parseInt(inp[i]);
-			for (int j = 0; j < cur; j++) {
-				grid[j][i] = 1;
-			}
-		}
-
-		for (int i = 0; i < H; i++) {
-			int idx = 0;
-			while (grid[i][idx] == 0) {
+		for (int i = 1; i < N; i++) {
+			if (sequence[i] > res[idx - 1]) {
+				res[idx] = sequence[i];
+				mem[i] = idx;
 				idx++;
-				if (idx == W)
-					break;
+				continue;
 			}
-			int temp = 0;
-			for (int j = idx + 1; j < W; j++) {
-				if (grid[i][j] == 0)
-					temp++;
-				if (grid[i][j] == 1) {
-					res += temp;
-					temp = 0;
+			int low = 0;
+			int hig = idx;
+			int mid = hig / 2;
+
+			while (low < hig) {
+				if (res[mid] < sequence[i]) {
+					low = mid + 1;
+					mid = (low + hig) / 2;
+				} else {
+					hig = mid;
+					mid = (low + hig) / 2;
 				}
 			}
+			res[low] = sequence[i];
+			mem[i] = low;
 		}
 
-		bw.write(res + "");
+		bw.write(idx + "\n");
+		int cur = idx - 1;
+		for (int i = N - 1; i >= 0; i--) {
+			if (mem[i] == cur) {
+				arr.add(sequence[i]);
+				cur--;
+				if (cur < 0)
+					break;
+			}
+		}
+
+		for (int i = idx-1; i >= 0; i--)
+			bw.write(arr.get(i) + " ");
+
 		bw.flush();
 		bw.close();
 	}
